@@ -5,6 +5,7 @@ __pycache__/
 
 #Pycharm
 .idea/
+.hypothesis
 
 # C extensions
 *.so
