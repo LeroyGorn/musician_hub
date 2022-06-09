@@ -1,9 +1,8 @@
-import random
 import unittest
 from datetime import date
 
-from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from django.test import TestCase
 from hypothesis import given
 from hypothesis import strategies as st
 
@@ -80,36 +79,34 @@ class TestFormattedName(unittest.TestCase):
         )
 
 
-User = get_user_model()
-user_instance = User.objects.create(username=random.randint(1, 10000), email="email", password="password")
-
-
 def sample_forum_posted(title, **params):
     defaults = {
         "description": "Some text",
         "category": ForumCategory.objects.create(name="Misha"),
-        "user": user_instance,
     }
     defaults.update(params)
     return ForumPosted.objects.create(title=title, **defaults)
 
 
 def sample_forum_comments(**params):
-    defaults = {"text": "text", "author": user_instance, "messages": sample_forum_posted(title="Test")}
+    defaults = {
+        "text": "text",
+        "messages": sample_forum_posted(title="Test"),
+    }
     defaults.update(params)
     return ForumComments.objects.create(**defaults)
 
 
-class TestForumModel(unittest.TestCase):
+class TestForumModel(TestCase):
     def setUp(self) -> None:
         self.category = ForumCategory.objects.create(name="Misha")
         self.messages_count = 1
         self.test_forum_posted = sample_forum_posted(title="test_mytest")
-        self.date = sample_forum_comments(
+        self.test_forum_comments = sample_forum_comments(
             text="test_text", messages=sample_forum_posted(title="Test"), date=date(2022, 6, 8)
         )
         for i in range(self.messages_count):
-            sample_forum_comments(messages=self.test_forum_posted, text="test_text")
+            sample_forum_comments(messages=self.test_forum_posted, text="test")
 
     def tearDown(self) -> None:
         self.test_forum_posted.delete()
@@ -118,12 +115,14 @@ class TestForumModel(unittest.TestCase):
         self.assertEqual(self.messages_count, self.test_forum_posted.messages_count())
 
     def test_title_limit(self):
+        post_wrong_value = sample_forum_posted(title="i" * 2000)
         with self.assertRaises(ValidationError):
-            sample_forum_posted(title="i" * 2000)
+            post_wrong_value.full_clean()
 
     def test_description_limit(self):
+        desc_wrong_value = sample_forum_posted(title="3", description="i" * 2000)
         with self.assertRaises(ValidationError):
-            sample_forum_comments(text="i" * 20000)
+            desc_wrong_value.full_clean()
 
     def test_category_name(self):
         self.assertEqual(str(self.category), "Misha")
@@ -131,7 +130,7 @@ class TestForumModel(unittest.TestCase):
     def test_date_field(self):
         with self.assertRaises(ValueError):
             self.assertEqual(
-                self.date,
+                self.test_forum_comments,
                 sample_forum_comments(
                     text="test_text", messages=sample_forum_posted(title="Test"), date=date(6, 2022, 8)
                 ),
