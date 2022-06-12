@@ -103,7 +103,7 @@ class TestForumModel(TestCase):
         self.messages_count = 1
         self.test_forum_posted = sample_forum_posted(title="test_mytest")
         self.test_forum_comments = sample_forum_comments(
-            text="test_text", messages=sample_forum_posted(title="Test"), date=date(2022, 6, 8)
+            text="test_text", messages=sample_forum_posted(title="Test"), create_datetime=date(2022, 6, 8)
         )
         for i in range(self.messages_count):
             sample_forum_comments(messages=self.test_forum_posted, text="test")
@@ -132,6 +132,6 @@ class TestForumModel(TestCase):
             self.assertEqual(
                 self.test_forum_comments,
                 sample_forum_comments(
-                    text="test_text", messages=sample_forum_posted(title="Test"), date=date(6, 2022, 8)
+                    text="test_text", messages=sample_forum_posted(title="Test"), create_datetime=date(6, 2022, 8)
                 ),
             )
