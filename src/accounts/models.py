@@ -9,7 +9,7 @@ from accounts.managers import ForumManager
 class ForumUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("email address"), unique=True)
     first_name = models.CharField(_("first_name"), max_length=64, blank=True)
-    last_name = models.CharField(_("first_name"), max_length=64, blank=True)
+    last_name = models.CharField(_("last_name"), max_length=64, blank=True)
     birthdate = models.DateField(_("Birthdate"), null=True, blank=True)
     photo = models.ImageField(upload_to="media/users_photo/", null=True, blank=True)
 

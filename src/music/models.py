@@ -27,7 +27,7 @@ class ForumPosted(BaseModel):
 
 class ForumCategory(BaseModel):
     name = models.CharField(max_length=128)
-    uuid = models.UUIDField(default=uuid.uuid4, db_index=True, unique=True)
+    image = models.ImageField(default="default.png", upload_to="media/covers")
 
     def __str__(self):
         return f"{self.name}"
