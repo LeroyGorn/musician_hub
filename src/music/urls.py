@@ -1,11 +1,12 @@
 from django.urls import path
 
-from music.views import (CategoryDetailsView, CommentsDetailsView,
-                         PostsDetailsView, UsersDetailsView)
+from music.views import (CategoryIndexView, CategoryListView, PostsDetailsView, UsersDetailsView)
+
+app_name = "music"
 
 urlpatterns = [
-    path("categories/", CategoryDetailsView.as_view(), name="categories"),
+    path("categories/", CategoryIndexView.as_view(), name="categories"),
     path("users/", UsersDetailsView.as_view(), name="users"),
-    path("contests/", PostsDetailsView.as_view(), name="posts"),
-    path("contest-details/", CommentsDetailsView.as_view(), name="etc"),
+    path("categories/<int:pk>", CategoryListView.as_view(), name="category"),
+    path("<uuid:uuid>/", PostsDetailsView.as_view(), name="post"),
 ]

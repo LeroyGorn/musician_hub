@@ -11,7 +11,7 @@ class ForumUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(_("first_name"), max_length=64, blank=True)
     last_name = models.CharField(_("last_name"), max_length=64, blank=True)
     birthdate = models.DateField(_("Birthdate"), null=True, blank=True)
-    photo = models.ImageField(upload_to="media/users_photo/", null=True, blank=True)
+    photo = models.ImageField(upload_to="users_photo/", null=True, blank=True)
 
     is_staff = models.BooleanField(
         _("staff status"),
@@ -33,6 +33,9 @@ class ForumUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = _("User")
         verbose_name_plural = _("Users")
+
+    def posted_count(self):
+        return self.posts.count()
 
     def get_full_name(self):
         """

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "accounts",
     "music",
+    "crispy_forms",
 ]
 
 MIDDLEWARE = [

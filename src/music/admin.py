@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from music.models import ForumCategory, ForumComments, ForumPosted
+
+for model in (ForumPosted, ForumComments, ForumCategory):
+    admin.site.register(model)
