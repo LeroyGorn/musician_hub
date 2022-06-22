@@ -226,7 +226,7 @@ https://templatemo.com/tm-576-snapx-photography
       </div>
     </div>
   </div>
-
+{% block content %}
   <section class="featured-contests">
     <div class="container">
       <div class="row">
@@ -236,125 +236,85 @@ https://templatemo.com/tm-576-snapx-photography
             <h4>View Most <em>Popular</em> Category <em>Contests</em></h4>
           </div>
         </div>
+       {% for category in all_categories %}
         <div class="col-lg-6">
           <div class="item">
             <div class="thumb">
-              <img src="{% static 'assets/images/featured-image-02.jpg' %}" alt="">
+              <img src="{{ category.image.url }}" alt="">
               <div class="hover-effect">
                 <div class="content">
                   <div class="top-content">
-                    <span class="award">Award Price</span>
+                    <span class="award">{{ category.name }}</span>
                     <span class="price">$1,600</span>
                   </div>
-                  <h4>Walk In The Nature Night</h4>
+                  <h4>{{ category.name }}</h4>
                   <div class="info">
-                    <span class="participants"><img src="{% static 'assets//images/icon-03.png' %}" alt=""><br>60<br>Participants</span>
-                    <span class="submittions"><img src="{% static 'assets//images/icon-01.png' %}" alt=""><br>188<br>Submissions</span>
+                    <span class="price"><img src="{% static 'assets/images/icon-01.png' %}" alt="">
+                        <br>{{ category.post_count }}<br>Posts</span>
                   </div>
                   <div class="border-button">
-                    <a href="contest-details.html">Browse Nature Contests</a>
+                    <a href="{% url 'music:category' category.id %}">Browse Nature Contests</a>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-lg-6">
-          <div class="item">
-            <div class="thumb">
-              <img src="{% static 'assets/images/featured-image-01.jpg' %}" alt="">
-              <div class="hover-effect">
-                <div class="content">
-                  <div class="top-content">
-                    <span class="award">Award Price</span>
-                    <span class="price">$3,200</span>
-                  </div>
-                  <h4>Walk In The Nature Night</h4>
-                  <div class="info">
-                    <span class="participants"><img src="{% static 'assets//images/icon-03.png' %}" alt=""><br>78<br>Participants</span>
-                    <span class="submittions"><img src="{% static 'assets//images/icon-01.png' %}" alt=""><br>240<br>Submissions</span>
-                  </div>
-                  <div class="border-button">
-                    <a href="contest-details.html">Browse Nature Contests</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="item">
-            <div class="thumb">
-              <img src="{% static 'assets/images/featured-image-03.jpg' %}" alt="">
-              <div class="hover-effect">
-                <div class="content">
-                  <div class="top-content">
-                    <span class="award">Award Price</span>
-                    <span class="price">$4,100</span>
-                  </div>
-                  <h4>Walk In The Nature Night</h4>
-                  <div class="info">
-                    <span class="participants"><img src="{% static 'assets//images/icon-03.png' %}" alt=""><br>112<br>Participants</span>
-                    <span class="submittions"><img src="{% static 'assets//images/icon-01.png' %}" alt=""><br>286<br>Submissions</span>
-                  </div>
-                  <div class="border-button">
-                    <a href="contest-details.html">Browse Nature Contests</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="item">
-            <div class="thumb">
-              <img src="{% static 'assets/images/featured-image-04.jpg' %}" alt="">
-              <div class="hover-effect">
-                <div class="content">
-                  <div class="top-content">
-                    <span class="award">Award Price</span>
-                    <span class="price">$3,400</span>
-                  </div>
-                  <h4>Walk In The Nature Night</h4>
-                  <div class="info">
-                    <span class="participants"><img src="{% static 'assets//images/icon-03.png' %}" alt=""><br>54<br>Participants</span>
-                    <span class="submittions"><img src="{% static 'assets//images/icon-01.png' %}" alt=""><br>140<br>Submissions</span>
-                  </div>
-                  <div class="border-button">
-                    <a href="contest-details.html">Browse Nature Contests</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="item">
-            <div class="thumb">
-              <img src="{% static 'assets/images/featured-image-05.jpg' %}" alt="">
-              <div class="hover-effect">
-                <div class="content">
-                  <div class="top-content">
-                    <span class="award">Award Price</span>
-                    <span class="price">$2,200</span>
-                  </div>
-                  <h4>Walk In The Nature Night</h4>
-                  <div class="info">
-                    <span class="participants"><img src="{% static 'assets//images/icon-03.png' %}" alt=""><br>68<br>Participants</span>
-                    <span class="submittions"><img src="{% static 'assets//images/icon-01.png' %}" alt=""><br>162<br>Submissions</span>
-                  </div>
-                  <div class="border-button">
-                    <a href="contest-details.html">Browse Nature Contests</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      {% endfor %}
       </div>
     </div>
   </section>
-
+{% endblock %}
+          {% if page_obj.paginator.num_pages > 1 %}
+            <div class="section-heading text-center">
+                <div class="tm-prev-next-wrapper">
+                    {% if page_obj.has_previous %}
+                        <div class="main-button" style="text-align: center">
+                        <a href="?page={{ page_obj.previous_page_number }}"
+                           class="mb-2 tm-btn tm-btn-primary tm-prev-next tm-mr-20">Prev</a>
+                        </div>
+                    {% else %}
+                        <div class="main-button ml-3" style="text-align: center">
+                        <a class="mb-2 tm-btn tm-btn-primary tm-prev-next disabled tm-mr-20">Prev</a>
+                        </div>
+                    {% endif %}
+                    {% if page_obj.has_next %}
+                        <div class="main-button" style="text-align: center">
+                        <a href="?page={{ page_obj.next_page_number }}"
+                           class="mb-2 tm-btn tm-btn-primary tm-prev-next">Next</a>
+                        </div>
+                    {% else %}
+                        <div class="main-button ml-3" style="text-align: center">
+                        <a class="mb-2 tm-btn tm-btn-primary tm-prev-next disabled">Next</a>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="tm-paging-wrapper">
+                    <span class="d-inline-block mr-3"></span>
+                    <nav class="tm-paging-nav d-inline-block">
+                        <ul>
+                            {% for page_number in page_obj.paginator.page_range %}
+                                {% if page_number == page_obj.number %}
+                                    <li class="tm-paging-item active">
+                                    <div class="owl-wrapper">
+                                        <a href="?page={{ page_number }}"
+                                           class="mb-2 tm-btn tm-paging-link">{{ page_number }}</a>
+                                    </div>
+                                    </li>
+                                {% else %}
+                                    <li class="tm-paging-item">
+                                    <div class="owl-wrapper">
+                                        <a href="?page={{ page_number }}"
+                                           class="mb-2 tm-btn tm-paging-link">{{ page_number }}</a>
+                                    </div>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        {% endif %}
   <section class="testimonials">
     <div class="container">
       <div class="row">
