@@ -52,12 +52,12 @@ https://templatemo.com/tm-576-snapx-photography
                               <a href="javascript:void(0)" class="active">Photos &amp; Videos</a>
                               <ul class="sub-menu">
                                   <li><a href="/hub/contests">Contests</a></li>
-                                  <li><a href="/hub/contest-details">Single Contest</a></li>
+                                  <li><a href="/hub/post-categories">Category Posts</a></li>
                               </ul>
                           </li>
                           <li><a href="/hub/categories">Categories</a></li>
                           <li><a href="/hub/users">Users</a></li>
-                      </ul>   
+                      </ul>
                       <div class="border-button">
                         <a id="modal_trigger" href="#modal" class="sign-in-up"><i class="fa fa-user"></i> Sign In/Up</a>
                       </div>
@@ -155,7 +155,7 @@ https://templatemo.com/tm-576-snapx-photography
                 </div>
             </form>
         </div>
-        
+
     </section>
   </div>
 
@@ -163,7 +163,7 @@ https://templatemo.com/tm-576-snapx-photography
     <div class="container">
       <div class="row">
         <div class="col-lg-8 offset-lg-2 header-text">
-          <h2>Discover Most Popular Categories on <em>SnapX</em></h2>
+          <h2>Discover Most Popular Categories on <em>MusHub</em></h2>
           <p>You are allowed to freely use SnapX Photography Template for your commercial websites. You are not allowed to redistribute the template ZIP file on any other Free CSS websites.</p>
         </div>
       </div>
@@ -240,7 +240,9 @@ https://templatemo.com/tm-576-snapx-photography
         <div class="col-lg-6">
           <div class="item">
             <div class="thumb">
+              {% if category.image %}
               <img src="{{ category.image.url }}" alt="">
+              {% endif %}
               <div class="hover-effect">
                 <div class="content">
                   <div class="top-content">
@@ -265,56 +267,38 @@ https://templatemo.com/tm-576-snapx-photography
     </div>
   </section>
 {% endblock %}
-          {% if page_obj.paginator.num_pages > 1 %}
-            <div class="section-heading text-center">
-                <div class="tm-prev-next-wrapper">
-                    {% if page_obj.has_previous %}
-                        <div class="main-button" style="text-align: center">
-                        <a href="?page={{ page_obj.previous_page_number }}"
-                           class="mb-2 tm-btn tm-btn-primary tm-prev-next tm-mr-20">Prev</a>
-                        </div>
-                    {% else %}
-                        <div class="main-button ml-3" style="text-align: center">
-                        <a class="mb-2 tm-btn tm-btn-primary tm-prev-next disabled tm-mr-20">Prev</a>
-                        </div>
-                    {% endif %}
-                    {% if page_obj.has_next %}
-                        <div class="main-button" style="text-align: center">
-                        <a href="?page={{ page_obj.next_page_number }}"
-                           class="mb-2 tm-btn tm-btn-primary tm-prev-next">Next</a>
-                        </div>
-                    {% else %}
-                        <div class="main-button ml-3" style="text-align: center">
-                        <a class="mb-2 tm-btn tm-btn-primary tm-prev-next disabled">Next</a>
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="tm-paging-wrapper">
-                    <span class="d-inline-block mr-3"></span>
-                    <nav class="tm-paging-nav d-inline-block">
-                        <ul>
-                            {% for page_number in page_obj.paginator.page_range %}
-                                {% if page_number == page_obj.number %}
-                                    <li class="tm-paging-item active">
-                                    <div class="owl-wrapper">
-                                        <a href="?page={{ page_number }}"
-                                           class="mb-2 tm-btn tm-paging-link">{{ page_number }}</a>
-                                    </div>
-                                    </li>
-                                {% else %}
-                                    <li class="tm-paging-item">
-                                    <div class="owl-wrapper">
-                                        <a href="?page={{ page_number }}"
-                                           class="mb-2 tm-btn tm-paging-link">{{ page_number }}</a>
-                                    </div>
-                                    </li>
-                                {% endif %}
-                            {% endfor %}
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        {% endif %}
+{% if page_obj.paginator.num_pages > 1 %}
+        <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation">   <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page=1" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">begin</span>
+          </a>
+        </li>   {% endif %}
+
+        {% for n in page_obj.paginator.page_range %}
+          {% if page_obj.number == n %}
+            <li class="page-item active">
+              <span class="page-link">{{ n }}<span class="sr-only">(current)</span></span>
+            </li>
+          {% elif n > page_obj.number|add:'-3' and n < page_obj.number|add:'3' %}
+            <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">end</span>
+            </a>
+          </li>
+          {% endif %}   </ul> </nav>
+        </div>
+{% endif %}
+
   <section class="testimonials">
     <div class="container">
       <div class="row">
@@ -420,9 +404,9 @@ https://templatemo.com/tm-576-snapx-photography
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
-          <p>Copyright © 2022 <a href="#">SnapX</a> Photo Contest Co., Ltd. All rights reserved. 
-          
-          Design: <a title="CSS Templates" rel="sponsored" href="https://templatemo.com" target="_blank">TemplateMo</a></p>
+          <p>Copyright © 2022 <a href="#">MusHub</a> Musician Forum Co., Ltd. All rights reserved.
+
+          Design: <a title="CSS Templates" rel="sponsored" href="https://templatemo.com" target="_blank">Michael Gorn</a></p>
         </div>
       </div>
     </div>
