@@ -1,6 +1,8 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 
+from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from django.views.generic import DetailView, ListView
 
 from accounts.models import ForumUser
@@ -10,7 +12,7 @@ from music.models import ForumCategory, ForumComments, ForumPosted
 
 class IndexView(ListView):
     template_name = "index.html"
-    one_week_ago = datetime.today() - timedelta(days=7)
+    one_week_ago = timezone.now() - timedelta(days=7)
     queryset = ForumPosted.objects.filter(create_datetime__gte=one_week_ago)[:5]
     context_object_name = "all_post"
     # paginate_by = 4
@@ -67,13 +69,15 @@ class CategoryIndexView(ListView):
     model = ForumCategory
     queryset = ForumCategory.objects.all()
     context_object_name = "all_categories"
+    ordering = ["-create_datetime"]
     paginate_by = 2
 
 
 class CategoryListView(ListView):
-    template_name = "contest-details.html"
+    template_name = "post-categories.html"
     model = ForumPosted
-    paginate_by = 1
+    ordering = ["-create_datetime"]
+    paginate_by = 4
 
     def get_object(self, queryset=None):
         return ForumCategory.objects.get(id=self.kwargs.get("pk"))
@@ -83,9 +87,9 @@ class CategoryListView(ListView):
         cat_id = self.kwargs["pk"]
 
         category = get_object_or_404(ForumCategory, id=cat_id)
-        posts = ForumPosted.objects.filter(category=category)
-
-        context["posts"] = posts
+        posts = ForumPosted.objects.filter(category=category).all().order_by("-create_datetime")
+        page = self.request.GET.get("page")
+        context["posts"] = Paginator(posts, 4).get_page(page)
         context["category"] = category
         return context
 
@@ -93,3 +97,8 @@ class CategoryListView(ListView):
 class UsersDetailsView(ListView):
     template_name = "users.html"
     model = ForumUser
+
+
+class ContestIndex(ListView):
+    template_name = "contests.html"
+    model = ForumComments
