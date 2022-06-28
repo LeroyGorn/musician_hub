@@ -1,6 +1,8 @@
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, User
 from django.core.mail import send_mail
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.translation import ugettext as _
 
 from accounts.managers import ForumManager
@@ -10,7 +12,6 @@ class ForumUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("email address"), unique=True)
     first_name = models.CharField(_("first_name"), max_length=64, blank=True)
     last_name = models.CharField(_("last_name"), max_length=64, blank=True)
-    birthdate = models.DateField(_("Birthdate"), null=True, blank=True)
     photo = models.ImageField(upload_to="users_photo/", null=True, blank=True)
 
     is_staff = models.BooleanField(
@@ -51,3 +52,8 @@ class ForumUser(AbstractBaseUser, PermissionsMixin):
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+    @receiver(post_save, sender=User)
+    def create_profile_signal(sender, instance, created, **kwargs):
+        if created:
+            ForumUser.objects.create(user=instance)

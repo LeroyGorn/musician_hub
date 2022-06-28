@@ -49,5 +49,18 @@ class ForumComments(BaseModel):
     text = models.TextField(blank=True)
     reply_to = models.ForeignKey("self", null=True, blank=True, on_delete=models.CASCADE, related_name="replies")
 
+    class Meta:
+        ordering = ["-create_datetime"]
+
     def __str__(self):
-        return f"{self.author}:{self.text}"
+        return str(self.author) + " comment " + str(self.text)
+
+    @property
+    def children(self):
+        return ForumComments.objects.filter(reply_to=self).reverse()
+
+    @property
+    def is_parent(self):
+        if self.reply_to is None:
+            return True
+        return False
