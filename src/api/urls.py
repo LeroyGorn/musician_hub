@@ -2,7 +2,10 @@ from django.urls import include, path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions, routers
-
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 from api.views import (CategoryCreateView, CategoryDeleteView,
                        CategoryDetailView, CategoryUpdateView, PostDetailView,
                        PostListView, UserViewSet)
@@ -30,7 +33,8 @@ schema_view = get_schema_view(
 urlpatterns = [
     path("", include(router.urls)),
     path("auth/", include("rest_framework.urls")),
-    path("auth/", include("djoser.urls.jwt")),
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path("docs/", schema_view.with_ui("swagger", cache_timeout=0), name="swagger_docs"),
     path("<uuid:uuid>/", PostDetailView.as_view(), name="post"),
     path("posts/", PostListView.as_view(), name="posts"),
