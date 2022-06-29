@@ -89,9 +89,6 @@ class ProfileView(UpdateView):
 
 
 class LoginView(FormView):
-    """
-    Provides the ability to login as a user with a username and password
-    """
 
     template_name = "login.html"
     success_url = reverse_lazy("music:users")
