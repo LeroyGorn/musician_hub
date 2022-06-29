@@ -26,6 +26,7 @@ urlpatterns = [
     path("hub/", include("music.urls")),
     path("api/", include("api.urls")),
     path("reg/", include("accounts.urls")),
+    path("api/auth/", include("rest_framework.urls", namespace="rest_framework")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
