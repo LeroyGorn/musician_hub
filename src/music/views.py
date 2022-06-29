@@ -1,7 +1,8 @@
 from datetime import timedelta
 
+from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
 from django.views.generic import DetailView, ListView
 
@@ -9,13 +10,14 @@ from accounts.models import ForumUser
 from music.forms import CommentForm
 from music.models import ForumCategory, ForumComments, ForumPosted
 
+User = get_user_model()
+
 
 class IndexView(ListView):
     template_name = "index.html"
     one_week_ago = timezone.now() - timedelta(days=7)
     queryset = ForumPosted.objects.filter(create_datetime__gte=one_week_ago)[:5]
     context_object_name = "all_post"
-    # paginate_by = 4
 
 
 class PostsDetailsView(DetailView):
@@ -29,39 +31,33 @@ class PostsDetailsView(DetailView):
         context = super().get_context_data(**kwargs)
         uuid = self.kwargs["uuid"]
 
-        form = CommentForm()
         post = get_object_or_404(ForumPosted, uuid=uuid)
-        comments = ForumComments.objects.filter(messages=post)
+        connected_comments = ForumComments.objects.filter(messages=post)
+        number_of_comments = connected_comments.count()
 
         context["post"] = post
-        context["comments"] = comments
-        context["form"] = form
+        context["comments"] = connected_comments
+        context["no_of_comments"] = number_of_comments
+        context["form"] = CommentForm()
         return context
 
     def post(self, request, *args, **kwargs):
-        form = CommentForm(request.POST)
-        context = super().get_context_data(**kwargs)
+        comment_form = CommentForm(self.request.POST)
+        if comment_form.is_valid():
+            text = comment_form.cleaned_data["text"]
+            try:
+                reply_to = comment_form.cleaned_data["reply_to"]
+            except ValueError:
+                reply_to = None
 
-        post = ForumPosted.objects.filter(uuid=self.kwargs["uuid"])[0]
-        comments = ForumComments.objects.filter(messages=post)
-
-        context["post"] = post
-        context["comments"] = comments
-        context["form"] = form
-
-        if form.is_valid():
-            text = form.cleaned_data["text"]
-
-            comment = ForumComments.objects.create(
-                text=text,
-                messages=post,
-            )
-            comment.save()
-            form = CommentForm()
-            context["form"] = form
-            return self.render_to_response(context=context)
-
-        return self.render_to_response(context=context)
+        new_comment = ForumComments(
+            text=text,
+            author=self.request.user,
+            messages=self.get_object(),
+            reply_to=reply_to,
+        )
+        new_comment.save()
+        return redirect(self.request.path_info)
 
 
 class CategoryIndexView(ListView):
