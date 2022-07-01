@@ -32,8 +32,8 @@ schema_view = get_schema_view(
 urlpatterns = [
     path("", include(router.urls)),
     path("docs/", schema_view.with_ui("swagger", cache_timeout=0), name="swagger_docs"),
-    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("<uuid:uuid>/", PostDetailView.as_view(), name="post"),
     path("posts/", PostListView.as_view(), name="posts"),
     path("category-create/", CategoryCreateView.as_view(), name="cat-create"),
