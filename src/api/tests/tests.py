@@ -14,9 +14,11 @@ class TestAPI(TestCase):
             title="test", description="TEST", category=ForumCategory.objects.create(name="Test")
         )
 
+    def tearDown(self) -> None:
+        self.post.delete()
+
     def test_post_list(self):
         user = ForumUser.objects.create(email="admin@admin.com", password="admin")
-        print(user)
         self.client.force_authenticate(user=user)
 
         result = self.client.get(
