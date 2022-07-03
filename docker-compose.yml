@@ -1,0 +1,37 @@
+version: "2"
+
+services:
+  backend:
+    build: ./
+#    image: example/mushub_image
+    container_name: mushub_container
+    working_dir: /musician_hub
+    restart: always
+    command:
+      - ./commands/start_project.sh
+    ports:
+      - ${LOCAL_PORT}:${WSGI_PORT}
+    volumes:
+      - ./src:/musician_hub/src
+      - ./commands:/musician_hub/commands
+    entrypoint: ["/bin/bash", "./commands/start_project.sh"]
+    env_file:
+      - .env
+#    environment:
+#      - DEBUG: True
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:12
+    ports:
+      - 5432:5432
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+#    environment:
+#      POSTGRES_PASSWORD: admin
+#      POSTGRES_USER: admin
+#      POSTGRES_DB: mushub
+volumes:
+  pg_data: { }
