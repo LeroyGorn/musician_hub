@@ -3,7 +3,6 @@ version: "2"
 services:
   backend:
     build: ./
-#    image: example/mushub_image
     container_name: mushub_container
     working_dir: /musician_hub
     restart: always
@@ -17,21 +16,48 @@ services:
     entrypoint: ["/bin/bash", "./commands/start_project.sh"]
     env_file:
       - .env
-#    environment:
-#      - DEBUG: True
     depends_on:
       - postgres
+
   postgres:
     image: postgres:12
     ports:
-      - 5432:5432
+      - 5433:5433
     volumes:
       - pg_data:/var/lib/postgresql/data
     env_file:
       - .env
-#    environment:
-#      POSTGRES_PASSWORD: admin
-#      POSTGRES_USER: admin
-#      POSTGRES_DB: mushub
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "5000:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+
 volumes:
   pg_data: { }
+  pgadmin_data: { }
