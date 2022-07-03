@@ -21,6 +21,7 @@ jobs:
         ports:
           - 5433:5433
         env:
+          DB_HOST: localhost
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: github_actions
