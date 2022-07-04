@@ -37,6 +37,7 @@ packaging==21.3
 pathspec==0.9.0
 Pillow==9.1.1
 platformdirs==2.5.2
+psycopg2==2.9.3
 pycodestyle==2.8.0
 pycparser==2.21
 pydot==1.4.2
