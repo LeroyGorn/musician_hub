@@ -22,8 +22,8 @@ def find_pairs(arr, arr_size, res):
 
     for i in range(0, arr_size):
         temp = res - arr[i]
-        if (temp in hashmap):
-            print(f'Pair with given sum {res} is ({temp},{arr[i]}) at indices ({hashmap[temp]},{i})')
+        if temp in hashmap:
+            print(f"Pair with given sum {res} is ({temp},{arr[i]}) at indices ({hashmap[temp]},{i})")
         hashmap[arr[i]] = i
 
 

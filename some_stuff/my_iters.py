@@ -27,7 +27,7 @@ class MyIterator:
         return self.MyIter(self)
 
 
-my_dictionary = {'a': 2, 'v': 3, 'b': 33}
+my_dictionary = {"a": 2, "v": 3, "b": 33}
 d = MyIterator()
 d.add_dict(my_dictionary)
 it = iter(d)
@@ -48,7 +48,7 @@ print(next(it))
 
 
 def generator_function(num):
-    random_words = ['I', 'like', 'generators', 'and', 'there', 'is', 'my', 'random', 'words']
+    random_words = ["I", "like", "generators", "and", "there", "is", "my", "random", "words"]
     empty_list = []
     while len(empty_list) != num:
         word = random.choice(random_words)

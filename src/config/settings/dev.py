@@ -5,6 +5,12 @@ DEBUG = True
 CURRENT_ENV = "DEV"
 print(CURRENT_ENV)
 
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_URL = "/static/"
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
+
 load_dotenv()  # noqa:
 if os.environ.get("GITHUB_WORKFLOW"):  # noqa:
     DATABASES = {

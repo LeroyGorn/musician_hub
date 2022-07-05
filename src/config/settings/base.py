@@ -14,6 +14,7 @@ import os.path
 from datetime import timedelta
 from pathlib import Path
 
+import mongoengine
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 import rest_framework.permissions
 from dotenv import load_dotenv
@@ -34,6 +35,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+mongoengine.connect(host="mongodb://admin:admin@mongodb:27017/mongodb_content?authSource=admin")
 
 # Application definition
 
@@ -51,6 +53,7 @@ INSTALLED_APPS = [
     "accounts",
     "music",
     "api",
+    "mongo_blog",
 ]
 
 MIDDLEWARE = [
@@ -135,11 +138,6 @@ EMAIL_PORT = 587
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-STATIC_URL = "/static/"
-
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-MEDIA_URL = "/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

@@ -13,6 +13,8 @@ services:
     volumes:
       - ./src:/musician_hub/src
       - ./commands:/musician_hub/commands
+      - static_content:/musician_hub/src/static
+      - media_content:/musician_hub/src/media
     entrypoint: ["/bin/bash", "./commands/start_project.sh"]
     env_file:
       - .env
@@ -41,23 +43,47 @@ services:
     depends_on:
       - postgres
 
-  mongo:
-    image: mongo
+  mongodb:
+    image: mongo:3-stretch
+    ports:
+      - 27017:27017
+    container_name: mongo_db_container
+    command: ["--bind_ip_all", "--smallfiles"]
+    volumes:
+      - mongo_data:/data/db
     restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+    env_file:
+      - .env
 
-  mongo-express:
+  mongoadmin:
     image: mongo-express
     restart: always
+    container_name: mongo_admin_container
     ports:
-      - 8081:8081
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: example
-      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+      - 8091:8081
+    env_file:
+      - .env
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
 
+  nginx:
+    image: nginx:1.19
+    volumes:
+      - static_content:/musician_hub/src/static
+      - media_content:/musician_hub/src/media
+      - ./nginx:/etc/nginx/conf.d
+    ports:
+      - 80:80
+      - 443:443
+    env_file:
+      - .env
+    depends_on:
+      - backend
 volumes:
   pg_data: { }
   pgadmin_data: { }
+  mongo_data: { }
+  static_content: { }
+  media_content: { }
