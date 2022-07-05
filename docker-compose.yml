@@ -7,7 +7,7 @@ services:
     working_dir: /musician_hub
     restart: always
     command:
-      - ./commands/start_project.sh
+      - ./commands/start_server_${MODE}.sh
     ports:
       - ${LOCAL_PORT}:${WSGI_PORT}
     volumes:
@@ -15,7 +15,7 @@ services:
       - ./commands:/musician_hub/commands
       - static_content:/musician_hub/src/static
       - media_content:/musician_hub/src/media
-    entrypoint: ["/bin/bash", "./commands/start_project.sh"]
+    entrypoint: ["/bin/bash", "./commands/start_server_${MODE}.sh"]
     env_file:
       - .env
     depends_on:

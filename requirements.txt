@@ -21,6 +21,7 @@ djangorestframework-simplejwt==4.8.0
 drf-yasg==1.20.0
 flake8==4.0.1
 graphviz==0.20
+gunicorn==20.1.0
 hypothesis==6.46.11
 idna==3.3
 inflection==0.5.1
