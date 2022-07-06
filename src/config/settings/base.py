@@ -168,7 +168,7 @@ DJOSER = {
     "PASSWORD_RESET_CONFIRM_URL": "auth/password-reset/{uid}/{token}",
 }
 
-CELERY_BROKER_URL = f"amqp://{os.environ['CELERY_BROKER_URL']}"
+CELERY_BROKER_URL = f"amqp://{os.getenv('CELERY_BROKER_URL')}"
 # CELERY_BROKER_URL = f"redis://{os.environ['CELERY_BROKER_URL']}"
 
 # CELERY_RESULT_BACKEND = f"redis://{os.environ['CELERY_BROKER_URL']}"
