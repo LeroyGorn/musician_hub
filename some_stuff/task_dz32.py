@@ -33,11 +33,11 @@ class timer:
 #         if response.status_code == 200:
 #             with open(f"{path}/{random_name}.jpg", "wb") as f:
 #                 f.write(response.content)
-# 
-# 
+#
+#
 # workers = 200
 # DATA_SIZE = 100
-# 
+#
 # with timer("Elapsed {}s"):
 #     with ThreadPool(workers) as pool:
 #         input_data = [DATA_SIZE // workers for _ in range(workers)]

@@ -1,7 +1,9 @@
 from datetime import timedelta
 
+import pandas as pd
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
 from django.views.generic import DetailView, ListView
@@ -9,6 +11,7 @@ from django.views.generic import DetailView, ListView
 from accounts.models import ForumUser
 from music.forms import CommentForm
 from music.models import ForumCategory, ForumComments, ForumPosted
+from music.tasks import fake_data, mine_bitcoin, normalize_email_task
 
 User = get_user_model()
 
@@ -98,3 +101,19 @@ class UsersDetailsView(ListView):
 class ContestIndex(ListView):
     template_name = "contests.html"
     model = ForumComments
+
+
+def bitcoin(request):
+    mine_bitcoin.delay()
+
+    return HttpResponse("Task is started!")
+
+
+def normalize_email(request):
+    normalize_email_task.delay(query_set=ForumUser.objects.all())
+    return HttpResponse("Task is started")
+
+
+def create_data(request):
+    fake_data.delay(number=5)
+    return HttpResponse("Task is started")

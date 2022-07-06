@@ -167,3 +167,11 @@ DJOSER = {
     "PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND": True,
     "PASSWORD_RESET_CONFIRM_URL": "auth/password-reset/{uid}/{token}",
 }
+
+CELERY_BROKER_URL = f"amqp://{os.environ['CELERY_BROKER_URL']}"
+# CELERY_BROKER_URL = f"redis://{os.environ['CELERY_BROKER_URL']}"
+
+# CELERY_RESULT_BACKEND = f"redis://{os.environ['CELERY_BROKER_URL']}"
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# CELERY_RESULT_SERIALIZER = "json"
+# CELERY_TASK_SERIALIZER = "json"
