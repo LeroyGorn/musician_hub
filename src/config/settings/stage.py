@@ -8,6 +8,13 @@ ALLOWED_HOSTS = [
 
 CURRENT_ENV = "STAGE"
 print(CURRENT_ENV)
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_URL = "/static/"
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
+
 load_dotenv()  # noqa:
 
 DATABASES = {
