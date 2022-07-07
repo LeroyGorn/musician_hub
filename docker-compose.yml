@@ -82,19 +82,13 @@ services:
     depends_on:
       - backend
 
-  rabbitmq:
-    image: rabbitmq:3.9-management-alpine
+  redis:
+    image: redis
     env_file:
       - .env
     restart: on-failure
-
-#  redis:
-#    image: redis
-#    env_file:
-#      - .env
-#    restart: on-failure
-#    depends_on:
-#      - backend
+    depends_on:
+      - backend
 
   celery:
     build: ./
@@ -107,8 +101,49 @@ services:
     env_file:
       - .env
     depends_on:
-      - rabbitmq
+      - redis
       - backend
+
+  celerybeat:
+    build: ./
+    env_file:
+      - .env
+    container_name: celerybeat
+    command:
+      - ./commands/start_celerybeat.sh
+    restart: on-failure
+    volumes:
+      - ./src:/musician_hub/src
+      - ./commands:/musician_hub/commands
+    depends_on:
+      - redis
+      - celery
+
+  flower:
+    build: ./
+    env_file:
+      - .env
+    command:
+      - ./commands/start_flower.sh
+    ports:
+      - 5555:5555
+    volumes:
+      - ./src:/musician_hub/src
+      - ./commands:/musician_hub/commands
+    depends_on:
+      - celery
+      - redis
+
+  redisadmin:
+    container_name: redisadmin
+    image: rediscommander/redis-commander:latest
+    hostname: redisadmin
+    restart: always
+    ports:
+      - "8092:8081"
+    env_file:
+      - .env
+
 
 volumes:
   pg_data: { }

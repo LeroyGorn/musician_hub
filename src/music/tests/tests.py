@@ -114,16 +114,6 @@ class TestForumModel(TestCase):
     def test_messages_count_normal_case(self):
         self.assertEqual(self.messages_count, self.test_forum_posted.messages_count())
 
-    # def test_title_limit(self):
-    #     post_wrong_value = sample_forum_posted(title="i" * 2000)
-    #     with self.assertRaises(ValidationError):
-    #         post_wrong_value.full_clean()
-
-    # def test_description_limit(self):
-    #     desc_wrong_value = sample_forum_posted(title="3", description="i" * 2000)
-    #     with self.assertRaises(ValidationError):
-    #         desc_wrong_value.full_clean()
-
     def test_category_name(self):
         self.assertEqual(str(self.category), "Misha")
 
