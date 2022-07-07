@@ -1,6 +1,5 @@
 from datetime import timedelta
 
-import pandas as pd
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
 from django.http import HttpResponse
@@ -110,7 +109,7 @@ def bitcoin(request):
 
 
 def normalize_email(request):
-    normalize_email_task.delay(query_set=ForumUser.objects.all())
+    normalize_email_task.delay(filter=dict(email__endswith=".com"))
     return HttpResponse("Task is started")
 
 

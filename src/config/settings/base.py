@@ -17,6 +17,7 @@ from pathlib import Path
 import mongoengine
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 import rest_framework.permissions
+from celery.schedules import crontab
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "drf_yasg",
     "django_extensions",
+    "django_celery_beat",
     "rest_framework",
     "crispy_forms",
     "accounts",
@@ -168,10 +170,12 @@ DJOSER = {
     "PASSWORD_RESET_CONFIRM_URL": "auth/password-reset/{uid}/{token}",
 }
 
-CELERY_BROKER_URL = f"amqp://{os.getenv('CELERY_BROKER_URL')}"
-# CELERY_BROKER_URL = f"redis://{os.environ['CELERY_BROKER_URL']}"
 
-# CELERY_RESULT_BACKEND = f"redis://{os.environ['CELERY_BROKER_URL']}"
-# CELERY_ACCEPT_CONTENT = ['application/json']
-# CELERY_RESULT_SERIALIZER = "json"
-# CELERY_TASK_SERIALIZER = "json"
+CELERY_BROKER_URL = "redis://redis"
+CELERY_RESULT_BACKEND = "redis://redis"
+
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TASK_SERIALIZER = "json"
+
+CELERY_BEAT_SCHEDULE = {"some_periodic_task": {"task": "music.tasks.mine_bitcoin", "schedule": crontab(minute="*/2")}}
