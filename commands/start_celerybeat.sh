@@ -1,3 +1,3 @@
 #!/bin/bash
 
-celery -A config beat -l $CELERY_LOG_LEVEL -S django
+cd src && celery -A config beat -l DEBUG -S django

@@ -1,4 +1,4 @@
-version: "2"
+version: "3"
 
 services:
   backend:
@@ -6,8 +6,8 @@ services:
     container_name: mushub_container
     working_dir: /musician_hub
     restart: always
-    command:
-      - ./commands/start_server_${MODE}.sh
+    command: bash -c "python src/manage.py migrate --settings=config.settings.${MODE} && python src/manage.py runserver --settings=config.settings.${MODE} 0:${WSGI_PORT}"
+
     ports:
       - ${LOCAL_PORT}:${WSGI_PORT}
     volumes:
@@ -15,7 +15,6 @@ services:
       - ./commands:/musician_hub/commands
       - static_content:/musician_hub/src/static
       - media_content:/musician_hub/src/media
-    entrypoint: ["/bin/bash", "./commands/start_server_${MODE}.sh"]
     env_file:
       - .env
     depends_on:
@@ -83,7 +82,7 @@ services:
       - backend
 
   redis:
-    image: redis
+    image: redis:alpine
     env_file:
       - .env
     restart: on-failure
@@ -92,8 +91,7 @@ services:
 
   celery:
     build: ./
-    command:
-      - ./commands/start_celery.sh
+    command: bash -c "cd src && celery -A config worker -l $CELERY_LOG_LEVEL  -c $CELERY_NUM_WORKERS"
     restart: always
     volumes:
       - ./src:/musician_hub/src
@@ -105,12 +103,10 @@ services:
       - backend
 
   celerybeat:
-    build: ./
-    env_file:
-      - .env
+    env_file: .env
+    build: .
     container_name: celerybeat
-    command:
-      - ./commands/start_celerybeat.sh
+    command: bash -c "cd src && celery -A config beat -l $CELERY_LOG_LEVEL -S django"
     restart: on-failure
     volumes:
       - ./src:/musician_hub/src
@@ -123,13 +119,11 @@ services:
     build: ./
     env_file:
       - .env
-    command:
-      - ./commands/start_flower.sh
+    command: bash -c "cd src && celery -A config flower --broker=redis://redis"
     ports:
       - 5555:5555
     volumes:
       - ./src:/musician_hub/src
-      - ./commands:/musician_hub/commands
     depends_on:
       - celery
       - redis

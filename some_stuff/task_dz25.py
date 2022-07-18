@@ -17,16 +17,16 @@ Output: [(7,1), (3,5), (2, 6)]
 """
 
 
-def find_pairs(arr, arr_size, res):
-    hashmap = {}
-
-    for i in range(0, arr_size):
-        temp = res - arr[i]
-        if temp in hashmap:
-            print(f"Pair with given sum {res} is ({temp},{arr[i]}) at indices ({hashmap[temp]},{i})")
-        hashmap[arr[i]] = i
-
-
-data = [7, 12, 3, 1, 2, -6, 5, -8, 6]
-n = 0
-find_pairs(data, len(data), n)
+# def find_pairs(arr, arr_size, res):
+#     hashmap = {}
+#
+#     for i in range(0, arr_size):
+#         temp = res - arr[i]
+#         if temp in hashmap:
+#             print(f"Pair with given sum {res} is ({temp},{arr[i]}) at indices ({hashmap[temp]},{i})")
+#         hashmap[arr[i]] = i
+#
+#
+# data = [7, 12, 3, 1, 2, -6, 5, -8, 6]
+# n = 0
+# find_pairs(data, len(data), n)
