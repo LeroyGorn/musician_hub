@@ -8,12 +8,11 @@ WORKDIR /musician_hub
 
 COPY ./src ./src
 
-COPY commands/start_server_dev.sh **/script**
+COPY ./commands ./commands
 
 COPY requirements.txt ./requirements.txt
 
 RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-ENTRYPOINT ["/bin/bash", "./commands/start_server_dev.sh"]
 CMD ["bash"]

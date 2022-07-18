@@ -1,0 +1,1355 @@
+DEV
+[
+{
+    "model": "sessions.session",
+    "pk": "bpf82nqo3wxa897jjhqjnjtm08kiku1b",
+    "fields": {
+        "session_data": ".eJxVjDkOwjAUBe_iGlm27CympOcM1l9xADlSnFSIu0OkFNC-mXkvk2FbS96aLHliczbenH43BHpI3QHfod5mS3NdlwntrtiDNnudWZ6Xw_07KNDKt0YeXUxKSJ04UfUukHJERBYOkCAwI4c0sO8xaewQ-wQ6CPkxROfM-wM3Jjmp:1o9Umn:SvGhY70GQAMIknTznHAcxtW0G-angg-rCCFJObldubs",
+        "expire_date": "2022-07-21T16:55:29.743Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "c3w61uqi0oxsjw9cvirazaetm0eo85xb",
+    "fields": {
+        "session_data": ".eJxVjDsOwjAQRO_iGln-r0VJzxmsXa_BAWRLcVIh7k4ipYBuNO_NvEXCdalpHWVOE4uzMF6cfkvC_CxtJ_zAdu8y97bME8ldkQcd8tq5vC6H-3dQcdRtTdErf9MYwWVwOgBwRrRINliiqLwDrVSI3mpib5Q2DHrLBQvZnEF8vu2KN4M:1o9C64:7Fy4QIdI2gDoMMUpXxU3R4Rq0_I7j2d9ASIjtJRaRZM",
+        "expire_date": "2022-07-20T20:58:08.029Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "fpvwbgtiht8x0wid4ixjc7lzx1sla1f6",
+    "fields": {
+        "session_data": ".eJxVjDkOwjAUBe_iGlm27CympOcM1l9xADlSnFSIu0OkFNC-mXkvk2FbS96aLHliczbenH43BHpI3QHfod5mS3NdlwntrtiDNnudWZ6Xw_07KNDKt0YeXUxKSJ04UfUukHJERBYOkCAwI4c0sO8xaewQ-wQ6CPkxROfM-wM3Jjmp:1oAeKQ:XWkfe8Lw4GWsIzS8ZZVhtTzsLQ4bdNGkylJqufQwzfg",
+        "expire_date": "2022-07-24T21:18:58.772Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "pr1s081aixmw2q0i7xyybsyyl57g9n0u",
+    "fields": {
+        "session_data": ".eJxVjMsOgyAUBf-FdUMg4IMuu-83kPuiWhtJBOOi6b9XEzduz8ycr6pSKuU8jaLuasvLJKxuKsJah7gWWeLIO7DXDYEmmQ_Ab5hfWVOe6zKiPhR90qKfmeXzON3LwQBl2Gvk3viQCKkRIylZ4yixR0QWdhDAMSO70LFtMSTfILYBUidke-eNUb8_vDVBXQ:1o7a75:k0xvJGqezcax91A-O5rbSjU3i1IdG8M9p_ZxC-YjRNc",
+        "expire_date": "2022-07-16T10:12:31.445Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "vyc3mvka0mc50zw60p6ljnyciqw1dukl",
+    "fields": {
+        "session_data": ".eJxVjDkOwjAUBe_iGlm27CympOcM1l9xADlSnFSIu0OkFNC-mXkvk2FbS96aLHliczbenH43BHpI3QHfod5mS3NdlwntrtiDNnudWZ6Xw_07KNDKt0YeXUxKSJ04UfUukHJERBYOkCAwI4c0sO8xaewQ-wQ6CPkxROfM-wM3Jjmp:1oAYYn:4MVj0V5urRJKishAEu1um82kcL_hyFjaGJng-hlM57k",
+        "expire_date": "2022-07-24T15:09:25.918Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "ziqb6c2po8m2ovha0vzfvs91ygz68ip4",
+    "fields": {
+        "session_data": "eyJ0ZXN0Y29va2llIjoid29ya2VkIn0:1o5pLF:z2i-3yKMj0S-6JHfd4RLNXFNZgw9mE6W0XDVKTKS708",
+        "expire_date": "2022-07-11T14:03:53.122Z"
+    }
+},
+{
+    "model": "accounts.forumuser",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$260000$DyXc0I3Q0kP8m7KpOG4sWO$XqnWJkdMoOqAbZ8sBe1jJe5KYvWV/+XZi0GcDOBKTck=",
+        "last_login": "2022-07-10T21:18:58.647Z",
+        "is_superuser": true,
+        "email": "leroygorn@gmail.com",
+        "first_name": "Michael",
+        "last_name": "Gorn",
+        "photo": "users_photo/Mae_young_8QMlu0s.png",
+        "is_staff": true,
+        "is_active": true,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "accounts.forumuser",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$260000$OYBwjNfMI0WxpZrFKTscrz$lNciewisJ8FALKjs+Dp3rS9iZc/I4hJL+KwD4sxiAIU=",
+        "last_login": null,
+        "is_superuser": true,
+        "email": "admin@gmail.com",
+        "first_name": "",
+        "last_name": "",
+        "photo": "",
+        "is_staff": true,
+        "is_active": true,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "accounts.forumuser",
+    "pk": 15,
+    "fields": {
+        "password": "pbkdf2_sha256$260000$HrAQykactMIyaI0Jm8i4ht$YtuioDOeB3ROg3O9+iibDtkD7QjgWylV6ktEZvvn3yU=",
+        "last_login": "2022-06-28T11:49:55Z",
+        "is_superuser": false,
+        "email": "gorn228322@gmail.com",
+        "first_name": "Michael",
+        "last_name": "Test",
+        "photo": "users_photo/9c90da18945163.562d202b749c9.jpg",
+        "is_staff": false,
+        "is_active": true,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "accounts.forumuser",
+    "pk": 24,
+    "fields": {
+        "password": "pbkdf2_sha256$260000$J8NOLS3FUBKnBsRipkpn92$l1ADGoeeVw8gQayl3Mtq+I3GFsLoL02wcb/KpMidVtA=",
+        "last_login": null,
+        "is_superuser": false,
+        "email": "leroyjorn@gmail.com",
+        "first_name": "MIchael",
+        "last_name": "FQEAEFA",
+        "photo": "",
+        "is_staff": false,
+        "is_active": false,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "accounts.forumuser",
+    "pk": 25,
+    "fields": {
+        "password": "pbkdf2_sha256$260000$KMEitmUItP6l4gVokA9mhN$qV5Z4Lvcd8LM/N1U/aTwD4Y0gtbNkR09T88N23bkhkY=",
+        "last_login": "2022-07-06T20:58:07.926Z",
+        "is_superuser": true,
+        "email": "lookup@gmail.com",
+        "first_name": "",
+        "last_name": "",
+        "photo": "",
+        "is_staff": true,
+        "is_active": true,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "music.forumposted",
+    "pk": 1,
+    "fields": {
+        "create_datetime": "2022-06-24T13:55:47.995Z",
+        "last_update": "2022-06-24T13:55:47.995Z",
+        "category": 1,
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "uuid": "a5433f8a-2236-41ca-aa9d-b96ee489f807",
+        "image": "covers/song_post1_ZSoQCLo_MvrFHjp_2Efv4Jo_j74YG2C_slAVOCP.jpg",
+        "title": "Ed Sheeran Cover",
+        "description": "Can you check my cover on song \"Perfect\" by Ed Sheeran ?)",
+        "content": "Link on my cover here: https://www.youtube.com/watch?v=2Vv-BfVoq4g",
+        "likes": []
+    }
+},
+{
+    "model": "music.forumposted",
+    "pk": 2,
+    "fields": {
+        "create_datetime": "2022-06-24T13:59:17.909Z",
+        "last_update": "2022-06-24T13:59:17.909Z",
+        "category": 1,
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "uuid": "96ac1280-2ce7-4426-a6c5-166f3bfc5d55",
+        "image": "covers/other_cat_yHBQ9xy_mlyTf8q_vFoZyDn.jpg",
+        "title": "What is your first melody, you learnt ?",
+        "description": "",
+        "content": "My was kuznechik) And you ?",
+        "likes": []
+    }
+},
+{
+    "model": "music.forumcategory",
+    "pk": 1,
+    "fields": {
+        "create_datetime": "2022-06-24T13:52:52.794Z",
+        "last_update": "2022-06-24T13:52:52.794Z",
+        "name": "Songs Covers",
+        "image": "covers/song_cat_yihixKU_PGFNLTu.jpeg",
+        "description": "Here you can find our community creations"
+    }
+},
+{
+    "model": "music.forumcategory",
+    "pk": 24,
+    "fields": {
+        "create_datetime": "2022-06-28T15:11:14.880Z",
+        "last_update": "2022-06-28T15:12:46.174Z",
+        "name": "Test",
+        "image": "default.png",
+        "description": "super"
+    }
+},
+{
+    "model": "music.forumcategory",
+    "pk": 25,
+    "fields": {
+        "create_datetime": "2022-06-28T15:34:45.806Z",
+        "last_update": "2022-06-28T15:34:45.806Z",
+        "name": "Other",
+        "image": "covers/other_cat_yHBQ9xy_mlyTf8q_9FuCBz5.jpg",
+        "description": "Deep, dark fantasies)"
+    }
+},
+{
+    "model": "music.forumcategory",
+    "pk": 26,
+    "fields": {
+        "create_datetime": "2022-07-02T14:10:48.011Z",
+        "last_update": "2022-07-02T14:10:48.011Z",
+        "name": "Test",
+        "image": "default.png",
+        "description": ""
+    }
+},
+{
+    "model": "music.forumcategory",
+    "pk": 27,
+    "fields": {
+        "create_datetime": "2022-07-02T14:11:24.703Z",
+        "last_update": "2022-07-02T14:11:24.703Z",
+        "name": "Test",
+        "image": "default.png",
+        "description": ""
+    }
+},
+{
+    "model": "music.forumcomments",
+    "pk": 1,
+    "fields": {
+        "create_datetime": "2022-06-27T19:37:02.595Z",
+        "last_update": "2022-06-27T19:37:02.595Z",
+        "author": [
+            "leroygorn@gmail.com"
+        ],
+        "messages": 1,
+        "text": "Wooow",
+        "reply_to": null
+    }
+},
+{
+    "model": "music.forumcomments",
+    "pk": 6,
+    "fields": {
+        "create_datetime": "2022-06-27T20:12:44.697Z",
+        "last_update": "2022-06-27T20:12:44.697Z",
+        "author": [
+            "leroygorn@gmail.com"
+        ],
+        "messages": 1,
+        "text": "Hey",
+        "reply_to": null
+    }
+},
+{
+    "model": "music.forumcomments",
+    "pk": 7,
+    "fields": {
+        "create_datetime": "2022-06-27T20:12:59.845Z",
+        "last_update": "2022-06-27T20:12:59.845Z",
+        "author": [
+            "leroygorn@gmail.com"
+        ],
+        "messages": 1,
+        "text": "sup",
+        "reply_to": 6
+    }
+},
+{
+    "model": "music.forumcomments",
+    "pk": 8,
+    "fields": {
+        "create_datetime": "2022-06-28T11:36:48.100Z",
+        "last_update": "2022-06-28T11:36:48.101Z",
+        "author": [
+            "gorn228322@gmail.com"
+        ],
+        "messages": 1,
+        "text": "Heello",
+        "reply_to": 6
+    }
+},
+{
+    "model": "music.forumcomments",
+    "pk": 9,
+    "fields": {
+        "create_datetime": "2022-06-28T11:39:11.265Z",
+        "last_update": "2022-06-28T11:39:11.265Z",
+        "author": [
+            "gorn228322@gmail.com"
+        ],
+        "messages": 1,
+        "text": "fff",
+        "reply_to": 6
+    }
+},
+{
+    "model": "music.forumcomments",
+    "pk": 12,
+    "fields": {
+        "create_datetime": "2022-06-28T15:40:33.247Z",
+        "last_update": "2022-06-28T15:40:33.247Z",
+        "author": [
+            "leroygorn@gmail.com"
+        ],
+        "messages": 1,
+        "text": "aaaa",
+        "reply_to": null
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+        "action_time": "2022-06-24T13:52:52.812Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "1",
+        "object_repr": "Songs Covers",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 2,
+    "fields": {
+        "action_time": "2022-06-24T13:53:17.552Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "2",
+        "object_repr": "Other",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 3,
+    "fields": {
+        "action_time": "2022-06-24T13:54:14.446Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "3",
+        "object_repr": "Music News",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 4,
+    "fields": {
+        "action_time": "2022-06-24T13:55:48.001Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumposted"
+        ],
+        "object_id": "1",
+        "object_repr": "ForumPosted object (1)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 5,
+    "fields": {
+        "action_time": "2022-06-24T13:57:55.978Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "1",
+        "object_repr": "leroygorn@gmail.com",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"First_name\", \"Last_name\", \"Birthdate\", \"Photo\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 6,
+    "fields": {
+        "action_time": "2022-06-24T13:59:17.917Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumposted"
+        ],
+        "object_id": "2",
+        "object_repr": "ForumPosted object (2)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 7,
+    "fields": {
+        "action_time": "2022-06-26T20:24:01.542Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "3",
+        "object_repr": "gorn228322@gmail.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 8,
+    "fields": {
+        "action_time": "2022-06-26T20:25:19.143Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "5",
+        "object_repr": "gorn228322@gmail.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 9,
+    "fields": {
+        "action_time": "2022-06-26T20:25:19.288Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "4",
+        "object_repr": "6125541@stud.nau.edu.ua",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 10,
+    "fields": {
+        "action_time": "2022-06-26T20:33:32.706Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "6",
+        "object_repr": "gorn228322@gmail.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 11,
+    "fields": {
+        "action_time": "2022-06-26T20:43:33.223Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "7",
+        "object_repr": "gorn228322@gmail.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 12,
+    "fields": {
+        "action_time": "2022-06-26T20:44:31.448Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "8",
+        "object_repr": "gorn228322@gmail.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 13,
+    "fields": {
+        "action_time": "2022-06-26T20:47:18.791Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "9",
+        "object_repr": "gorn228322@gmail.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 14,
+    "fields": {
+        "action_time": "2022-06-26T20:49:52.189Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "10",
+        "object_repr": "gorn228322@gmail.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 15,
+    "fields": {
+        "action_time": "2022-06-26T20:53:13.161Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "11",
+        "object_repr": "gorn228322@gmail.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 16,
+    "fields": {
+        "action_time": "2022-06-26T21:05:29.402Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "12",
+        "object_repr": "gorn228322@gmail.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 17,
+    "fields": {
+        "action_time": "2022-06-27T12:00:43.825Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "13",
+        "object_repr": "gorn228322@gmail.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 18,
+    "fields": {
+        "action_time": "2022-06-27T12:07:08.719Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "14",
+        "object_repr": "gorn228322@gmail.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 19,
+    "fields": {
+        "action_time": "2022-06-27T19:37:02.597Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcomments"
+        ],
+        "object_id": "1",
+        "object_repr": "leroygorn@gmail.com:Wooow",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 20,
+    "fields": {
+        "action_time": "2022-06-27T20:06:37.689Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcomments"
+        ],
+        "object_id": "3",
+        "object_repr": "leroygorn@gmail.com comment ",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 21,
+    "fields": {
+        "action_time": "2022-06-27T20:06:37.859Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcomments"
+        ],
+        "object_id": "2",
+        "object_repr": "leroygorn@gmail.com comment ",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 22,
+    "fields": {
+        "action_time": "2022-06-27T20:07:05.874Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcomments"
+        ],
+        "object_id": "5",
+        "object_repr": "leroygorn@gmail.com comment ",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 23,
+    "fields": {
+        "action_time": "2022-06-27T20:07:05.971Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcomments"
+        ],
+        "object_id": "4",
+        "object_repr": "leroygorn@gmail.com comment ",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 24,
+    "fields": {
+        "action_time": "2022-06-28T11:52:00.914Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "15",
+        "object_repr": "gorn228322@gmail.com",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Photo\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 25,
+    "fields": {
+        "action_time": "2022-06-28T14:07:11.600Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "18",
+        "object_repr": "ddd",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 26,
+    "fields": {
+        "action_time": "2022-06-28T14:07:11.751Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "17",
+        "object_repr": "ddd",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 27,
+    "fields": {
+        "action_time": "2022-06-28T14:07:11.818Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "16",
+        "object_repr": "ddd",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 28,
+    "fields": {
+        "action_time": "2022-06-28T14:07:11.884Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "15",
+        "object_repr": "ddd",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 29,
+    "fields": {
+        "action_time": "2022-06-28T14:07:12.009Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "14",
+        "object_repr": "ddd",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 30,
+    "fields": {
+        "action_time": "2022-06-28T14:07:12.116Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "13",
+        "object_repr": "ddd",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 31,
+    "fields": {
+        "action_time": "2022-06-28T14:07:12.183Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "12",
+        "object_repr": "Category3",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 32,
+    "fields": {
+        "action_time": "2022-06-28T14:07:12.249Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "11",
+        "object_repr": "Category3",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 33,
+    "fields": {
+        "action_time": "2022-06-28T14:07:12.316Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "10",
+        "object_repr": "Category3",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 34,
+    "fields": {
+        "action_time": "2022-06-28T14:07:12.382Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "9",
+        "object_repr": "Category3",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 35,
+    "fields": {
+        "action_time": "2022-06-28T14:07:12.449Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "8",
+        "object_repr": "Category3",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 36,
+    "fields": {
+        "action_time": "2022-06-28T14:07:12.515Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "7",
+        "object_repr": "Category3",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 37,
+    "fields": {
+        "action_time": "2022-06-28T14:07:12.570Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "6",
+        "object_repr": "Category3",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 38,
+    "fields": {
+        "action_time": "2022-06-28T14:07:12.626Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "5",
+        "object_repr": "Category3",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 39,
+    "fields": {
+        "action_time": "2022-06-28T14:07:12.692Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "4",
+        "object_repr": "Category3",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 40,
+    "fields": {
+        "action_time": "2022-06-28T14:39:15.327Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "21",
+        "object_repr": "fff",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 41,
+    "fields": {
+        "action_time": "2022-06-28T14:39:15.425Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "20",
+        "object_repr": "fff",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 42,
+    "fields": {
+        "action_time": "2022-06-28T14:39:15.497Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "19",
+        "object_repr": "fff",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 43,
+    "fields": {
+        "action_time": "2022-06-28T14:39:15.565Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "3",
+        "object_repr": "fff",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 44,
+    "fields": {
+        "action_time": "2022-06-28T14:50:03.704Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "23",
+        "object_repr": "test",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 45,
+    "fields": {
+        "action_time": "2022-06-28T15:11:04.231Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "22",
+        "object_repr": "fff",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 46,
+    "fields": {
+        "action_time": "2022-06-28T15:11:14.882Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "24",
+        "object_repr": "Test",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 47,
+    "fields": {
+        "action_time": "2022-06-28T15:12:46.177Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "24",
+        "object_repr": "Test",
+        "action_flag": 2,
+        "change_message": "[]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 48,
+    "fields": {
+        "action_time": "2022-06-28T15:34:45.826Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcategory"
+        ],
+        "object_id": "25",
+        "object_repr": "Other",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 49,
+    "fields": {
+        "action_time": "2022-06-28T15:39:59.316Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcomments"
+        ],
+        "object_id": "11",
+        "object_repr": "leroygorn@gmail.com comment ",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 50,
+    "fields": {
+        "action_time": "2022-06-28T15:39:59.404Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "music",
+            "forumcomments"
+        ],
+        "object_id": "10",
+        "object_repr": "leroygorn@gmail.com comment ",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 51,
+    "fields": {
+        "action_time": "2022-07-02T09:43:33.436Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "16",
+        "object_repr": "leroyjorn@gmail.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 52,
+    "fields": {
+        "action_time": "2022-07-02T09:50:06.140Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "17",
+        "object_repr": "leroyjorn@gmail.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 53,
+    "fields": {
+        "action_time": "2022-07-02T09:52:02.689Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "18",
+        "object_repr": "leroyjorn@gmail.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 54,
+    "fields": {
+        "action_time": "2022-07-02T09:54:52.864Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "19",
+        "object_repr": "leroyjorn@gmail.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 55,
+    "fields": {
+        "action_time": "2022-07-02T09:56:47.981Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "20",
+        "object_repr": "leroyjorn@gmail.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 56,
+    "fields": {
+        "action_time": "2022-07-02T10:06:50.457Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "21",
+        "object_repr": "leroyjorn@gmail.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 57,
+    "fields": {
+        "action_time": "2022-07-02T10:07:08.119Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "22",
+        "object_repr": "leroyjorn@gmail.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 58,
+    "fields": {
+        "action_time": "2022-07-02T10:12:37.997Z",
+        "user": [
+            "leroygorn@gmail.com"
+        ],
+        "content_type": [
+            "accounts",
+            "forumuser"
+        ],
+        "object_id": "23",
+        "object_repr": "leroyjorn@gmail.com",
+        "action_flag": 3,
+        "change_message": ""
+    }
+}
+]
