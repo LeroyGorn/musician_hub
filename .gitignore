@@ -4,7 +4,9 @@ __pycache__/
 *$py.class
 
 #Pycharm
+.env
 .idea/
+.hypothesis
 
 # C extensions
 *.so
