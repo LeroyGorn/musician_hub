@@ -103,7 +103,6 @@ class UsersDetailsView(ListView):
 
 
 class LikeView(LoginRequiredMixin, View):
-
     def post(self, request, *args, **kwargs):
         post = ForumPosted.objects.get(uuid=self.kwargs.get("uuid"))
 
@@ -118,7 +117,7 @@ class LikeView(LoginRequiredMixin, View):
         if is_like:
             post.likes.remove(request.user)
 
-        next = request.POST.get('next', '/')
+        next = request.POST.get("next", "/")
         return HttpResponseRedirect(next)
 
 
