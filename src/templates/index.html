@@ -41,7 +41,7 @@ https://templatemo.com/tm-576-snapx-photography
                 <nav class="main-nav">
                     <!-- ***** Logo Start ***** -->
                     <a href="/" class="logo">
-                        <img src="{% static 'assets/images/logo.png' %}" alt="MusHub">
+                        <img src="{% static 'assets/images/newlogo.png' %}" style="width:115px;height:58px;" alt="MusHub" >
                     </a>
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
@@ -315,7 +315,7 @@ https://templatemo.com/tm-576-snapx-photography
                             <img src="{{ post.image.url }}" alt="Image">
                         {% endif %}
                       <span class="category">Replies:{{ post.messages_count }}</span>
-                      <span class="likes"><i class="fa fa-heart"></i> 256</span>
+                      <span class="likes"><i class="fa fa-heart"></i> {{ post.likes.all.count }}</span>
                     </div>
                     <div class="border-button">
                       <a href="{% url 'music:post' uuid=post.uuid %}">View</a>

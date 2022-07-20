@@ -42,7 +42,7 @@ https://templatemo.com/tm-576-snapx-photography
                   <nav class="main-nav">
                       <!-- ***** Logo Start ***** -->
                       <a href="/" class="logo">
-                          <img src="{% static 'assets/images/logo.png' %}" alt="SnapX Photography Template">
+                          <img src="{% static 'assets/images/newlogo.png' %}" style="width:115px;height:58px;" alt="MusHub" >
                       </a>
                       <!-- ***** Logo End ***** -->
                       <!-- ***** Menu Start ***** -->
@@ -199,8 +199,6 @@ https://templatemo.com/tm-576-snapx-photography
               <div class="hover-effect">
                 <div class="content">
                   <div class="top-content">
-                    <span class="award">{{ category.name }}</span>
-                    <span class="price">$1,600</span>
                   </div>
                   <h4>{{ category.name }}</h4>
                   <div class="info">
@@ -208,7 +206,7 @@ https://templatemo.com/tm-576-snapx-photography
                         <br>{{ category.post_count }}<br>Posts</span>
                   </div>
                   <div class="border-button">
-                    <a href="{% url 'music:category' category.id %}">Browse Nature Contests</a>
+                    <a href="{% url 'music:category' category.id %}">View All Posts</a>
                   </div>
                 </div>
               </div>
