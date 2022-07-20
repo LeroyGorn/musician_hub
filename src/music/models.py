@@ -26,10 +26,6 @@ class ForumPosted(BaseModel):
     def messages_count(self):
         return self.thread.count()
 
-    @property
-    def like_count(self):
-        return self.likes.all().count()
-
 
 class ForumCategory(BaseModel):
     name = models.CharField(max_length=128)

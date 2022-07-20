@@ -1,10 +1,15 @@
 from datetime import timedelta
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
 from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.views import View
 from django.views.generic import DetailView, ListView
 
 from accounts.models import ForumUser
@@ -95,6 +100,26 @@ class CategoryListView(ListView):
 class UsersDetailsView(ListView):
     template_name = "users.html"
     model = ForumUser
+
+
+class LikeView(LoginRequiredMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        post = ForumPosted.objects.get(uuid=self.kwargs.get("uuid"))
+
+        is_like = False
+        for like in post.likes.all():
+            if like == request.user:
+                is_like = True
+                break
+        if not is_like:
+            post.likes.add(request.user)
+
+        if is_like:
+            post.likes.remove(request.user)
+
+        next = request.POST.get('next', '/')
+        return HttpResponseRedirect(next)
 
 
 class ContestIndex(ListView):
