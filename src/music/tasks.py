@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from faker import Faker
 
 from accounts.models import ForumUser
-from music.models import ForumCategory, ForumComments
+from music.models import ForumCategory, ForumComment
 
 
 @shared_task
@@ -49,7 +49,5 @@ def fake_data(number):
     for i in range(0, number):
         fake_uuid = fake.UUID.v4()
         fake_desc = fake.sentence(nb_words=70)
-        comments_item = ForumComments.objects.get_or_create(
-            author=get_user_model(), messages=fake_uuid, text=fake_desc
-        )
+        comments_item = ForumComment.objects.get_or_create(author=get_user_model(), messages=fake_uuid, text=fake_desc)
         comments_item.save()

@@ -1,8 +1,10 @@
 from django.urls import path
 
-from music.views import (CategoryIndexView, CategoryListView, LikeView,
-                         PostsDetailsView, UsersDetailsView, bitcoin,
-                         create_data, normalize_email)
+from music.views import (CategoryIndexView, CategoryListView, CreatePost,
+                         DeletePost, FavouritesList, LikeView,
+                         PostsDetailsView, RelatedPost, UpdatePost,
+                         UsersDetailsView, bitcoin, create_data,
+                         normalize_email)
 
 app_name = "music"
 
@@ -16,4 +18,9 @@ urlpatterns = [
     path("bitcoin/", bitcoin, name="bitcoin"),
     path("email/", normalize_email, name="emails"),
     path("friends/", create_data, name="friends"),
+    path("create-post/", CreatePost.as_view(), name="create_post"),
+    path("user-posts/", RelatedPost.as_view(), name="user_posts"),
+    path("update/<uuid:uuid>/", UpdatePost.as_view(), name="update_post"),
+    path("delete/<uuid:uuid>/", DeletePost.as_view(), name="delete_post"),
+    path("favourites/", FavouritesList.as_view(), name="favourites"),
 ]

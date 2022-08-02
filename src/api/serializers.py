@@ -1,7 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 
 from accounts.models import ForumUser
-from music.models import ForumCategory, ForumComments, ForumPosted
+from music.models import ForumCategory, ForumComment, ForumPosted
 
 
 class ForumUserSerializer(ModelSerializer):
@@ -14,9 +14,9 @@ class ForumUserSerializer(ModelSerializer):
         return self.initial_data.get("last_name")
 
 
-class ForumCommentsSerializer(ModelSerializer):
+class ForumCommentSerializer(ModelSerializer):
     class Meta:
-        model = ForumComments
+        model = ForumComment
         fields = ("id", "text", "reply_to")
 
 
@@ -27,7 +27,7 @@ class ForumCategorySerializer(ModelSerializer):
 
 
 class ForumPostedSerializer(ModelSerializer):
-    thread = ForumCommentsSerializer(many=True, read_only=True)
+    thread = ForumCommentSerializer(many=True, read_only=True)
     posts = ForumCategorySerializer(read_only=True)
 
     class Meta:
@@ -36,7 +36,7 @@ class ForumPostedSerializer(ModelSerializer):
 
 
 class PostsSerializer(ModelSerializer):
-    thread = ForumCommentsSerializer(many=True, read_only=True)
+    thread = ForumCommentSerializer(many=True, read_only=True)
 
     class Meta:
         model = ForumPosted

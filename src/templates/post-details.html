@@ -199,8 +199,19 @@ https://templatemo.com/tm-576-snapx-photography
               <div class="main-content">
                    <div class="thumb">
                        {% if forumposted.image %}
-                        <img src="{{ forumposted.image.url }}" alt="">
+                        <img src="{{ forumposted.image.url }}" alt="" style="width:auto;height:500px;">
                        {% endif %}
+                   {% if forumposted.video %}
+                   <div class="col-12">
+                    <hr class="tm-hr-primary tm-mb-55">
+                    <!-- Video player 1422x800 -->
+                    <iframe width="954" height="535" src="{{ forumposted.video }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <!--        <video width="954" height="535" controls class="tm-mb-40">-->
+                    <!--            <source src="{% static 'video/wheat-field.mp4' %}" type="video/mp4">-->
+                    <!--            Your browser does not support the video tag.-->
+                    <!--        </video>-->
+                    </div>
+                    {% endif %}
                     </div>
                 <h4>{{ forumposted.title }}</h4>
                 <h6>{{ forumposted.description }}</h6>
