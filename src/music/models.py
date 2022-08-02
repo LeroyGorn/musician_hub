@@ -2,6 +2,7 @@ import uuid
 
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils.translation import ugettext as _
 
 
 class BaseModel(models.Model):
@@ -15,9 +16,10 @@ class BaseModel(models.Model):
 
 class ForumPosted(BaseModel):
     category = models.ForeignKey(to="music.ForumCategory", related_name="posts", on_delete=models.CASCADE)
-    user = models.ForeignKey(get_user_model(), related_name="writer", null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), related_name="writer", on_delete=models.CASCADE)
     uuid = models.UUIDField(default=uuid.uuid4, db_index=True, unique=True)
-    image = models.ImageField(default="default.png", upload_to="covers/")
+    image = models.ImageField(default="initial.png", upload_to="covers/")
+    video = models.URLField(max_length=128, db_index=True, unique=True, blank=True)
     title = models.CharField(max_length=128, blank=True)
     description = models.CharField(max_length=128, blank=True)
     content = models.TextField(blank=True)
@@ -25,6 +27,13 @@ class ForumPosted(BaseModel):
 
     def messages_count(self):
         return self.thread.count()
+
+    def __str__(self):
+        return f"{self.title}"
+
+    class Meta:
+        verbose_name = _("Post")
+        verbose_name_plural = _("Posts")
 
 
 class ForumCategory(BaseModel):
@@ -38,14 +47,20 @@ class ForumCategory(BaseModel):
     def post_count(self):
         return self.posts.count()
 
+    class Meta:
+        verbose_name = _("Category")
+        verbose_name_plural = _("Categories")
 
-class ForumComments(BaseModel):
-    author = models.ForeignKey(get_user_model(), related_name="users", null=True, on_delete=models.CASCADE)
+
+class ForumComment(BaseModel):
+    author = models.ForeignKey(get_user_model(), related_name="users", on_delete=models.CASCADE)
     messages = models.ForeignKey(to="music.ForumPosted", related_name="thread", on_delete=models.CASCADE)
     text = models.TextField(blank=True)
     reply_to = models.ForeignKey("self", null=True, blank=True, on_delete=models.CASCADE, related_name="replies")
 
     class Meta:
+        verbose_name = _("Comment")
+        verbose_name_plural = _("Comments")
         ordering = ["-create_datetime"]
 
     def __str__(self):
@@ -53,7 +68,7 @@ class ForumComments(BaseModel):
 
     @property
     def children(self):
-        return ForumComments.objects.filter(reply_to=self).reverse()
+        return ForumComment.objects.filter(reply_to=self).reverse()
 
     @property
     def is_parent(self):

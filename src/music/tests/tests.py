@@ -1,12 +1,7 @@
 import unittest
-from datetime import date
 
-from django.core.exceptions import ValidationError
-from django.test import TestCase
 from hypothesis import given
 from hypothesis import strategies as st
-
-from music.models import ForumCategory, ForumComments, ForumPosted
 
 
 class Fibonacci:
@@ -77,51 +72,3 @@ class TestFormattedName(unittest.TestCase):
             formatted_name("Michael"),
             'TypeError: formatted_name() missing 1 required positional argument: "last_name"',
         )
-
-
-def sample_forum_posted(title, **params):
-    defaults = {
-        "description": "Some text",
-        "category": ForumCategory.objects.create(name="Misha"),
-    }
-    defaults.update(params)
-    return ForumPosted.objects.create(title=title, **defaults)
-
-
-def sample_forum_comments(**params):
-    defaults = {
-        "text": "text",
-        "messages": sample_forum_posted(title="Test"),
-    }
-    defaults.update(params)
-    return ForumComments.objects.create(**defaults)
-
-
-class TestForumModel(TestCase):
-    def setUp(self) -> None:
-        self.category = ForumCategory.objects.create(name="Misha")
-        self.messages_count = 1
-        self.test_forum_posted = sample_forum_posted(title="test_mytest")
-        self.test_forum_comments = sample_forum_comments(
-            text="test_text", messages=sample_forum_posted(title="Test"), create_datetime=date(2022, 6, 8)
-        )
-        for i in range(self.messages_count):
-            sample_forum_comments(messages=self.test_forum_posted, text="test")
-
-    def tearDown(self) -> None:
-        self.test_forum_posted.delete()
-
-    def test_messages_count_normal_case(self):
-        self.assertEqual(self.messages_count, self.test_forum_posted.messages_count())
-
-    def test_category_name(self):
-        self.assertEqual(str(self.category), "Misha")
-
-    def test_date_field(self):
-        with self.assertRaises(ValueError):
-            self.assertEqual(
-                self.test_forum_comments,
-                sample_forum_comments(
-                    text="test_text", messages=sample_forum_posted(title="Test"), create_datetime=date(6, 2022, 8)
-                ),
-            )

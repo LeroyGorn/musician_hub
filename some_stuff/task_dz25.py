@@ -17,9 +17,23 @@ Output: [(7,1), (3,5), (2, 6)]
 """
 
 
+# def find_pairs(arr, arr_size, target):
+#     res = {}
+#     for i in range(0, arr_size):
+#         temp = target - arr[i]
+#         if temp in res:
+#             print(f'Pairs is {temp}, {arr[i]}')
+#         res[arr[i]] = i
+#
+#
+#
+# arr = [7, 12, 3, 1, 2, -6, 5, -8, 6]
+# target = 0
+# find_pairs(arr, len(arr), target)
+
+
 # def find_pairs(arr, arr_size, res):
 #     hashmap = {}
-#
 #     for i in range(0, arr_size):
 #         temp = res - arr[i]
 #         if temp in hashmap:
@@ -30,3 +44,17 @@ Output: [(7,1), (3,5), (2, 6)]
 # data = [7, 12, 3, 1, 2, -6, 5, -8, 6]
 # n = 0
 # find_pairs(data, len(data), n)
+
+
+# def pig_it(text):
+#     arr = text.split()
+#     res = []
+#     for word in arr:
+#         if word.isalpha() == True:
+#             newword = word[1:] + word[0] + "ay"
+#             res.append(newword)
+#         else:
+#             res.append(word)
+#     return ' '.join(res)
+#
+# pig_it('Some pig !')

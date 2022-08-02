@@ -11,7 +11,10 @@ class TestAPI(TestCase):
     def setUp(self) -> None:
         self.client = APIClient()
         self.post = ForumPosted.objects.create(
-            title="test", description="TEST", category=ForumCategory.objects.create(name="Test")
+            user=ForumUser.objects.create(),
+            title="test",
+            description="TEST",
+            category=ForumCategory.objects.create(name="Test"),
         )
 
     def tearDown(self) -> None:
