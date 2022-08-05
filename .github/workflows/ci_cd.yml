@@ -41,8 +41,6 @@ jobs:
         env:
             SECRET_KEY: ${{ secrets.SECRET_KEY }}
       - name: secret key
-        run: |
-          export SECRET_KEY="5#$r#@!i#yy=&223nfnnmkl9yy9(rbe$+2l4pq#w@6_l@1z)vz"
       - name: Check migration
         run: |
           python src/manage.py makemigrations

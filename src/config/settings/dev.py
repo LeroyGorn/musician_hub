@@ -12,7 +12,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
 load_dotenv()  # noqa:
-if os.environ.get("GITHUB_WORKFLOW"):  # noqa:
+if os.environ.get("GITHUB_WORKFLOW"):   #noqa:
+    SECRET_KEY = "5#$r#@!i#yy=&223nfnnmkl9yy9(rbe$+2l4pq#w@6_l@1z)vz"
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
