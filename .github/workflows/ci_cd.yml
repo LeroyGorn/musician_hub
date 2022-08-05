@@ -40,7 +40,6 @@ jobs:
           pip install -r requirements.txt
         env:
             SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      - name: secret key
       - name: Check migration
         run: |
           python src/manage.py makemigrations
