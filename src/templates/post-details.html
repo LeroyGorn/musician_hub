@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load crispy_forms_tags %}
 <html lang="en">
 
   <head>
@@ -239,29 +240,49 @@ https://templatemo.com/tm-576-snapx-photography
       </div>
     {% endblock %}
   </section>
+              <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New Comment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <label for="comment">Comment:</label>
+                        <br>
+                        {{ form.text }}
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Post</button>
+                        </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
 <section class="gradient-custom">
   <div class="container my-5 py-5">
     <div class="row d-flex justify-content-left">
       <div class="col-lg-12">
           <div class="card-body p-4">
-            <h4 class="text-center mb-4 pb-2">Comments</h4>
-              <br>
-              {% if user.is_authenticated %}
-                  <form action="" method="POST" id="main_form" class="comment_form">
-                      <div>
-                          <label for="comment">Type Comment here</label>
-                          <br>
-                          <input type="text" name="text"  onkeypress="this.style.width = ((this.value.length + 1) * 8) + 'px';">
-                          {% csrf_token %}{{ comment_form.text }} <input type="submit" value="Post"></div>
-                      </form>
-              {% else %} <h3>You need to <a href="{% url 'accounts:login' %}">Log In</a> to comment</h3>
+            <h3 class="text-center mb-4 pb-2">Comments</h3>
+              <!-- Button trigger modal -->
+            {% if user.is_authenticated %}
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              Leave Comment
+            </button>
+              {% else %} <h4>You need to <a href="{% url 'accounts:login' %}">Log In</a> to comment</h4>
                   <br>
               {% endif %}
-          <br><hr>
+          <br><br>
+          <br><br>
+           {% for comment in comments %}
             <div class="row">
               <div class="col">
-              {% for comment in comments %}
-                <div class="d-flex flex-start">
+                  <div class="d-flex flex-start">
                   {% if comment.is_parent %}
                         {% if comment.author.photo %}
                             <img src="{{ comment.author.photo.url }}" alt="Image"
@@ -271,52 +292,76 @@ https://templatemo.com/tm-576-snapx-photography
                     <div>
                       <div class="d-flex justify-content-between align-items-center">
                         <p class="mb-1">
-                         {{ comment.author.get_full_name }}<span class="small"> - {{ comment.create_datetime }}</span>
+                         {{ comment.author.get_full_name }}<span class="small"> - {{ comment.create_datetime }} </span> &nbsp; &nbsp; <span>
+                            {% if user.is_authenticated %}
+                                <a href="#modal" data-bs-toggle="modal" data-bs-target="#Modal{{ comment.pk }}" ><i class="fas fa-reply fa-xs"></i><span class="small"> reply</span></a>
+                            {% endif %}</span>
                         </p>
                       </div>
                       <p class="small mb-0">
                           {{ comment.text }}
                       </p>
                     </div>
-                      <br>
-                      {% if user.is_authenticated %}
-                         <form action="" method="POST" id="main_form" class="comment_form">
-                            <div>
-                                &nbsp; &nbsp; &nbsp;<label for="comment"><a href="#!"><i class="fas fa-reply fa-xs"></i><span class="small"> reply</span></a></label>
-                               &nbsp; &nbsp; &nbsp;<input type="text" name="text"> <input type="hidden" value="{{ comment.pk }}" name="reply_to"> {% csrf_token %} <input type="submit" value="Post"></div>
-                         </form>
-                         {% endif %}
-                      <br>
-                    {% endif %}
-                {% for replies in comment.children %}
-                    <div class="d-flex flex-start mt-4">
-                      <a class="me-3" href="#">
-                            {% if replies.author.photo %}
-                            <img src="{{ replies.author.photo.url }}" alt="Image"
-                                 class="mb-2 rounded-circle img-thumbnail" style="width:88px;height:88px;">
-                            {% endif %}
-                      </a>
-                      <div class="flex-grow-1 flex-shrink-1">
-                        <div>
-                          <div class="d-flex justify-content-between align-items-center">
-                            <p class="mb-1">
-                              {{ replies.author.get_full_name }} <span class="small"> - {{ replies.create_datetime }}</span>
-                            </p>
+                      <div class="modal fade" id="Modal{{ comment.pk }}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="ModalLabel">Reply to {{ comment.author.get_short_name }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form action="" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" value="{{ comment.pk }}" name="reply_to">
+                                        <div>
+                                        <label for="comment">Message:</label>
+                                          <br>
+                                        {{ form.text }}
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Post</button>
+                                        </div>
+                                        </div>
+                                    </form>
+                                 </div>
+                              </div>
                           </div>
-                          <p class="small mb-0">
-                              {{ replies.text }}
-                          </p>
-                          {% endfor %}
                       </div>
+                      <hr style="width:50%; background: transparent;" >
+                      <hr style="width:50%; background: transparent;" >
+                      <hr style="width:50%; background: transparent;" >
+                    {% endif %}
+                    {% for replies in comment.children %}
+                        <div class="d-flex flex-start mt-4">
+                          <a class="me-3" href="#">
+                                {% if replies.author.photo %}
+                                <img src="{{ replies.author.photo.url }}" alt="Image"
+                                     class="mb-2 rounded-circle img-thumbnail" style="width:88px;height:88px;">
+                                {% endif %}
+                          </a>
+                          <div class="flex-grow-1 flex-shrink-1">
+                            <div>
+                              <div class="d-flex justify-content-between align-items-center">
+                                <p class="mb-1">
+                                  {{ replies.author.get_full_name }} <span class="small"> - {{ replies.create_datetime }}</span>
+                                </p>
+                              </div>
+                              <p class="small mb-0">
+                                  {{ replies.text }}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <hr style="width:50%; background: transparent;" >
+                    {% endfor %}
                     </div>
-                {% endfor %}
                   </div>
                 </div>
-              </div>
-            </div>
+            {% endfor %}
           </div>
       </div>
 </section>
+
   <section class="contest-win">
     <div class="container-fluid">
       <div class="row">

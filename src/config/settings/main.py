@@ -1,5 +1,8 @@
 from config.settings.base import *
 
+
+load_dotenv()  # noqa:
+
 DEBUG = False
 
 
@@ -16,12 +19,11 @@ STATIC_URL = "/static/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
-load_dotenv()  # noqa:
 
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",  # noqa:
-        "NAME": os.getenv("POSTGRES_DB"),  # noqa:
+        "NAME": os.getenv("POSTGRES_DB"),  # noqa:POSTGRES_PASSWORD=admin
         "USER": os.getenv("POSTGRES_USER"),  # noqa:
         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),  # noqa:
         "HOST": os.getenv("POSTGRES_HOST"),  # noqa:

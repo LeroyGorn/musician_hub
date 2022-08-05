@@ -137,9 +137,10 @@ class FavouritesList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        posts = ForumPosted.objects.filter(likes=self.request.user).all().order_by("-create_datetime")
+        posts = ForumPosted.objects.filter(likes=self.request.user).all()
+        comment = ForumPosted.objects.filter(thread__in=ForumComment.objects.filter(author=self.request.user)).all()
         page = self.request.GET.get("page")
-        context["posts"] = Paginator(posts, 4).get_page(page)
+        context["posts"] = Paginator(posts.union(comment).order_by("-create_datetime"), 4).get_page(page)
         return context
 
 
@@ -206,10 +207,9 @@ class RelatedPost(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        posts = ForumPosted.objects.filter(user=self.request.user).all()
-        comment = ForumPosted.objects.filter(thread__in=ForumComment.objects.filter(author=self.request.user)).all()
+        posts = ForumPosted.objects.filter(user=self.request.user).all().order_by("-create_datetime")
         page = self.request.GET.get("page")
-        context["posts"] = Paginator(posts.union(comment).order_by("-create_datetime"), 4).get_page(page)
+        context["posts"] = Paginator(posts, 4).get_page(page)
         return context
 
 
