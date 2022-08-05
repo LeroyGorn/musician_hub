@@ -20,8 +20,6 @@ from django.views.generic import FormView, RedirectView, UpdateView, View
 from accounts.forms import ProfileForm, SignUpForm
 from accounts.tokens import account_activation_token
 
-User = get_user_model()
-
 
 class SignUpView(View):
     form_class = SignUpForm
@@ -63,8 +61,8 @@ class ActivateAccount(View):
     def get(self, request, uidb64, token, *args, **kwargs):
         try:
             uid = force_text(urlsafe_base64_decode(uidb64))
-            user = User.objects.get(pk=uid)
-        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = get_user_model().objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
             user = None
 
         if user is not None and account_activation_token.check_token(user, token):
@@ -82,7 +80,7 @@ class ActivateAccount(View):
 
 
 class ProfileView(UpdateView):
-    model = User
+    model = get_user_model()
     form_class = ProfileForm
     success_url = reverse_lazy("music:users")
     template_name = "profile.html"

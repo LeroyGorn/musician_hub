@@ -19,7 +19,7 @@ class ForumPosted(BaseModel):
     user = models.ForeignKey(get_user_model(), related_name="writer", on_delete=models.CASCADE)
     uuid = models.UUIDField(default=uuid.uuid4, db_index=True, unique=True)
     image = models.ImageField(default="initial.png", upload_to="covers/")
-    video = models.URLField(max_length=128, db_index=True, unique=True, blank=True)
+    video = models.URLField(max_length=128, db_index=True, blank=True)
     title = models.CharField(max_length=128, blank=True)
     description = models.CharField(max_length=128, blank=True)
     content = models.TextField(blank=True)

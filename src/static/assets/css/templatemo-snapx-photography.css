@@ -931,7 +931,7 @@ Banner Style
 */
 
 .main-banner {
-  background-image: url(../images/banner-bg.jpg);
+  background-image: url(../images/banner-bg1.jpg);
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -1193,6 +1193,7 @@ section.popular-categories .main-button {
 }
 
 .popular-item .thumb {
+  margin: 0 auto;
   position: relative;
   overflow: hidden;
 }
