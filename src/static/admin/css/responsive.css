@@ -19,6 +19,8 @@ input[type="submit"], button {
 
     .small {
         font-size: 12px;
+        overflow-wrap: break-word;
+        word-break: break-word;
     }
 
     /* Layout */

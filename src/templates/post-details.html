@@ -214,9 +214,12 @@ https://templatemo.com/tm-576-snapx-photography
                     </div>
                     {% endif %}
                     </div>
+              <br>
                 <h4>{{ forumposted.title }}</h4>
+              <br>
                 <h6>{{ forumposted.description }}</h6>
-                <h6>{{ forumposted.content }}</h6>
+              <br><br>
+                {{ forumposted.content }}
               <hr>
                 <div class="row">
                   <div class="col-lg-3 col-6">
@@ -266,7 +269,8 @@ https://templatemo.com/tm-576-snapx-photography
 <section class="gradient-custom">
   <div class="container my-5 py-5">
     <div class="row d-flex justify-content-left">
-      <div class="col-lg-12">
+        <div class="col-md-12 col-lg-10 col-xl-8">
+            <div class="card">
           <div class="card-body p-4">
             <h3 class="text-center mb-4 pb-2">Comments</h3>
               <!-- Button trigger modal -->
@@ -284,10 +288,13 @@ https://templatemo.com/tm-576-snapx-photography
               <div class="col">
                   <div class="d-flex flex-start">
                   {% if comment.is_parent %}
+                      <div class="col-auto me-auto">
                         {% if comment.author.photo %}
                             <img src="{{ comment.author.photo.url }}" alt="Image"
-                                 class="rounded-circle shadow-1-strong me-3" style="width:100px;height:100px;">
+                                 class="rounded-circle shadow-1-strong me-3" style="width:100px;height:100px;" align="left" >
+                            &nbsp; &nbsp;
                         {% endif %}
+                      </div>
                   <div class="flex-grow-1 flex-shrink-1">
                     <div>
                       <div class="d-flex justify-content-between align-items-center">
@@ -298,9 +305,9 @@ https://templatemo.com/tm-576-snapx-photography
                             {% endif %}</span>
                         </p>
                       </div>
-                      <p class="small mb-0">
+                            <p class="small mb-0">
                           {{ comment.text }}
-                      </p>
+                            </p>
                     </div>
                       <div class="modal fade" id="Modal{{ comment.pk }}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
                           <div class="modal-dialog modal-dialog-centered">
@@ -334,10 +341,12 @@ https://templatemo.com/tm-576-snapx-photography
                     {% for replies in comment.children %}
                         <div class="d-flex flex-start mt-4">
                           <a class="me-3" href="#">
+                          <div class="col-auto me-auto">
                                 {% if replies.author.photo %}
                                 <img src="{{ replies.author.photo.url }}" alt="Image"
-                                     class="mb-2 rounded-circle img-thumbnail" style="width:88px;height:88px;">
+                                     class="rounded-circle shadow-1-strong me-3" style="width:88px;height:88px;" align="left">
                                 {% endif %}
+                          </div>
                           </a>
                           <div class="flex-grow-1 flex-shrink-1">
                             <div>
@@ -346,9 +355,9 @@ https://templatemo.com/tm-576-snapx-photography
                                   {{ replies.author.get_full_name }} <span class="small"> - {{ replies.create_datetime }}</span>
                                 </p>
                               </div>
-                              <p class="small mb-0">
+                                 <p class="small mb-0">
                                   {{ replies.text }}
-                              </p>
+                                 </p>
                             </div>
                           </div>
                         </div>
@@ -360,6 +369,8 @@ https://templatemo.com/tm-576-snapx-photography
             {% endfor %}
           </div>
       </div>
+      </div>
+    </div>
 </section>
 
   <section class="contest-win">

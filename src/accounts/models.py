@@ -12,7 +12,7 @@ class ForumUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("email address"), unique=True)
     first_name = models.CharField(_("first name"), max_length=64, blank=True)
     last_name = models.CharField(_("last name"), max_length=64, blank=True)
-    photo = models.ImageField(upload_to="users_photo/", null=True, blank=True)
+    photo = models.ImageField(upload_to="users_photo/", default="user.png", null=True, blank=True)
 
     is_staff = models.BooleanField(
         _("staff status"),
