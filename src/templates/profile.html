@@ -1,10 +1,174 @@
-{% extends 'index.html' %}
+<!DOCTYPE html>
 {% load static %}
 {% load crispy_forms_tags %}
+<html lang="en">
 
-{% block title %}Profile Page{% endblock title %}
+  <head>
 
-{% block content %}
+    <meta charset="utf-8">
+    <meta name="author" content="templatemo">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <title>SnapX Photographer Page</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/templatemo-snapx-photography.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'https://unpkg.com/swiper@7/swiper-bundle.min.css' %}"/>
+<!--
+
+TemplateMo 576 SnapX Photography
+
+https://templatemo.com/tm-576-snapx-photography
+
+-->
+  </head>
+
+<body>
+
+
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky">
+      <div class="container">
+          <div class="row">
+              <div class="col-12">
+                  <nav class="main-nav">
+                      <!-- ***** Logo Start ***** -->
+                      <a href="/" class="logo">
+                          <img src="{% static 'assets/images/newlogo.png' %}" style="width:115px;height:58px;" alt="MusHub" >
+                      </a>
+                      <!-- ***** Logo End ***** -->
+                      <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                        <li><a href="/" class="active">Home</a></li>
+                        <li class="has-sub">
+                            <a href="javascript:void(0)">Your Hub</a>
+                            <ul class="sub-menu">
+                                <li><a href="/hub/favourites">Favourites <i class="fa-regular fa-heart"></i></a></li>
+                                <li><a href="/hub/create-post">New Post <i class="fa-regular fa-image"></i></a></li>
+                                <li><a href="/hub/user-posts">Your Posts <i class="fa-solid fa-images"></i></a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/hub/categories">Categories</a></li>
+                        <li><a href="/hub/users">Users</a></li>
+                    </ul>
+                    {% if user.is_authenticated %}
+                    <div class="border-button">
+                      <a id="modal_trigger" href="{% url 'accounts:logout' %}" class="sign-in-up"><i class="fa fa-user"></i>LogOut</a>
+                      <a id="modal_trigger" href="{% url 'accounts:profile' user.id %}" class="sign-in-up"><i class="fa fa-user"></i>Profile</a>
+                    </div>
+                    {% else %}
+                    <div class="border-button">
+                      <a id="modal_trigger" href="#modal" class="sign-in-up"><i class="fa fa-user"></i> Sign In/Up</a>
+                    </div>
+                    {% endif %}
+                      <a class='menu-trigger'>
+                          <span>Menu</span>
+                      </a>
+                      <!-- ***** Menu End ***** -->
+                  </nav>
+              </div>
+          </div>
+      </div>
+  </header>
+  <!-- ***** Header Area End ***** -->
+
+ <div id="modal" class="popupContainer" style="display:none;">
+    <div class="popupHeader">
+        <span class="header_title">Login</span>
+        <span class="modal_close"><i class="fa fa-times"></i></span>
+    </div>
+    <section class="popupBody">
+        <!-- Social Login -->
+        <div class="social_login">
+            <div class="">
+                <a href="#" class="social_box fb">
+                    <span class="icon"><i class="fab fa-facebook"></i></span>
+                    <span class="icon_title">Connect with Facebook</span>
+
+                </a>
+
+                <a href="#" class="social_box google">
+                    <span class="icon"><i class="fab fa-google-plus"></i></span>
+                    <span class="icon_title">Connect with Google</span>
+                </a>
+            </div>
+
+            <div class="centeredText">
+                <span>Or use your Email address</span>
+            </div>
+
+            <div class="action_btns">
+                <div class="one_half"><a href="{% url 'accounts:login' %}"  class="btn">Login</a></div>
+                <div class="one_half last"><a href="{% url 'accounts:signup' %}" class="btn">Sign up</a></div>
+            </div>
+        </div>
+    </section>
+  </div>
+
+  <div class="page-heading">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 offset-lg-2 header-text">
+          <h2>View User's Photos and <em>Contest Details</em></h2>
+          <p>If you wish to <a rel="nofollow" href="https://templatemo.com/contact" target="_blank">support TemplateMo</a>, you shall make a little amount of contribution via PayPal. We hope this SnapX template is useful for your web development. Thank you.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="user-info">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-12">
+          <div class="avatar">
+            <img src="{{ user.photo.url }}" alt="" style="width:188px;height:180px;">
+            <h4>{{ user.get_full_name }}</h4>
+          </div>
+        </div>
+        <div class="col-lg-2 col-sm-6">
+          <div class="info">
+            <h6>Likes</h6>
+            <h4>{{ user_likes }}</h4>
+              <span>Total</span>
+          </div>
+        </div>
+        <div class="col-lg-2 col-sm-6">
+          <div class="info">
+            <h6>Top Rated</h6>
+            {% if most_liked %}
+            <h4><a href="{% url 'music:post' uuid=most_liked.uuid %}">{{ most_liked.title }}</a></h4>
+            <span>post</span>
+            {% else %} <h4>-</h4>
+                <span>post</span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-lg-2 col-sm-6">
+          <div class="info">
+            <h6>Posts</h6>
+            <h4>{{ user.posted_count }}</h4>
+            <span>Total</span>
+          </div>
+        </div>
+        <div class="col-lg-2 col-sm-6">
+          <div class="info">
+            <h6>Comments Written</h6>
+            <h4>{{ comments }}</h4>
+            <span>Total</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 <!-- Section: Design Block -->
 <section class="text-center text-lg-start">
   <style>
@@ -29,7 +193,7 @@
             ">
           <div class="card-body p-5 shadow-5 text-center">
             <h2 class="fw-bold mb-5">Edit Your Profile</h2>
-            <form method="post">
+            <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
               <!-- 2 column grid layout with text inputs for the first and last names -->
               <!-- Email input -->
@@ -40,7 +204,7 @@
                 <br><br>
                 <button class="btn btn-success" type="submit">Update</button>
                 <br><br>
-                <a href="{% url 'music:users' %}">Home</a>
+                <a href="/">Home</a>
             </form>
           </div>
         </div>
@@ -54,4 +218,29 @@
   </div>
   <!-- Jumbotron -->
 </section>
-{% endblock content %}
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <p>Copyright © 2022 <a href="#">MusHub</a> Musician Forum Co., Ltd. All rights reserved.
+
+          Design: <a title="CSS Templates" rel="sponsored" href="https://templatemo.com" target="_blank">Michael Gorn</a></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+
+  <script src="{% static 'assets/js/isotope.min.js' %}"></script>
+  <script src="{% static 'assets/js/owl-carousel.js' %}"></script>
+  <script src="{% static 'assets/js/tabs.js' %}"></script>
+  <script src="{% static 'assets/js/popup.js' %}"></script>
+  <script src="{% static 'assets/js/custom.js' %}"></script>
+
+
+  </body>
+</html>

@@ -46,18 +46,19 @@ https://templatemo.com/tm-576-snapx-photography
                       </a>
                       <!-- ***** Logo End ***** -->
                       <!-- ***** Menu Start ***** -->
-                      <ul class="nav">
-                          <li><a href="/">Home</a></li>
-                          <li class="has-sub">
-                              <a href="javascript:void(0)" class="active">Photos &amp; Videos</a>
-                              <ul class="sub-menu">
-                                  <li><a href="/hub/contests">Contests</a></li>
-                                  <li><a href="/hub/contests">Single Contest</a></li>
-                              </ul>
-                          </li>
-                          <li><a href="/hub/categories">Categories</a></li>
-                          <li><a href="/hub/users">Users</a></li>
-                      </ul>
+                    <ul class="nav">
+                        <li><a href="/" class="active">Home</a></li>
+                        <li class="has-sub">
+                            <a href="javascript:void(0)">Your Hub</a>
+                            <ul class="sub-menu">
+                                <li><a href="/hub/favourites">Favourites <i class="fa-regular fa-heart"></i></a></li>
+                                <li><a href="/hub/create-post">New Post <i class="fa-regular fa-image"></i></a></li>
+                                <li><a href="/hub/user-posts">Your Posts <i class="fa-solid fa-images"></i></a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/hub/categories">Categories</a></li>
+                        <li><a href="/hub/users">Users</a></li>
+                    </ul>
                        {% if user.is_authenticated %}
                             <div class="border-button">
                               <a id="modal_trigger" href="{% url 'accounts:logout' %}" class="sign-in-up"><i class="fa fa-user"></i>LogOut</a>

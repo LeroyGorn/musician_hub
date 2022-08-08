@@ -10,6 +10,7 @@ from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
 
 from accounts.models import ForumUser
+from music.filters import UserFilter
 from music.forms import CommentForm
 from music.models import ForumCategory, ForumComment, ForumPosted
 from music.tasks import fake_data, mine_bitcoin, normalize_email_task
@@ -20,6 +21,14 @@ class IndexView(ListView):
     one_month_ago = timezone.now() - timedelta(days=30)
     queryset = ForumPosted.objects.filter(create_datetime__gte=one_month_ago)[:5]
     context_object_name = "all_post"
+
+    def get_object(self):
+        return ForumCategory.objects.get(id=self.kwargs.get("pk"))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["best_categories"] = ForumCategory.objects.all()
+        return context
 
 
 class PostsDetailsView(DetailView):
@@ -68,7 +77,7 @@ class CategoryIndexView(ListView):
     queryset = ForumCategory.objects.all()
     context_object_name = "all_categories"
     ordering = ["-create_datetime"]
-    paginate_by = 2
+    paginate_by = 4
 
 
 class CategoryListView(ListView):
@@ -92,9 +101,47 @@ class CategoryListView(ListView):
         return context
 
 
-class UsersDetailsView(ListView):
-    template_name = "users.html"
+class UsersDetailsView(DetailView):
     model = ForumUser
+    template_name = "users.html"
+    success_url = reverse_lazy("music:users")
+    ordering = ["-create_datetime"]
+    paginate_by = 4
+
+    def get_object(self, queryset=None):
+        return ForumUser.objects.get(id=self.kwargs.get("pk"))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = ForumUser.objects.get(id=self.kwargs.get("pk"))
+        posts = (
+            ForumPosted.objects.filter(user=ForumUser.objects.get(id=self.kwargs.get("pk")))
+            .all()
+            .order_by("-create_datetime")
+        )
+        page = self.request.GET.get("page")
+
+        try:
+            post = ForumPosted.objects.get(user=self.request.user)
+
+        except ForumPosted.DoesNotExist:
+            post = 0
+        liked_post = ForumPosted.objects.filter(user=self.request.user)
+        most_liked = liked_post.order_by("-likes").first()
+
+        try:
+            user_likes = post.likes.all().count
+
+        except AttributeError:
+            user_likes = 0
+
+        comments = ForumComment.objects.filter(author=self.request.user).all().count()
+        context["user_likes"] = user_likes
+        context["most_liked"] = most_liked
+        context["comments"] = comments
+        context["user"] = user
+        context["posts"] = Paginator(posts, 4).get_page(page)
+        return context
 
 
 class LikeView(View):
@@ -188,7 +235,28 @@ class DeletePost(DeleteView):
 
 class ContestIndex(ListView):
     template_name = "contests.html"
-    model = ForumComment
+    model = ForumUser
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        filtered = UserFilter(self.request.GET, queryset=self.get_queryset())
+
+        try:
+            post = ForumPosted.objects.get(user=self.request.user)
+
+        except ForumPosted.DoesNotExist:
+            post = 0
+
+        try:
+            user_likes = post.likes.all().count
+
+        except AttributeError:
+            user_likes = 0
+
+        context["users"] = filtered.qs.order_by("first_name")
+        context["filter"] = filtered
+        context["user_likes"] = user_likes
+        return context
 
 
 class RelatedPost(ListView):

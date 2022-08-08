@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "drf_yasg",
     "django_extensions",
+    "django_filters",
     "django_celery_beat",
     "rest_framework",
     "crispy_forms",

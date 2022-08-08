@@ -7,7 +7,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import (is_safe_url, urlsafe_base64_decode,
@@ -19,6 +19,7 @@ from django.views.generic import FormView, RedirectView, UpdateView, View
 
 from accounts.forms import ProfileForm, SignUpForm
 from accounts.tokens import account_activation_token
+from music.models import ForumComment, ForumPosted
 
 
 class SignUpView(View):
@@ -30,7 +31,7 @@ class SignUpView(View):
         return render(request, self.template_name, {"form": form})
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
 
             user = form.save(commit=False)
@@ -82,8 +83,31 @@ class ActivateAccount(View):
 class ProfileView(UpdateView):
     model = get_user_model()
     form_class = ProfileForm
-    success_url = reverse_lazy("music:users")
+    success_url = "/"
     template_name = "profile.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("accounts:login")
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        try:
+            post = ForumPosted.objects.get(user=self.request.user)
+        except ForumPosted.DoesNotExist:
+            post = 0
+        liked_post = ForumPosted.objects.filter(user=self.request.user)
+        most_liked = liked_post.order_by("-likes").first()
+        try:
+            user_likes = post.likes.all().count
+        except AttributeError:
+            user_likes = 0
+        comments = ForumComment.objects.filter(author=self.request.user).all().count()
+        context["user_likes"] = user_likes
+        context["most_liked"] = most_liked
+        context["comments"] = comments
+        return context
 
 
 class LoginView(FormView):
