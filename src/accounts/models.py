@@ -37,7 +37,7 @@ class ForumUser(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = _("Users")
 
     def posted_count(self):
-        return self.posts.count()
+        return self.writer.distinct().count()
 
     def get_full_name(self):
         """
