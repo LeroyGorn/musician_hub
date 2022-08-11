@@ -57,12 +57,13 @@ https://templatemo.com/tm-576-snapx-photography
                             </ul>
                         </li>
                         <li><a href="/hub/categories">Categories</a></li>
+                        <li><a href="/hub/posts">Posts</a></li>
                         <li><a href="/hub/users">Users</a></li>
                     </ul>
                        {% if user.is_authenticated %}
                             <div class="border-button">
-                              <a id="modal_trigger" href="{% url 'accounts:logout' %}" class="sign-in-up"><i class="fa fa-user"></i>LogOut</a>
-                              <a id="modal_trigger" href="{% url 'accounts:profile' user.id %}" class="sign-in-up"><i class="fa fa-user"></i>Profile</a>
+                              <a id="modal_trigger" href="{% url 'accounts:logout' %}" class="sign-in-up"><i class="fa fa-sign-out"></i> Exit</a>
+                              <a id="modal_trigger" href="{% url 'accounts:profile' user.id %}" class="sign-in-up"><i class="fa fa-user"></i> Profile</a>
                             </div>
                             {% else %}
                             <div class="border-button">
@@ -83,30 +84,10 @@ https://templatemo.com/tm-576-snapx-photography
         <span class="modal_close"><i class="fa fa-times"></i></span>
     </div>
     <section class="popupBody">
-        <!-- Social Login -->
-        <div class="social_login">
-            <div class="">
-                <a href="#" class="social_box fb">
-                    <span class="icon"><i class="fab fa-facebook"></i></span>
-                    <span class="icon_title">Connect with Facebook</span>
-
-                </a>
-
-                <a href="#" class="social_box google">
-                    <span class="icon"><i class="fab fa-google-plus"></i></span>
-                    <span class="icon_title">Connect with Google</span>
-                </a>
-            </div>
-
-            <div class="centeredText">
-                <span>Or use your Email address</span>
-            </div>
-
             <div class="action_btns">
                 <div class="one_half"><a href="{% url 'accounts:login' %}"  class="btn">Login</a></div>
                 <div class="one_half last"><a href="{% url 'accounts:signup' %}" class="btn">Sign up</a></div>
             </div>
-        </div>
     </section>
   </div>
 
@@ -114,60 +95,11 @@ https://templatemo.com/tm-576-snapx-photography
     <div class="container">
       <div class="row">
         <div class="col-lg-8 offset-lg-2 header-text">
-          <h2>Discover what's currently going on at <em>SnapX</em></h2>
-          <p>When you need Free CSS Templates, you just remember our website TemplateMo. We provide you best quality website templates at absolutely free of charge. No hidden cost involved.</p>
+          <h2>Discover what's currently going on at <em>MusHub</em></h2>
         </div>
       </div>
     </div>
   </div>
-
-  <div class="search-form">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <form id="search-form" name="gs" method="submit" role="search" action="#">
-            <div class="row">
-              <div class="col-lg-4">
-                <fieldset>
-                    <label for="contest" class="form-label">Search Any Contest</label>
-                    <input type="text" name="contest" class="searchText" placeholder="Contest Name..." autocomplete="on" required>
-                </fieldset>
-              </div>
-              <div class="col-lg-4">
-                <fieldset>
-                    <label for="category" class="form-label">Pick Category</label>
-                    <select name="category" class="form-select" aria-label="Choose a category" id="category" onchange="this.form.click()">
-                        <option selected>Choose a category</option>
-                        <option type="checkbox" name="Nature" value="Nature">Nature Photography (220 Contests)</option>
-                        <option value="Portrait">Portrait Photography (172 Contests)</option>
-                        <option value="Space">Space Photography (92 Contests)</option>
-                    </select>
-                </fieldset>
-              </div>
-              <div class="col-lg-2">
-                <fieldset>
-                    <label for="chooseprice" class="form-label">Award Price</label>
-                    <select name="Price" class="form-select" aria-label="Default select example" id="chooseCategory" onchange="this.form.click()">
-                        <option selected>Choose a price</option>
-                        <option value="500">$500 to $1,000</option>
-                        <option value="1500">$1,500 to $2,000</option>
-                        <option value="2500">$2,500 to $3000</option>
-                        <option value="3500+">$3,500+</option>
-                    </select>
-                </fieldset>
-              </div>
-              <div class="col-lg-2">
-                <fieldset>
-                    <button class="main-button">Search Now</button>
-                </fieldset>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <section class="photos-videos">
     <div class="container">
      {% block content %}
@@ -183,15 +115,15 @@ https://templatemo.com/tm-576-snapx-photography
                             <input type="hidden" name="next" value="{{ request.path }}">
                             <button style="background-color: transparent; border: none; box-shadow: none;" type="submit">
                             <span class="wish-list">
-                            <i class="fa fa-heart"></i> Add To Favourites  {{ post.likes.all.count }}
+                            <i class="fa fa-heart"></i> Add To Favourites  {{ post.likes_count }}
                             </span></button>
                           </form>
                   </div>
                   <div class="col-lg-8">
                     <ul>
                       <li><i class="fa fa-medal"></i> <span>Author: </span>{{ forumposted.user.get_full_name }}</li>
-                      <li><span>Posted on:</span>{{ forumposted.create_datetime }}</li>
-                      <li><span>Comments:</span>{{ forumposted.messages_count }}</li>
+                      <li><span>Posted on:</span> {{ forumposted.create_datetime }}</li>
+                      <li><span>Comments:</span> {{ forumposted.messages_count }}</li>
                     </ul>
                   </div>
                 </div>
@@ -201,7 +133,7 @@ https://templatemo.com/tm-576-snapx-photography
               <div class="main-content">
                    <div class="thumb">
                        {% if forumposted.image %}
-                        <img src="{{ forumposted.image.url }}" alt="" style="width:auto;height:500px;">
+                               <img src="{{ forumposted.image.url }}" alt="" style="width:auto;height:500px;">
                        {% endif %}
                    {% if forumposted.video %}
                    <div class="col-12">
@@ -227,8 +159,10 @@ https://templatemo.com/tm-576-snapx-photography
                     <div class="item">
                       <div class="icon">
                           {% if forumposted.user.photo %}
+                            <a href="{% url 'music:user' user.id %}">
                             <img src="{{ forumposted.user.photo.url }}" alt="" class="mb-2 rounded-circle img-thumbnail"
                                  style="width:128px;height:128px;">
+                              </a>
                           {% endif %}
                           </div>
                       <h5>{{ forumposted.user.get_full_name }}<br><h6>Authored By</h6></h5>
@@ -373,108 +307,13 @@ https://templatemo.com/tm-576-snapx-photography
       </div>
     </div>
 </section>
-
-  <section class="contest-win">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="section-heading text-center">
-            <h6>Recently Added Contests by Users</h6>
-            <h4>Current <em>Contests</em> to Enter Now &amp; <em>Win</em></h4>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="contest-item">
-            <div class="top-content">
-              <span class="award">Award Price</span>
-              <span class="price">$1,200</span>
-            </div>
-            <img src="{% static 'assets/images/contest-01.jpg' %}" alt="">
-            <h4>Walk In The Nature Night</h4>
-            <div class="info">
-              <span class="participants"><img src="{% static 'assets/images/icon-03.png' %}" alt=""><br>80 Participants</span>
-              <span class="submittions"><img src="{% static 'assets/images/icon-01.png' %}" alt=""><br>260 Submissions</span>
-            </div>
-            <div class="border-button">
-              <a href="post-categories.html">Browse Nature Pic Contests</a>
-            </div>
-            <span class="info">* Client will pay via Online Payments</span>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="contest-item">
-            <div class="top-content">
-              <span class="award">Award Price</span>
-              <span class="price">$2,400</span>
-            </div>
-            <img src="{% static 'assets/images/contest-02.jpg' %}" alt="">
-            <h4>Walk In The Nature Night</h4>
-            <div class="info">
-              <span class="participants"><img src="{% static 'assets/images/icon-03.png' %}" alt=""><br>60 Participants</span>
-              <span class="submittions"><img src="{% static 'assets/images/icon-01.png' %}" alt=""><br>212 Submissions</span>
-            </div>
-            <div class="border-button">
-              <a href="/hub/contest-details">Browse Nature Pic Contests</a>
-            </div>
-            <span class="info">* Client will pay via Online Payments</span>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="contest-item">
-            <div class="top-content">
-              <span class="award">Award Price</span>
-              <span class="price">$3,600</span>
-            </div>
-            <img src="{% static 'assets/images/contest-03.jpg' %}" alt="">
-            <h4>Walk In The Nature Night</h4>
-            <div class="info">
-              <span class="participants"><img src="{% static 'assets/images/icon-03.png' %}" alt=""><br>55 Participants</span>
-              <span class="submittions"><img src="{% static 'assets/images/icon-01.png' %}" alt=""><br>150 Submissions</span>
-            </div>
-            <div class="border-button">
-              <a href="/hub/contests">Browse Nature Pic Contests</a>
-            </div>
-            <span class="info">* Client will pay via Online Payments</span>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="contest-item">
-            <div class="top-content">
-              <span class="award">Award Price</span>
-              <span class="price">$4,800</span>
-            </div>
-            <img src="{% static 'assets/images/contest-04.jpg' %}" alt="">
-            <h4>Walk In The Nature Night</h4>
-            <div class="info">
-              <span class="participants"><img src="{% static 'assets/images/icon-03.png' %}" alt=""><br>40 Participants</span>
-              <span class="submittions"><img src="{% static 'assets/images/icon-01.png' %}" alt=""><br>120 Submissions</span>
-            </div>
-            <div class="border-button">
-              <a href="hub/categories">Browse Nature Pic Contests</a>
-            </div>
-            <span class="info">* Client will pay via Online Payments</span>
-          </div>
-        </div>
-        <div class="col-lg-12">
-          <ul class="pagination">
-            <li><a href="#"><i class="fa fa-arrow-left"></i></a></li>
-            <li><a href="#">1</a></li>
-            <li class="active"><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#"><i class="fa fa-arrow-right"></i></a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <footer>
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
           <p>Copyright © 2022 <a href="#">MusHub</a> Musician Forum Co., Ltd. All rights reserved.
 
-          Design: <a title="CSS Templates" rel="sponsored" href="https://templatemo.com" target="_blank">Michael Gorn</a></p>
+          Design: <a href="{% url "music:users" %}">Michael Gorn</a></p>
         </div>
       </div>
     </div>

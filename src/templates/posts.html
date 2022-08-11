@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 {% load static %}
-{% load crispy_forms_tags %}
 <html lang="en">
 
   <head>
@@ -11,7 +10,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 
-    <title>SnapX Photographer Page</title>
+    <title>SnapX Photo Contests</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -22,7 +21,7 @@
     <link rel="stylesheet" href="{% static 'assets/css/templatemo-snapx-photography.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
-    <link rel="stylesheet" href="{% static 'https://unpkg.com/swiper@7/swiper-bundle.min.css' %}"/>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
 <!--
 
 TemplateMo 576 SnapX Photography
@@ -33,7 +32,6 @@ https://templatemo.com/tm-576-snapx-photography
   </head>
 
 <body>
-
 
   <!-- ***** Header Area Start ***** -->
   <header class="header-area header-sticky">
@@ -66,14 +64,15 @@ https://templatemo.com/tm-576-snapx-photography
                       <a id="modal_trigger" href="{% url 'accounts:logout' %}" class="sign-in-up"><i class="fa fa-sign-out"></i> Exit</a>
                       <a id="modal_trigger" href="{% url 'accounts:profile' user.id %}" class="sign-in-up"><i class="fa fa-user"></i> Profile</a>
                     </div>
-                    {% else %}
+                    {% endif %}
+                     {% if not user.is_authenticated %}
                     <div class="border-button">
                       <a id="modal_trigger" href="#modal" class="sign-in-up"><i class="fa fa-user"></i> Sign In/Up</a>
                     </div>
                     {% endif %}
-                      <a class='menu-trigger'>
-                          <span>Menu</span>
-                      </a>
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
                       <!-- ***** Menu End ***** -->
                   </nav>
               </div>
@@ -82,7 +81,7 @@ https://templatemo.com/tm-576-snapx-photography
   </header>
   <!-- ***** Header Area End ***** -->
 
- <div id="modal" class="popupContainer" style="display:none;">
+   <div id="modal" class="popupContainer" style="display:none;">
     <div class="popupHeader">
         <span class="header_title">Login</span>
         <span class="modal_close"><i class="fa fa-times"></i></span>
@@ -92,7 +91,6 @@ https://templatemo.com/tm-576-snapx-photography
                 <div class="one_half"><a href="{% url 'accounts:login' %}"  class="btn">Login</a></div>
                 <div class="one_half last"><a href="{% url 'accounts:signup' %}" class="btn">Sign up</a></div>
             </div>
-        </div>
     </section>
   </div>
 
@@ -100,112 +98,121 @@ https://templatemo.com/tm-576-snapx-photography
     <div class="container">
       <div class="row">
         <div class="col-lg-8 offset-lg-2 header-text">
-          <h2>View User's Photos and <em>Contest Details</em></h2>
+          <h2>Discover what's currently going on at <em>MusHub</em></h2>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="user-info">
+  <div class="search-form">
     <div class="container">
-      <div class="row justify-content-center">
+      <div class="row">
         <div class="col-lg-12">
-          <div class="avatar">
-            <img src="{{ user.photo.url }}" alt="" style="width:188px;height:180px;">
-            <h4>{{ user.get_full_name }}</h4>
-          </div>
-        </div>
-        <div class="col-lg-2 col-sm-6">
-          <div class="info">
-            <h6>Likes</h6>
-            <h4>{{ forumuser.user_likes }}</h4>
-              <span>Total</span>
-          </div>
-        </div>
-        <div class="col-lg-2 col-sm-6">
-          <div class="info">
-            <h6>Top Rated</h6>
-            {% if most_liked %}
-            <h4><a href="{% url 'music:post' uuid=most_liked.uuid %}"><i class="fa fa-eye"></i></a></h4>
-            <span>Post</span>
-            {% else %} <h4>-</h4>
-                <span>Post</span>
-            {% endif %}
-          </div>
-        </div>
-        <div class="col-lg-2 col-sm-6">
-          <div class="info">
-            <h6>Posts</h6>
-            <h4>{{ user.posted_count }}</h4>
-            <span>Total</span>
-          </div>
-        </div>
-        <div class="col-lg-2 col-sm-6">
-          <div class="info">
-            <h6>Comments Written</h6>
-            <h4>{{ comments }}</h4>
-            <span>Total</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-<!-- Section: Design Block -->
-<section class="text-center text-lg-start">
-  <style>
-    .cascading-right {
-      margin-right: -50px;
-    }
-
-    @media (max-width: 991.98px) {
-      .cascading-right {
-        margin-right: 0;
-      }
-    }
-  </style>
-
-  <!-- Jumbotron -->
-  <div class="container py-4">
-    <div class="row g-0 align-items-center">
-      <div class="col-lg-6 mb-5 mb-lg-0">
-        <div class="card cascading-right" style="
-            background: hsla(0, 0%, 100%, 0.55);
-            backdrop-filter: blur(30px);
-            ">
-          <div class="card-body p-5 shadow-5 text-center">
-            <h2 class="fw-bold mb-5">Edit Your Profile</h2>
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-              <!-- 2 column grid layout with text inputs for the first and last names -->
-              <!-- Email input -->
-              <div class="form-outline mb-4">
-                  {{ form|crispy }}
+          <form id="search-form" name="gs" method="GET" role="search" action="">
+            <div class="row">
+              <div class="col-lg-4">
+                <fieldset>
+                    <label for="contest" class="form-label">Title</label>
+                    {{ filter.form.title }}
+                </fieldset>
               </div>
-              <!-- Submit button -->
-                <br><br>
-                <button class="btn btn-success" type="submit">Update</button>
-                <br><br>
-                <a href="/">Home</a>
-            </form>
-          </div>
+                <div class="col-lg-4">
+                <fieldset>
+                    <label for="contest" class="form-label">Description</label>
+                    {{ filter.form.description }}
+                </fieldset>
+              </div>
+                <div class="col-lg-4">
+                <fieldset>
+                    <label for="contest" class="form-label">Ordering</label>
+                    {{ filter.form.ordering }}
+                </fieldset>
+              </div>
+                <div class="col-lg-4">
+                <fieldset>
+                    <label for="contest" class="form-label">Category</label>
+                    {{ filter.form.category }}
+                </fieldset>
+              </div>
+              <div class="col-lg-2">
+                <fieldset>
+                    <button type="submit" class="main-button">Search Now</button>
+                </fieldset>
+              </div>
+            </div>
+          </form>
         </div>
-      </div>
-
-      <div class="col-lg-6 mb-5 mb-lg-0">
-        <img src="{% static 'assets/images/musician_profile.jpg' %}" class="w-100 rounded-4 shadow-4"
-          alt="" />
       </div>
     </div>
   </div>
-  <!-- Jumbotron -->
-</section>
+  <section class="contest-win">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-heading text-center">
+            <h6>Recently Added Posts by Users</h6>
+            <h4>Best <em>Posts</em> to Enter <em>Musician World</em></h4>
+          </div>
+        </div>
+          {% for post in posts %}
+            <div class="col-lg-3">
+              <div class="contest-item">
+                <img src="{{ post.image.url }}" style="width:352px;height:290px;" alt="">
+                <h4>{{ post.title }}</h4>
+                <div class="info">
+                  <span class="participants"><img src="{% static 'assets/images/icon-03.png' %}" alt=""><br>Author:  {{ post.user.get_full_name }}</span>
+                  <span class="submittions"><img src="{% static 'assets/images/icon-01.png' %}" alt=""><br>Likes {{ post.likes.all.count }}</span>
+                </div>
+                <div class="border-button">
+                    <a href="{% url 'music:post' uuid=post.uuid %}" style="text-align: left"><i class="fa fa-eye"></i> View</a>
+                </div>
+              </div>
+            <br><br>
+            </div>
+         {% endfor %}
+      </div>
+    </div>
+  </section>
+  <br><br>
+      {% if page_obj.paginator.num_pages > 1 %}
+        <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation">   <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page=1&amp;{{ view.querystring_url }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">begin</span>
+          </a>
+        </li>   {% endif %}
+
+        {% for n in page_obj.paginator.page_range %}
+          {% if page_obj.number == n %}
+            <li class="page-item active">
+              <span class="page-link">{{ n }}<span class="sr-only">(current)</span></span>
+            </li>
+          {% elif n > page_obj.number|add:'-3' and n < page_obj.number|add:'3' %}
+            <li class="page-item"><a class="page-link" href="?page={{ n }}&amp;{{ view.querystring_url }}">{{ n }}</a></li>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&amp;{{ view.querystring_url }}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">end</span>
+            </a>
+          </li>
+          {% endif %}   </ul> </nav>
+        </div>
+{% endif %}
+
   <footer>
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
-          <p>Copyright © 2022 <a href="#">MusHub</a> Musician Forum Co., Ltd. All rights reserved.
+          <p>Copyright © 2022 <a href="#">MusHub</a> Musician Hub Ltd. All rights reserved.
 
-          Design: <a title="CSS Templates" rel="sponsored" href="https://templatemo.com" target="_blank">Michael Gorn</a></p>
+          Design: <a href="{% url 'music:users' %}">Michael Gorn</a></p>
         </div>
       </div>
     </div>
@@ -221,7 +228,6 @@ https://templatemo.com/tm-576-snapx-photography
   <script src="{% static 'assets/js/tabs.js' %}"></script>
   <script src="{% static 'assets/js/popup.js' %}"></script>
   <script src="{% static 'assets/js/custom.js' %}"></script>
-
 
   </body>
 </html>

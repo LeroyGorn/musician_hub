@@ -2,7 +2,9 @@
 {% load static %}
 
 {% block content %}
-          {% block subcontent %}
+              <div class="section-heading">
+                    <h4>Check Out <em>Favourites </em><em>Posts</em></h4>
+              </div>
               {% if user.is_authenticated %}
               {% for post in posts %}
                 <div class="col-lg-3 col-sm-6">
@@ -10,17 +12,17 @@
                     <div class="top-content">
                       <div class="icon">
                         {% if post.user.photo %}
-                        <img src="{{ post.user.photo.url }}" alt="">
+                        <img src="{{ post.user.photo.url }}" style="width:88px;height:auto;" alt="">
                         {% endif %}
                       </div>
                       <div class="right">
                         <h4>{{ post.title }}</h4>
-                        <span><em>{{ post.user.get_short_name }}</em>{{ post.description }}</span>
+                        <span><em>{{ post.user.get_short_name }}</em></span>
                       </div>
                     </div>
-                    <div class="thumb">
+                    <div class="thumb" style="width:320px;height:270px;">
                       {% if post.image %}
-                      <img src="{{ post.image.url }}" alt="">
+                      <img src="{{ post.image.url }}" style="width:320px;height:270px;" alt="">
                       {% endif %}
                       <span class="category">Replies:{{ post.messages_count }}</span>
                       <span class="likes"><i class="fa fa-heart"></i> {{ post.likes.all.count }}</span>
@@ -35,6 +37,7 @@
                       {% endif %}
                     </div>
                   </div>
+                <br><br>
                 </div>
               {% endfor %}
           {% if page_obj.paginator.num_pages > 1 %}
@@ -72,5 +75,5 @@
                   <h3>You need to <a href="{% url 'accounts:login' %}">Log In</a> to view your posts.</h3>
                   <br>
         {% endif %}
-    {% endblock subcontent %}
+    <br><br><br>
 {% endblock %}

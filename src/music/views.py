@@ -1,16 +1,15 @@
 from datetime import timedelta
 
-from django.core.paginator import Paginator
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from django.utils import timezone
 from django.views import View
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
 
 from accounts.models import ForumUser
-from music.filters import UserFilter
+from music.filters import PostFilter, UserFilter
 from music.forms import CommentForm
 from music.models import ForumCategory, ForumComment, ForumPosted
 from music.tasks import fake_data, mine_bitcoin, normalize_email_task
@@ -18,15 +17,23 @@ from music.tasks import fake_data, mine_bitcoin, normalize_email_task
 
 class IndexView(ListView):
     template_name = "index.html"
-    one_month_ago = timezone.now() - timedelta(days=30)
-    queryset = ForumPosted.objects.filter(create_datetime__gte=one_month_ago)[:5]
     context_object_name = "all_post"
+
+    def get_queryset(self):
+        one_month_ago = timezone.now() - timedelta(days=30)
+        posts = ForumPosted.objects.filter(create_datetime__gte=one_month_ago).distinct()
+        queryset = sorted([i for i in posts], key=ForumPosted.likes_count, reverse=True)
+        return queryset[:4]
 
     def get_object(self):
         return ForumCategory.objects.get(id=self.kwargs.get("pk"))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        one_month_ago = timezone.now() - timedelta(days=30)
+        posts = ForumPosted.objects.filter(create_datetime__gte=one_month_ago).distinct()
+        queryset = sorted([i for i in posts], key=ForumPosted.likes_count, reverse=True)
+        context["top_users"] = ForumUser.objects.filter(writer__in=queryset).distinct()
         context["best_categories"] = ForumCategory.objects.all()
         return context
 
@@ -43,10 +50,12 @@ class PostsDetailsView(DetailView):
         uuid = self.kwargs["uuid"]
 
         post = get_object_or_404(ForumPosted, uuid=uuid)
+        user = ForumUser.objects.get(writer=post)
         connected_comments = ForumComment.objects.filter(messages=post)
         number_of_comments = connected_comments.count()
 
         context["post"] = post
+        context["user"] = user
         context["comments"] = connected_comments
         context["no_of_comments"] = number_of_comments
         context["form"] = CommentForm()
@@ -84,19 +93,21 @@ class CategoryListView(ListView):
     template_name = "post-categories.html"
     model = ForumPosted
     ordering = ["-create_datetime"]
+    context_object_name = "post_categories"
     paginate_by = 4
 
     def get_object(self, queryset=None):
         return ForumCategory.objects.get(id=self.kwargs.get("pk"))
+
+    def get_queryset(self):
+        category = get_object_or_404(ForumCategory, id=self.kwargs["pk"])
+        return ForumPosted.objects.filter(category=category).order_by("-create_datetime")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         cat_id = self.kwargs["pk"]
 
         category = get_object_or_404(ForumCategory, id=cat_id)
-        posts = ForumPosted.objects.filter(category=category).all().order_by("-create_datetime")
-        page = self.request.GET.get("page")
-        context["posts"] = Paginator(posts, 4).get_page(page)
         context["category"] = category
         return context
 
@@ -104,43 +115,32 @@ class CategoryListView(ListView):
 class UsersDetailsView(DetailView):
     model = ForumUser
     template_name = "users.html"
-    success_url = reverse_lazy("music:users")
+    success_url = "/"
     ordering = ["-create_datetime"]
+    context_object_name = "posts"
     paginate_by = 4
 
     def get_object(self, queryset=None):
         return ForumUser.objects.get(id=self.kwargs.get("pk"))
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        user = ForumUser.objects.get(id=self.kwargs.get("pk"))
-        posts = (
+    def get_queryset(self):
+        return (
             ForumPosted.objects.filter(user=ForumUser.objects.get(id=self.kwargs.get("pk")))
             .all()
             .order_by("-create_datetime")
         )
-        page = self.request.GET.get("page")
 
-        try:
-            post = ForumPosted.objects.get(user=self.request.user)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = ForumUser.objects.get(id=self.kwargs.get("pk"))
 
-        except ForumPosted.DoesNotExist:
-            post = 0
-        liked_post = ForumPosted.objects.filter(user=self.request.user)
-        most_liked = liked_post.order_by("-likes").first()
+        post = ForumPosted.objects.filter(user=user)
+        most_liked = sorted([i for i in post], key=ForumPosted.likes_count, reverse=True)[0]
+        comments = ForumComment.objects.filter(author=user).all().count()
 
-        try:
-            user_likes = post.likes.all().count
-
-        except AttributeError:
-            user_likes = 0
-
-        comments = ForumComment.objects.filter(author=self.request.user).all().count()
-        context["user_likes"] = user_likes
         context["most_liked"] = most_liked
         context["comments"] = comments
         context["user"] = user
-        context["posts"] = Paginator(posts, 4).get_page(page)
         return context
 
 
@@ -164,14 +164,15 @@ class LikeView(View):
         if is_like:
             post.likes.remove(request.user)
 
-        next = request.POST.get("next", "/")
-        return HttpResponseRedirect(next)
+        next_obj = request.POST.get("next", "/")
+        return HttpResponseRedirect(next_obj)
 
 
 class FavouritesList(ListView):
     template_name = "favourites.html"
     model = ForumPosted
     ordering = ["-create_datetime"]
+    context_object_name = "posts"
     paginate_by = 4
 
     def dispatch(self, request, *args, **kwargs):
@@ -182,19 +183,21 @@ class FavouritesList(ListView):
     def get_object(self, queryset=None):
         return ForumPosted.objects.get(uuid=self.kwargs.get("uuid"))
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get_queryset(self):
         posts = ForumPosted.objects.filter(likes=self.request.user).all()
         comment = ForumPosted.objects.filter(thread__in=ForumComment.objects.filter(author=self.request.user)).all()
-        page = self.request.GET.get("page")
-        context["posts"] = Paginator(posts.union(comment).order_by("-create_datetime"), 4).get_page(page)
-        return context
+        return posts.union(comment).order_by("-create_datetime")
 
 
 class CreatePost(CreateView):
     template_name = "create-post.html"
     model = ForumPosted
     fields = ["category", "image", "video", "title", "description", "content"]
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("accounts:login")
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -216,13 +219,16 @@ class UpdatePost(UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
-        return ForumPosted.objects.get(user=self.request.user, uuid=self.kwargs.get("uuid"))
+        try:
+            return ForumPosted.objects.get(user=self.request.user, uuid=self.kwargs.get("uuid"))
+        except ForumPosted.DoesNotExist:
+            raise Http404("You are not allowed to edit this post.")
 
 
 class DeletePost(DeleteView):
     template_name = "delete-post.html"
     model = ForumPosted
-    success_url = reverse_lazy("music:users")
+    success_url = "/"
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -230,39 +236,64 @@ class DeletePost(DeleteView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
-        return ForumPosted.objects.get(user=self.request.user, uuid=self.kwargs.get("uuid"))
+        try:
+            return ForumPosted.objects.get(user=self.request.user, uuid=self.kwargs.get("uuid"))
+        except ForumPosted.DoesNotExist:
+            raise Http404("You are not allowed to delete this Post")
 
 
 class ContestIndex(ListView):
     template_name = "contests.html"
     model = ForumUser
+    ordering = ["first_name"]
+    context_object_name = "users"
+    paginate_by = 8
+
+    def get_object(self, queryset=None):
+        return ForumUser.objects.get(id=self.kwargs.get("pk"))
+
+    def get_queryset(self):
+        return UserFilter(self.request.GET, queryset=super().get_queryset()).qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        filtered = UserFilter(self.request.GET, queryset=self.get_queryset())
 
-        try:
-            post = ForumPosted.objects.get(user=self.request.user)
-
-        except ForumPosted.DoesNotExist:
-            post = 0
-
-        try:
-            user_likes = post.likes.all().count
-
-        except AttributeError:
-            user_likes = 0
-
-        context["users"] = filtered.qs.order_by("first_name")
-        context["filter"] = filtered
-        context["user_likes"] = user_likes
+        context["filter"] = UserFilter(self.request.GET, queryset=self.get_queryset())
         return context
+
+    def querystring_url(self):
+        data = self.request.GET.copy()
+        data.pop(self.page_kwarg, None)
+        return data.urlencode()
+
+
+class PostIndex(ListView):
+    template_name = "posts.html"
+    model = ForumPosted
+    ordering = ["-create_datetime"]
+    context_object_name = "posts"
+    paginate_by = 8
+
+    def get_queryset(self):
+        return PostFilter(self.request.GET, queryset=super().get_queryset()).qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["filter"] = PostFilter(self.request.GET, queryset=self.get_queryset())
+        return context
+
+    def querystring_url(self):
+        data = self.request.GET.copy()
+        data.pop(self.page_kwarg, None)
+        return data.urlencode()
 
 
 class RelatedPost(ListView):
     template_name = "user_posts.html"
     model = ForumPosted
     ordering = ["-create_datetime"]
+    context_object_name = "posts"
     paginate_by = 4
 
     def dispatch(self, request, *args, **kwargs):
@@ -273,12 +304,8 @@ class RelatedPost(ListView):
     def get_object(self, queryset=None):
         return ForumPosted.objects.get(uuid=self.kwargs.get("uuid"))
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        posts = ForumPosted.objects.filter(user=self.request.user).all().order_by("-create_datetime")
-        page = self.request.GET.get("page")
-        context["posts"] = Paginator(posts, 4).get_page(page)
-        return context
+    def get_queryset(self):
+        return ForumPosted.objects.filter(user=self.request.user).all()
 
 
 def bitcoin(request):

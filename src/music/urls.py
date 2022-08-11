@@ -2,7 +2,7 @@ from django.urls import path
 
 from music.views import (CategoryIndexView, CategoryListView, ContestIndex,
                          CreatePost, DeletePost, FavouritesList, LikeView,
-                         PostsDetailsView, RelatedPost, UpdatePost,
+                         PostIndex, PostsDetailsView, RelatedPost, UpdatePost,
                          UsersDetailsView, bitcoin, create_data,
                          normalize_email)
 
@@ -13,6 +13,7 @@ urlpatterns = [
     path("users/", ContestIndex.as_view(), name="users"),
     path("users/<int:pk>", UsersDetailsView.as_view(), name="user"),
     path("categories/<int:pk>", CategoryListView.as_view(), name="category"),
+    path("posts/", PostIndex.as_view(), name="posts"),
     path("<uuid:uuid>/", PostsDetailsView.as_view(), name="post"),
     path("<uuid:uuid>/like/", LikeView.as_view(), name="like"),
     path("bitcoin/", bitcoin, name="bitcoin"),

@@ -56,12 +56,13 @@ https://templatemo.com/tm-576-snapx-photography
                             </ul>
                         </li>
                         <li><a href="/hub/categories">Categories</a></li>
+                        <li><a href="/hub/posts">Posts</a></li>
                         <li><a href="/hub/users">Users</a></li>
                     </ul>
                     {% if user.is_authenticated %}
                     <div class="border-button">
-                      <a id="modal_trigger" href="{% url 'accounts:logout' %}" class="sign-in-up"><i class="fa fa-user"></i>LogOut</a>
-                      <a id="modal_trigger" href="{% url 'accounts:profile' user.id %}" class="sign-in-up"><i class="fa fa-user"></i>Profile</a>
+                      <a id="modal_trigger" href="{% url 'accounts:logout' %}" class="sign-in-up"><i class="fa fa-sign-out"></i> Exit</a>
+                      <a id="modal_trigger" href="{% url 'accounts:profile' user.id %}" class="sign-in-up"><i class="fa fa-user"></i> Profile</a>
                     </div>
                     {% endif %}
                      {% if not user.is_authenticated %}
@@ -86,25 +87,6 @@ https://templatemo.com/tm-576-snapx-photography
         <span class="modal_close"><i class="fa fa-times"></i></span>
     </div>
     <section class="popupBody">
-        <!-- Social Login -->
-        <div class="social_login">
-            <div class="">
-                <a href="#" class="social_box fb">
-                    <span class="icon"><i class="fab fa-facebook"></i></span>
-                    <span class="icon_title">Connect with Facebook</span>
-
-                </a>
-
-                <a href="#" class="social_box google">
-                    <span class="icon"><i class="fab fa-google-plus"></i></span>
-                    <span class="icon_title">Connect with Google</span>
-                </a>
-            </div>
-
-            <div class="centeredText">
-                <span>Or use your Email address</span>
-            </div>
-
             <div class="action_btns">
                 <div class="one_half"><a href="{% url 'accounts:login' %}"  class="btn">Login</a></div>
                 <div class="one_half last"><a href="{% url 'accounts:signup' %}" class="btn">Sign up</a></div>
@@ -117,8 +99,8 @@ https://templatemo.com/tm-576-snapx-photography
     <div class="container">
       <div class="row">
         <div class="col-lg-8 offset-lg-2 header-text">
-          <h2>Discover what's currently going on at <em>SnapX</em></h2>
-          <p>When you need Free CSS Templates, you just remember our website TemplateMo. We provide you best quality website templates at absolutely free of charge. No hidden cost involved.</p>
+          <h2>Discover Community Of <em>MusHub</em></h2>
+          <p>Search any user on our forum</p>
         </div>
       </div>
     </div>
@@ -158,24 +140,23 @@ https://templatemo.com/tm-576-snapx-photography
       <div class="row">
         <div class="col-lg-12">
           <div class="section-heading text-center">
-            <h6>Recently Added Contests by Users</h6>
-            <h4>Current <em>Contests</em> to Enter Now &amp; <em>Win</em></h4>
+            <h4> <em>Users</em> Profiles <em></em></h4>
           </div>
         </div>
           {% for user in users %}
-        <div class="col-lg-3">
-          <div class="contest-item">
-            <img src="{{ user.photo.url }}" style="width:352px;height:290px;" alt="">
-            <h4>{{ user.get_full_name }}</h4>
-            <div class="info">
-              <span class="participants"><img src="{% static 'assets/images/icon-03.png' %}" alt=""><br>Likes {{ user_likes }}</span>
-              <span class="submittions"><img src="{% static 'assets/images/icon-01.png' %}" alt=""><br>Posts {{ user.posted_count }}</span>
+            <div class="col-lg-3">
+              <div class="contest-item">
+                <img src="{{ user.photo.url }}" style="width:352px;height:290px;" alt="">
+                <h4>{{ user.get_full_name }}</h4>
+                <div class="info">
+                  <span class="participants"><img src="{% static 'assets/images/icon-03.png' %}" alt=""><br>Likes {{ user.user_likes }}</span>
+                  <span class="submittions"><img src="{% static 'assets/images/icon-01.png' %}" alt=""><br>Posts {{ user.posted_count }}</span>
+                </div>
+                <div class="border-button">
+                    <a href="{% url 'music:user' user.id %}" style="text-align: left"><i class="fa fa-eye"></i> View</a>
+                </div>
+              </div>
             </div>
-            <div class="border-button">
-                <a href="{% url 'music:user' user.id %}" style="text-align: left"><i class="fa fa-eye"></i> View</a>
-            </div>
-          </div>
-        </div>
          {% endfor %}
       </div>
     </div>
@@ -186,7 +167,7 @@ https://templatemo.com/tm-576-snapx-photography
         <nav aria-label="Page navigation">   <ul class="pagination">
         {% if page_obj.has_previous %}
         <li class="page-item">
-          <a class="page-link" href="?page=1" aria-label="Previous">
+          <a class="page-link" href="?page=1&amp;{{ view.querystring_url }}" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
             <span class="sr-only">begin</span>
           </a>
@@ -198,13 +179,13 @@ https://templatemo.com/tm-576-snapx-photography
               <span class="page-link">{{ n }}<span class="sr-only">(current)</span></span>
             </li>
           {% elif n > page_obj.number|add:'-3' and n < page_obj.number|add:'3' %}
-            <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ n }}&amp;{{ view.querystring_url }}">{{ n }}</a></li>
           {% endif %}
         {% endfor %}
 
         {% if page_obj.has_next %}
           <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Next">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&amp;{{ view.querystring_url }}" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
               <span class="sr-only">end</span>
             </a>
@@ -219,7 +200,7 @@ https://templatemo.com/tm-576-snapx-photography
         <div class="col-lg-12">
           <p>Copyright © 2022 <a href="#">MusHub</a>Musician Hub Ltd. All rights reserved.
           
-          Design: <a title="CSS Templates" rel="sponsored" href="https://templatemo.com" target="_blank">Michael Gorn</a></p>
+          Design: <a href="{% url 'music:users' %}">Michael Gorn</a></p>
         </div>
       </div>
     </div>

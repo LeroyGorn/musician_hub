@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, User
 from django.core.mail import send_mail
 from django.db import models
@@ -38,6 +39,12 @@ class ForumUser(AbstractBaseUser, PermissionsMixin):
 
     def posted_count(self):
         return self.writer.distinct().count()
+
+    def user_likes(self):
+        likes_number = 0
+        for post in self.writer.distinct():
+            likes_number += post.likes_count()
+        return likes_number
 
     def get_full_name(self):
         """
