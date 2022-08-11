@@ -931,7 +931,7 @@ Banner Style
 */
 
 .main-banner {
-  background-image: url(../images/banner-bg1.jpg);
+  background-image: url(../images/banner-main.jpg);
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -1479,7 +1479,7 @@ page heading
 */
 
 .page-heading {
-  background-image: url(../images/heading-bg.jpg);
+  background-image: url(../images/heading.jpg);
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;

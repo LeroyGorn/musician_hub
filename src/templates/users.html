@@ -58,12 +58,13 @@ https://templatemo.com/tm-576-snapx-photography
                             </ul>
                         </li>
                         <li><a href="/hub/categories">Categories</a></li>
+                        <li><a href="/hub/posts">Posts</a></li>
                         <li><a href="/hub/users">Users</a></li>
                     </ul>
                     {% if user.is_authenticated %}
                     <div class="border-button">
-                      <a id="modal_trigger" href="{% url 'accounts:logout' %}" class="sign-in-up"><i class="fa fa-user"></i>LogOut</a>
-                      <a id="modal_trigger" href="{% url 'accounts:profile' user.id %}" class="sign-in-up"><i class="fa fa-user"></i>Profile</a>
+                      <a id="modal_trigger" href="{% url 'accounts:logout' %}" class="sign-in-up"><i class="fa fa-sign-out"></i> Exit</a>
+                      <a id="modal_trigger" href="{% url 'accounts:profile' user.id %}" class="sign-in-up"><i class="fa fa-user"></i> Profile</a>
                     </div>
                     {% else %}
                     <div class="border-button">
@@ -87,25 +88,6 @@ https://templatemo.com/tm-576-snapx-photography
         <span class="modal_close"><i class="fa fa-times"></i></span>
     </div>
     <section class="popupBody">
-        <!-- Social Login -->
-        <div class="social_login">
-            <div class="">
-                <a href="#" class="social_box fb">
-                    <span class="icon"><i class="fab fa-facebook"></i></span>
-                    <span class="icon_title">Connect with Facebook</span>
-
-                </a>
-
-                <a href="#" class="social_box google">
-                    <span class="icon"><i class="fab fa-google-plus"></i></span>
-                    <span class="icon_title">Connect with Google</span>
-                </a>
-            </div>
-
-            <div class="centeredText">
-                <span>Or use your Email address</span>
-            </div>
-
             <div class="action_btns">
                 <div class="one_half"><a href="{% url 'accounts:login' %}"  class="btn">Login</a></div>
                 <div class="one_half last"><a href="{% url 'accounts:signup' %}" class="btn">Sign up</a></div>
@@ -119,7 +101,6 @@ https://templatemo.com/tm-576-snapx-photography
       <div class="row">
         <div class="col-lg-8 offset-lg-2 header-text">
           <h2>View User's Photos and <em>Contest Details</em></h2>
-          <p>If you wish to <a rel="nofollow" href="https://templatemo.com/contact" target="_blank">support TemplateMo</a>, you shall make a little amount of contribution via PayPal. We hope this SnapX template is useful for your web development. Thank you.</p>
         </div>
       </div>
     </div>
@@ -137,18 +118,18 @@ https://templatemo.com/tm-576-snapx-photography
         <div class="col-lg-2 col-sm-6">
           <div class="info">
             <h6>Likes</h6>
-            <h4>{{ user_likes }}</h4>
+            <h4>{{ forumuser.user_likes }}</h4>
               <span>Total</span>
           </div>
         </div>
         <div class="col-lg-2 col-sm-6">
-          <div class="info">
+          <div class="info" style="height:151px; width:auto;">
             <h6>Top Rated</h6>
             {% if most_liked %}
-            <h4><a href="{% url 'music:post' uuid=most_liked.uuid %}">{{ most_liked.title }}</a></h4>
-            <span>post</span>
+            <h4><a href="{% url 'music:post' uuid=most_liked.uuid %}"><i class="fa fa-eye"></i></a></h4>
+                <span>Post</span>
             {% else %} <h4>-</h4>
-                <span>post</span>
+                <span>Post</span>
             {% endif %}
           </div>
         </div>
@@ -189,8 +170,7 @@ https://templatemo.com/tm-576-snapx-photography
       <div class="row">
         <div class="col-lg-12">
           <div class="section-heading text-center">
-            <h6>Featured Contests</h6>
-            <h4>View Most <em>Popular</em> Category <em>Contests</em></h4>
+            <h4>User <em>Posts</em><em></em></h4>
           </div>
         </div>
        {% for post in posts %}
@@ -260,7 +240,7 @@ https://templatemo.com/tm-576-snapx-photography
         <div class="col-lg-12">
           <p>Copyright © 2022 <a href="#">MusHub</a> Musician Forum Co., Ltd. All rights reserved.
           
-          Design: <a title="CSS Templates" rel="sponsored" href="https://templatemo.com" target="_blank">Michael Gorn</a></p>
+          Design: <a href="{% url 'music:users' %}">Michael Gorn</a></p>
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import (is_safe_url, urlsafe_base64_decode,
@@ -93,18 +93,9 @@ class ProfileView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        try:
-            post = ForumPosted.objects.get(user=self.request.user)
-        except ForumPosted.DoesNotExist:
-            post = 0
-        liked_post = ForumPosted.objects.filter(user=self.request.user)
-        most_liked = liked_post.order_by("-likes").first()
-        try:
-            user_likes = post.likes.all().count
-        except AttributeError:
-            user_likes = 0
+        posts = ForumPosted.objects.filter(user=self.request.user)
+        most_liked = sorted([i for i in posts], key=ForumPosted.likes_count, reverse=True)[0]
         comments = ForumComment.objects.filter(author=self.request.user).all().count()
-        context["user_likes"] = user_likes
         context["most_liked"] = most_liked
         context["comments"] = comments
         return context

@@ -28,6 +28,9 @@ class ForumPosted(BaseModel):
     def messages_count(self):
         return self.thread.count()
 
+    def likes_count(self):
+        return self.likes.all().count()
+
     def __str__(self):
         return f"{self.title}"
 

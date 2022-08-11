@@ -3,6 +3,9 @@
 
 {% block content %}
           {% block subcontent %}
+              <div class="section-heading">
+                    <h4>Check Out <em>Posts </em>You <em>Created</em></h4>
+              </div>
               {% if user.is_authenticated %}
               {% for post in posts %}
                 <div class="col-lg-3 col-sm-6">
@@ -15,12 +18,12 @@
                       </div>
                       <div class="right">
                         <h4>{{ post.title }}</h4>
-                        <span><em>{{ post.user.get_short_name }}</em>{{ post.description }}</span>
+                        <span><em>{{ post.user.get_short_name }}</em></span>
                       </div>
                     </div>
-                    <div class="thumb">
+                    <div class="thumb" style="width:320px;height:270px;">
                       {% if post.image %}
-                      <img src="{{ post.image.url }}" alt="Post image">
+                      <img src="{{ post.image.url }}" style="width:320px;height:270px;" alt="Post image">
                       {% endif %}
                       <span class="category">Replies:{{ post.messages_count }}</span>
                       <span class="likes"><i class="fa fa-heart"></i> {{ post.likes.all.count }}</span>
@@ -35,6 +38,7 @@
                       {% endif %}
                     </div>
                   </div>
+                 <br><br>
                 </div>
               {% endfor %}
           {% if page_obj.paginator.num_pages > 1 %}
@@ -47,7 +51,6 @@
             <span class="sr-only">begin</span>
           </a>
         </li>   {% endif %}
-
         {% for n in page_obj.paginator.page_range %}
           {% if page_obj.number == n %}
             <li class="page-item active">
@@ -72,5 +75,6 @@
                   <h3>You need to <a href="{% url 'accounts:login' %}">Log In</a> to view your posts.</h3>
                   <br>
         {% endif %}
+              <br><br><br>
     {% endblock subcontent %}
 {% endblock %}
