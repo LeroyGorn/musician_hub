@@ -60,13 +60,12 @@ https://templatemo.com/tm-576-snapx-photography
                         <li><a href="/hub/posts">Posts</a></li>
                         <li><a href="/hub/users">Users</a></li>
                     </ul>
-                    {% if user.is_authenticated %}
+                    {% if request.user.is_authenticated %}
                     <div class="border-button">
                       <a id="modal_trigger" href="{% url 'accounts:logout' %}" class="sign-in-up"><i class="fa fa-sign-out"></i> Exit</a>
                       <a id="modal_trigger" href="{% url 'accounts:profile' user.id %}" class="sign-in-up"><i class="fa fa-user"></i> Profile</a>
                     </div>
-                    {% endif %}
-                     {% if not user.is_authenticated %}
+                    {% else %}
                     <div class="border-button">
                       <a id="modal_trigger" href="#modal" class="sign-in-up"><i class="fa fa-user"></i> Sign In/Up</a>
                     </div>
@@ -154,7 +153,7 @@ https://templatemo.com/tm-576-snapx-photography
         </div>
         <div class="col-lg-6">
           <div class="main-button">
-            {% if user.is_authenticated %}
+            {% if request.user.is_authenticated %}
             <a href="/hub/create-post">New Post  <i class="fa-solid fa-image"></i></a>
             {% endif %}
             <a href="/hub/categories">Categories  <i class="fa-regular fa-images"></i></a>

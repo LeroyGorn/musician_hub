@@ -60,7 +60,7 @@ https://templatemo.com/tm-576-snapx-photography
                         <li><a href="/hub/posts">Posts</a></li>
                         <li><a href="/hub/users">Users</a></li>
                     </ul>
-                    {% if user.is_authenticated %}
+                    {% if request.user.is_authenticated %}
                     <div class="border-button">
                       <a id="modal_trigger" href="{% url 'accounts:logout' %}" class="sign-in-up"><i class="fa fa-sign-out"></i> Exit</a>
                       <a id="modal_trigger" href="{% url 'accounts:profile' user.id %}" class="sign-in-up"><i class="fa fa-user"></i> Profile</a>

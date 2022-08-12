@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from django.core.paginator import Paginator
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
@@ -7,6 +8,7 @@ from django.utils import timezone
 from django.views import View
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
+from django.views.generic.list import MultipleObjectMixin
 
 from accounts.models import ForumUser
 from music.filters import PostFilter, UserFilter
@@ -47,9 +49,8 @@ class PostsDetailsView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        uuid = self.kwargs["uuid"]
 
-        post = get_object_or_404(ForumPosted, uuid=uuid)
+        post = get_object_or_404(ForumPosted, uuid=self.kwargs["uuid"])
         user = ForumUser.objects.get(writer=post)
         connected_comments = ForumComment.objects.filter(messages=post)
         number_of_comments = connected_comments.count()
@@ -105,42 +106,27 @@ class CategoryListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        cat_id = self.kwargs["pk"]
 
-        category = get_object_or_404(ForumCategory, id=cat_id)
-        context["category"] = category
+        context["category"] = super().get_queryset()
         return context
 
 
 class UsersDetailsView(DetailView):
     model = ForumUser
     template_name = "users.html"
-    success_url = "/"
     ordering = ["-create_datetime"]
-    context_object_name = "posts"
-    paginate_by = 4
 
     def get_object(self, queryset=None):
         return ForumUser.objects.get(id=self.kwargs.get("pk"))
 
-    def get_queryset(self):
-        return (
-            ForumPosted.objects.filter(user=ForumUser.objects.get(id=self.kwargs.get("pk")))
-            .all()
-            .order_by("-create_datetime")
-        )
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user = ForumUser.objects.get(id=self.kwargs.get("pk"))
+        posts = ForumPosted.objects.filter(user=super().get_object()).order_by("-create_datetime")
 
-        post = ForumPosted.objects.filter(user=user)
-        most_liked = sorted([i for i in post], key=ForumPosted.likes_count, reverse=True)[0]
-        comments = ForumComment.objects.filter(author=user).all().count()
-
-        context["most_liked"] = most_liked
-        context["comments"] = comments
-        context["user"] = user
+        context["page_obj"] = Paginator(posts, 4).get_page(self.request.GET.get("page"))
+        context["most_liked"] = sorted([i for i in posts], key=ForumPosted.likes_count, reverse=True)[0]
+        context["comments"] = ForumComment.objects.filter(author=super().get_object()).all().count()
+        context["user"] = super().get_object()
         return context
 
 
