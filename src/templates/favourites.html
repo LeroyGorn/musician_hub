@@ -1,0 +1,79 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+              <div class="section-heading">
+                    <h4>Check Out <em>Favourites </em><em>Posts</em></h4>
+              </div>
+              {% if user.is_authenticated %}
+              {% for post in posts %}
+                <div class="col-lg-3 col-sm-6">
+                  <div class="popular-item">
+                    <div class="top-content">
+                      <div class="icon">
+                        {% if post.user.photo %}
+                        <img src="{{ post.user.photo.url }}" style="width:88px;height:auto;" alt="">
+                        {% endif %}
+                      </div>
+                      <div class="right">
+                        <h4>{{ post.title }}</h4>
+                        <span><em>{{ post.user.get_short_name }}</em></span>
+                      </div>
+                    </div>
+                    <div class="thumb" style="width:320px;height:270px;">
+                      {% if post.image %}
+                      <img src="{{ post.image.url }}" style="width:320px;height:270px;" alt="">
+                      {% endif %}
+                      <span class="category">Replies:{{ post.messages_count }}</span>
+                      <span class="likes"><i class="fa fa-heart"></i> {{ post.likes.all.count }}</span>
+                    </div>
+                    <div class="border-button">
+                      <a href="{% url 'music:post' uuid=post.uuid %}">View</a>
+                        <br><br>
+                      {% if post.user == request.user%}
+                      <a href="{% url 'music:update_post' uuid=post.uuid %}">Update</a>
+                        <br><br>
+                      <a href="{% url 'music:delete_post' uuid=post.uuid %}">Delete</a>
+                      {% endif %}
+                    </div>
+                  </div>
+                <br><br>
+                </div>
+              {% endfor %}
+          {% if page_obj.paginator.num_pages > 1 %}
+        <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation">   <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page=1" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">begin</span>
+          </a>
+        </li>   {% endif %}
+
+        {% for n in page_obj.paginator.page_range %}
+          {% if page_obj.number == n %}
+            <li class="page-item active">
+              <span class="page-link">{{ n }}<span class="sr-only">(current)</span></span>
+            </li>
+          {% elif n > page_obj.number|add:'-3' and n < page_obj.number|add:'3' %}
+            <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">end</span>
+            </a>
+          </li>
+          {% endif %}   </ul> </nav>
+        </div>
+        {% endif %}
+        {% else %}
+                  <h3>You need to <a href="{% url 'accounts:login' %}">Log In</a> to view your posts.</h3>
+                  <br>
+        {% endif %}
+    <br><br><br>
+{% endblock %}

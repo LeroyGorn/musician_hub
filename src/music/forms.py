@@ -1,12 +1,12 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from music.models import ForumComments
+from music.models import ForumComment
 
 
 class CommentForm(forms.ModelForm):
     class Meta:
-        model = ForumComments
+        model = ForumComment
 
         fields = ["text", "reply_to"]
 

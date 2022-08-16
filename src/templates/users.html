@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load crispy_forms_tags %}
 <html lang="en">
 
   <head>
@@ -46,22 +47,24 @@ https://templatemo.com/tm-576-snapx-photography
                       </a>
                       <!-- ***** Logo End ***** -->
                       <!-- ***** Menu Start ***** -->
-                      <ul class="nav">
-                          <li><a href="/">Home</a></li>
-                          <li class="has-sub">
-                              <a href="javascript:void(0)" class="active">Photos &amp; Videos</a>
-                              <ul class="sub-menu">
-                                  <li><a href="/hub/contests">Contests</a></li>
-                                  <li><a href="/hub/contests">Single Contest</a></li>
-                              </ul>
-                          </li>
-                          <li><a href="/hub/categories">Categories</a></li>
-                          <li><a href="/hub/users">Users</a></li>
-                      </ul>   
-                    {% if user.is_authenticated %}
+                    <ul class="nav">
+                        <li><a href="/" class="active">Home</a></li>
+                        <li class="has-sub">
+                            <a href="javascript:void(0)">Your Hub</a>
+                            <ul class="sub-menu">
+                                <li><a href="/hub/favourites">Favourites <i class="fa-regular fa-heart"></i></a></li>
+                                <li><a href="/hub/create-post">New Post <i class="fa-regular fa-image"></i></a></li>
+                                <li><a href="/hub/user-posts">Your Posts <i class="fa-solid fa-images"></i></a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/hub/categories">Categories</a></li>
+                        <li><a href="/hub/posts">Posts</a></li>
+                        <li><a href="/hub/users">Users</a></li>
+                    </ul>
+                    {% if request.user.is_authenticated %}
                     <div class="border-button">
-                      <a id="modal_trigger" href="{% url 'accounts:logout' %}" class="sign-in-up"><i class="fa fa-user"></i>LogOut</a>
-                      <a id="modal_trigger" href="{% url 'accounts:profile' user.id %}" class="sign-in-up"><i class="fa fa-user"></i>Profile</a>
+                      <a id="modal_trigger" href="{% url 'accounts:logout' %}" class="sign-in-up"><i class="fa fa-sign-out"></i> Exit</a>
+                      <a id="modal_trigger" href="{% url 'accounts:profile' user.id %}" class="sign-in-up"><i class="fa fa-user"></i> Profile</a>
                     </div>
                     {% else %}
                     <div class="border-button">
@@ -85,25 +88,6 @@ https://templatemo.com/tm-576-snapx-photography
         <span class="modal_close"><i class="fa fa-times"></i></span>
     </div>
     <section class="popupBody">
-        <!-- Social Login -->
-        <div class="social_login">
-            <div class="">
-                <a href="#" class="social_box fb">
-                    <span class="icon"><i class="fab fa-facebook"></i></span>
-                    <span class="icon_title">Connect with Facebook</span>
-
-                </a>
-
-                <a href="#" class="social_box google">
-                    <span class="icon"><i class="fab fa-google-plus"></i></span>
-                    <span class="icon_title">Connect with Google</span>
-                </a>
-            </div>
-
-            <div class="centeredText">
-                <span>Or use your Email address</span>
-            </div>
-
             <div class="action_btns">
                 <div class="one_half"><a href="{% url 'accounts:login' %}"  class="btn">Login</a></div>
                 <div class="one_half last"><a href="{% url 'accounts:signup' %}" class="btn">Sign up</a></div>
@@ -117,7 +101,6 @@ https://templatemo.com/tm-576-snapx-photography
       <div class="row">
         <div class="col-lg-8 offset-lg-2 header-text">
           <h2>View User's Photos and <em>Contest Details</em></h2>
-          <p>If you wish to <a rel="nofollow" href="https://templatemo.com/contact" target="_blank">support TemplateMo</a>, you shall make a little amount of contribution via PayPal. We hope this SnapX template is useful for your web development. Thank you.</p>
         </div>
       </div>
     </div>
@@ -125,292 +108,139 @@ https://templatemo.com/tm-576-snapx-photography
 
   <div class="user-info">
     <div class="container">
-      <div class="row">
+      <div class="row justify-content-center">
         <div class="col-lg-12">
           <div class="avatar">
-            <img src="{% static 'assets/images/user-avatar.jpg' %}" alt="">
-            <h4>#007772 John Walker</h4>
+            <img src="{{ user.photo.url }}" alt="" style="width:188px;height:180px;">
+            <h4>{{ user.get_full_name }}</h4>
           </div>
         </div>
         <div class="col-lg-2 col-sm-6">
           <div class="info">
-            <h6>Rank</h6>
-            <h4>#121</h4>
-            <span>of 1680</span>
+            <h6>Likes</h6>
+            <h4>{{ forumuser.user_likes }}</h4>
+              <span>Total</span>
           </div>
         </div>
         <div class="col-lg-2 col-sm-6">
-          <div class="info">
-            <h6>Ratings</h6>
-            <h4>4.56</h4>
-            <span>of 5.00 Stars</span>
-          </div>
-        </div>
-        <div class="col-lg-2 col-sm-6">
-          <div class="info">
+          <div class="info" style="height:151px; width:auto;">
             <h6>Top Rated</h6>
-            <h4>Nature</h4>
-            <span>Picture Category</span>
+            {% if most_liked %}
+            <h4><a href="{% url 'music:post' uuid=most_liked.uuid %}"><i class="fa fa-eye"></i></a></h4>
+                <span>Post</span>
+            {% else %} <h4>-</h4>
+                <span>Post</span>
+            {% endif %}
           </div>
         </div>
         <div class="col-lg-2 col-sm-6">
           <div class="info">
-            <h6>Profile Views</h6>
-            <h4>8,250</h4>
-            <span>Monthly</span>
+            <h6>Posts</h6>
+            <h4>{{ user.posted_count }}</h4>
+            <span>Total</span>
           </div>
         </div>
         <div class="col-lg-2 col-sm-6">
           <div class="info">
-            <h6>Contests Won</h6>
-            <h4>90</h4>
-            <span>of 12,400</span>
-          </div>
-        </div>
-        <div class="col-lg-2 col-sm-6">
-          <div class="info">
-            <h6>Total Earned</h6>
-            <h4>$68,000</h4>
-            <span>All Time</span>
+            <h6>Comments Written</h6>
+            <h4>{{ comments }}</h4>
+            <span>Total</span>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <section class="portfolio">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-3">
-          <div class="thumb">
-            <img src="{% static 'assets/images/portfolio-01.jpg' %}" alt="">
-            <div class="hover-effect">
-              <div class="content">
-                <h4>Walk In the Beach</h4>
-                <span>Ranked: <em>2nd</em></span>
-                <span>Award Won: <em>None</em></span>
-                <ul>
-                  <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                  <li><a href="#"><i class="fa fa-eye"></i></a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-5">
-          <div class="thumb">
-            <img src="{% static 'assets/images/portfolio-02.jpg' %}" alt="">
-            <div class="hover-effect">
-              <div class="content">
-                <h4>Walk In The Nature</h4>
-                <span>Ranked: <em>3rd</em></span>
-                <span>Award Won: <em>EOS R3</em></span>
-                <ul>
-                  <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                  <li><a href="#"><i class="fa fa-eye"></i></a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="thumb">
-            <img src="{% static 'assets/images/portfolio-03.jpg' %}" alt="">
-            <div class="hover-effect">
-              <div class="content">
-                <h4>Walk In The Forest</h4>
-                <span>Ranked: <em>4th</em></span>
-                <span>Award: <em>EOS R7</em></span>
-                <ul>
-                  <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                  <li><a href="#"><i class="fa fa-eye"></i></a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="thumb">
-            <img src="{% static 'assets/images/portfolio-04.jpg' %}" alt="">
-            <div class="hover-effect">
-              <div class="content">
-                <h4>Forest Nature</h4>
-                <span>Ranked: <em>2nd</em></span>
-                <span>Award: <em>EOS R3</em></span>
-                <ul>
-                  <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                  <li><a href="#"><i class="fa fa-eye"></i></a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="thumb">
-            <img src="{% static 'assets/images/portfolio-05.jpg' %}" alt="">
-            <div class="hover-effect">
-              <div class="content">
-                <h4>Fly thru the river</h4>
-                <span>Ranked: <em>1st</em></span>
-                <span>Award: <em>EOS R1</em></span>
-                <ul>
-                  <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                  <li><a href="#"><i class="fa fa-eye"></i></a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="thumb">
-            <img src="{% static 'assets/images/portfolio-06.jpg' %}" alt="">
-            <div class="hover-effect">
-              <div class="content">
-                <h4>Rocky Mountain</h4>
-                <span>Ranked: <em>2nd</em></span>
-                <span>Award Won: <em>None</em></span>
-                <ul>
-                  <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                  <li><a href="#"><i class="fa fa-eye"></i></a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-5">
-          <div class="thumb">
-            <img src="{% static 'assets/images/portfolio-07.jpg' %}" alt="">
-            <div class="hover-effect">
-              <div class="content">
-                <h4>Rocky Mountain . Part 2</h4>
-                <span>Ranked: <em>2nd</em></span>
-                <span>Award Won: <em>None</em></span>
-                <ul>
-                  <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                  <li><a href="#"><i class="fa fa-eye"></i></a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="thumb">
-            <img src="{% static 'assets/images/portfolio-08.jpg' %}" alt="">
-            <div class="hover-effect">
-              <div class="content">
-                <h4>Blue Lake Nature</h4>
-                <span>Ranked: <em>4th</em></span>
-                <span>Award Won: <em>None</em></span>
-                <ul>
-                  <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                  <li><a href="#"><i class="fa fa-eye"></i></a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="thumb">
-            <img src="{% static 'assets/images/portfolio-09.jpg' %}" alt="">
-            <div class="hover-effect">
-              <div class="content">
-                <h4>Walk In The Forest</h4>
-                <span>Ranked: <em>3rd</em></span>
-                <span>Award Won: <em>None</em></span>
-                <ul>
-                  <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                  <li><a href="#"><i class="fa fa-eye"></i></a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-12">
-          <div class="main-button">
-            <a href="#">Load More Photos</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+<!-- Section: Design Block -->
+<section class="text-center text-lg-start">
+  <style>
+    .cascading-right {
+      margin-right: -50px;
+    }
 
-  <section class="contact-us">
+    @media (max-width: 991.98px) {
+      .cascading-right {
+        margin-right: 0;
+      }
+    }
+  </style>
+    {% block content %}
+  <section class="featured-contests">
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
           <div class="section-heading text-center">
-            <h6>Contact This User</h6>
-            <h4>Don't Be Shy <em></em> to contact the <em>Photographer Now</em></h4>
+            <h4>User <em>Posts</em><em></em></h4>
           </div>
         </div>
-        <div class="col-lg-4">
-          <div class="info-item">
-            <i class="fa fa-phone"></i>
-            <h4>Phone Numbers</h4>
-            <span><a href="#">010-020-0340</a><br><a href="#">090-080-0760</a></span>
-          </div>  
-        </div>
-        <div class="col-lg-4">
-          <div class="info-item">
-            <i class="fa fa-envelope"></i>
-            <h4>Email Addresses</h4>
-            <span><a href="#">info@company.com</a><br><a href="#">SnapX@company.com</a></span>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="info-item">
-            <i class="fa fa-map-marked"></i>
-            <h4>Office Location</h4>
-            <span><a href="#">155 Michigan Ave, Chicago,<br>IL 60601, United States</a></span>
-          </div>
-        </div>
-        <div class="col-lg-12">
-          <form id="contact" action="" method="post">
-            <div class="row">
-              <div class="col-lg-6">
-                <fieldset>
-                  <input type="text" name="name" id="name" placeholder="Your Name..." autocomplete="on" required>
-                </fieldset>
-              </div>
-              <div class="col-lg-6">
-                <fieldset>
-                  <input type="text" name="telephone" id="telephone" placeholder="Your Telephone..." autocomplete="on" required>
-                </fieldset>
-              </div>
-              <div class="col-lg-6">
-                <fieldset>
-                  <input type="email" name="email" id="email" placeholder="Your E-mail..." required="">
-                </fieldset>
-              </div>
-              <div class="col-lg-6">
-                <fieldset>
-                  <input type="text" name="subject" id="subject" placeholder="Subject..." autocomplete="on" >
-                </fieldset>
-              </div>
-              <div class="col-lg-12">
-                <fieldset>
-                  <textarea name="message" id="message" placeholder="Your Message"></textarea>
-                </fieldset>
-              </div>
-              <div class="col-lg-12">
-                <fieldset>
-                  <button type="submit" id="form-submit" class="orange-button">Send Message Now</button>
-                </fieldset>
+       {% for post in page_obj %}
+        <div class="col-lg-6">
+          <div class="item">
+            <div class="thumb">
+              {% if post.image %}
+              <img src="{{ post.image.url }}" alt="">
+              {% endif %}
+              <div class="hover-effect">
+                <div class="content">
+                  <div class="top-content">
+                  </div>
+                  <h4>{{ post.title }}</h4>
+                  <div class="info">
+                    <span class="price"><img src="{% static 'assets/images/icon-01.png' %}" alt="">
+                        <br>
+                        <br>{{ post.likes.all.count }} <i class="fa fa-heart"></i></span>
+                  </div>
+                  <div class="border-button">
+                    <a href="{% url 'music:post' post.uuid %}">View</a>
+                  </div>
+                </div>
               </div>
             </div>
-          </form>
+          </div>
         </div>
+      {% endfor %}
       </div>
     </div>
   </section>
+{% endblock %}
+{% if page_obj.paginator.num_pages > 1 %}
+        <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation">   <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page=1" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">begin</span>
+          </a>
+        </li>   {% endif %}
 
+        {% for n in page_obj.paginator.page_range %}
+          {% if page_obj.number == n %}
+            <li class="page-item active">
+              <span class="page-link">{{ n }}<span class="sr-only">(current)</span></span>
+            </li>
+          {% elif n > page_obj.number|add:'-3' and n < page_obj.number|add:'3' %}
+            <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">end</span>
+            </a>
+          </li>
+          {% endif %}   </ul> </nav>
+        </div>
+{% endif %}
   <footer>
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
           <p>Copyright © 2022 <a href="#">MusHub</a> Musician Forum Co., Ltd. All rights reserved.
           
-          Design: <a title="CSS Templates" rel="sponsored" href="https://templatemo.com" target="_blank">Michael Gorn</a></p>
+          Design: <a href="{% url 'music:users' %}">Michael Gorn</a></p>
         </div>
       </div>
     </div>

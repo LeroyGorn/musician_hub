@@ -3,7 +3,8 @@
 
 {% block content %}
           {% block subcontent %}
-              {% for post in posts %}
+              {% if post_categories %}
+              {% for post in post_categories %}
                 <div class="col-lg-3 col-sm-6">
                   <div class="popular-item">
                     <div class="top-content">
@@ -14,12 +15,12 @@
                       </div>
                       <div class="right">
                         <h4>{{ post.title }}</h4>
-                        <span><em>{{ post.user.get_short_name }}</em>{{ post.description }}</span>
+                        <span><em>{{ post.user.get_short_name }}</em></span>
                       </div>
                     </div>
                     <div class="thumb">
                       {% if post.image %}
-                      <img src="{{ post.image.url }}" alt="">
+                      <img src="{{ post.image.url }}" style="width:352px;height:290px;" alt="">
                       {% endif %}
                       <span class="category">Replies:{{ post.messages_count }}</span>
                       <span class="likes"><i class="fa fa-heart"></i> {{ post.likes.all.count }}</span>
@@ -28,6 +29,7 @@
                       <a href="{% url 'music:post' uuid=post.uuid %}">View</a>
                     </div>
                   </div>
+                <br><br>
                 </div>
               {% endfor %}
           {% if page_obj.paginator.num_pages > 1 %}
@@ -60,6 +62,17 @@
           </li>
           {% endif %}   </ul> </nav>
         </div>
+              <br><br>
+        {% endif %}
+        {% else %}
+                  <div class="section-heading text-center">
+                    <h6>There Is No Posts Yet</h6>
+                    <h4>Wanna <em>Be</em> First <em>Author In </em>This Category ?</h4>
+                  <br>
+                      <div class="border-button" style="position: center">
+                        <a href="/hub/create-post">Write New Post!</a>
+                      </div>
+                  </div>
         {% endif %}
     {% endblock subcontent %}
 {% endblock %}

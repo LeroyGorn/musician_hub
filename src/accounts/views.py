@@ -19,8 +19,7 @@ from django.views.generic import FormView, RedirectView, UpdateView, View
 
 from accounts.forms import ProfileForm, SignUpForm
 from accounts.tokens import account_activation_token
-
-User = get_user_model()
+from music.models import ForumComment, ForumPosted
 
 
 class SignUpView(View):
@@ -32,7 +31,7 @@ class SignUpView(View):
         return render(request, self.template_name, {"form": form})
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
 
             user = form.save(commit=False)
@@ -63,8 +62,8 @@ class ActivateAccount(View):
     def get(self, request, uidb64, token, *args, **kwargs):
         try:
             uid = force_text(urlsafe_base64_decode(uidb64))
-            user = User.objects.get(pk=uid)
-        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = get_user_model().objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
             user = None
 
         if user is not None and account_activation_token.check_token(user, token):
@@ -82,10 +81,24 @@ class ActivateAccount(View):
 
 
 class ProfileView(UpdateView):
-    model = User
+    model = get_user_model()
     form_class = ProfileForm
-    success_url = reverse_lazy("music:users")
+    success_url = "/"
     template_name = "profile.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("accounts:login")
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        posts = ForumPosted.objects.filter(user=self.request.user)
+        most_liked = sorted([i for i in posts], key=ForumPosted.likes_count, reverse=True)[0]
+        comments = ForumComment.objects.filter(author=self.request.user).all().count()
+        context["most_liked"] = most_liked
+        context["comments"] = comments
+        return context
 
 
 class LoginView(FormView):

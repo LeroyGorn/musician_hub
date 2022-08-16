@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, User
 from django.core.mail import send_mail
 from django.db import models
@@ -10,9 +11,9 @@ from accounts.managers import ForumManager
 
 class ForumUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("email address"), unique=True)
-    first_name = models.CharField(_("first_name"), max_length=64, blank=True)
-    last_name = models.CharField(_("last_name"), max_length=64, blank=True)
-    photo = models.ImageField(upload_to="users_photo/", null=True, blank=True)
+    first_name = models.CharField(_("first name"), max_length=64, blank=True)
+    last_name = models.CharField(_("last name"), max_length=64, blank=True)
+    photo = models.ImageField(upload_to="users_photo/", default="user.png", null=True, blank=True)
 
     is_staff = models.BooleanField(
         _("staff status"),
@@ -27,6 +28,7 @@ class ForumUser(AbstractBaseUser, PermissionsMixin):
             "Designates whether this user should be treated as active. " "Unselect this instead of deleting accounts."
         ),
     )
+
     objects = ForumManager()
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -36,7 +38,13 @@ class ForumUser(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = _("Users")
 
     def posted_count(self):
-        return self.posts.count()
+        return self.writer.distinct().count()
+
+    def user_likes(self):
+        likes_number = 0
+        for post in self.writer.distinct():
+            likes_number += post.likes_count()
+        return likes_number
 
     def get_full_name(self):
         """

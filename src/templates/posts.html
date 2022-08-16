@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="author" content="templatemo">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <title>SnapX Photo Contests</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/templatemo-snapx-photography.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+<!--
+
+TemplateMo 576 SnapX Photography
+
+https://templatemo.com/tm-576-snapx-photography
+
+-->
+  </head>
+
+<body>
+
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky">
+      <div class="container">
+          <div class="row">
+              <div class="col-12">
+                  <nav class="main-nav">
+                      <!-- ***** Logo Start ***** -->
+                      <a href="/" class="logo">
+                          <img src="{% static 'assets/images/newlogo.png' %}" style="width:115px;height:58px;" alt="MusHub" >
+                      </a>
+                      <!-- ***** Logo End ***** -->
+                      <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                        <li><a href="/" class="active">Home</a></li>
+                        <li class="has-sub">
+                            <a href="javascript:void(0)">Your Hub</a>
+                            <ul class="sub-menu">
+                                <li><a href="/hub/favourites">Favourites <i class="fa-regular fa-heart"></i></a></li>
+                                <li><a href="/hub/create-post">New Post <i class="fa-regular fa-image"></i></a></li>
+                                <li><a href="/hub/user-posts">Your Posts <i class="fa-solid fa-images"></i></a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/hub/categories">Categories</a></li>
+                        <li><a href="/hub/posts">Posts</a></li>
+                        <li><a href="/hub/users">Users</a></li>
+                    </ul>
+                    {% if request.user.is_authenticated %}
+                    <div class="border-button">
+                      <a id="modal_trigger" href="{% url 'accounts:logout' %}" class="sign-in-up"><i class="fa fa-sign-out"></i> Exit</a>
+                      <a id="modal_trigger" href="{% url 'accounts:profile' user.id %}" class="sign-in-up"><i class="fa fa-user"></i> Profile</a>
+                    </div>
+                    {% else %}
+                    <div class="border-button">
+                      <a id="modal_trigger" href="#modal" class="sign-in-up"><i class="fa fa-user"></i> Sign In/Up</a>
+                    </div>
+                    {% endif %}
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                      <!-- ***** Menu End ***** -->
+                  </nav>
+              </div>
+          </div>
+      </div>
+  </header>
+  <!-- ***** Header Area End ***** -->
+
+   <div id="modal" class="popupContainer" style="display:none;">
+    <div class="popupHeader">
+        <span class="header_title">Login</span>
+        <span class="modal_close"><i class="fa fa-times"></i></span>
+    </div>
+    <section class="popupBody">
+            <div class="action_btns">
+                <div class="one_half"><a href="{% url 'accounts:login' %}"  class="btn">Login</a></div>
+                <div class="one_half last"><a href="{% url 'accounts:signup' %}" class="btn">Sign up</a></div>
+            </div>
+    </section>
+  </div>
+
+  <div class="page-heading">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 offset-lg-2 header-text">
+          <h2>Discover what's currently going on at <em>MusHub</em></h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="search-form">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <form id="search-form" name="gs" method="GET" role="search" action="">
+            <div class="row">
+              <div class="col-lg-4">
+                <fieldset>
+                    <label for="contest" class="form-label">Title</label>
+                    {{ filter.form.title }}
+                </fieldset>
+              </div>
+                <div class="col-lg-4">
+                <fieldset>
+                    <label for="contest" class="form-label">Description</label>
+                    {{ filter.form.description }}
+                </fieldset>
+              </div>
+                <div class="col-lg-4">
+                <fieldset>
+                    <label for="contest" class="form-label">Ordering</label>
+                    {{ filter.form.ordering }}
+                </fieldset>
+              </div>
+                <div class="col-lg-4">
+                <fieldset>
+                    <label for="contest" class="form-label">Category</label>
+                    {{ filter.form.category }}
+                </fieldset>
+              </div>
+              <div class="col-lg-2">
+                <fieldset>
+                    <button type="submit" class="main-button">Search Now</button>
+                </fieldset>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="contest-win">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-heading text-center">
+            <h6>Recently Added Posts by Users</h6>
+            <h4>Best <em>Posts</em> to Enter <em>Musician World</em></h4>
+          </div>
+        </div>
+          {% for post in posts %}
+            <div class="col-lg-3">
+              <div class="contest-item">
+                <img src="{{ post.image.url }}" style="width:352px;height:290px;" alt="">
+                <h4>{{ post.title }}</h4>
+                <div class="info">
+                  <span class="participants"><img src="{% static 'assets/images/icon-03.png' %}" alt=""><br>Author:  {{ post.user.get_full_name }}</span>
+                  <span class="submittions"><img src="{% static 'assets/images/icon-01.png' %}" alt=""><br>Likes {{ post.likes.all.count }}</span>
+                </div>
+                <div class="border-button">
+                    <a href="{% url 'music:post' uuid=post.uuid %}" style="text-align: left"><i class="fa fa-eye"></i> View</a>
+                </div>
+              </div>
+            <br><br>
+            </div>
+         {% endfor %}
+      </div>
+    </div>
+  </section>
+  <br><br>
+      {% if page_obj.paginator.num_pages > 1 %}
+        <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation">   <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page=1&amp;{{ view.querystring_url }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">begin</span>
+          </a>
+        </li>   {% endif %}
+
+        {% for n in page_obj.paginator.page_range %}
+          {% if page_obj.number == n %}
+            <li class="page-item active">
+              <span class="page-link">{{ n }}<span class="sr-only">(current)</span></span>
+            </li>
+          {% elif n > page_obj.number|add:'-3' and n < page_obj.number|add:'3' %}
+            <li class="page-item"><a class="page-link" href="?page={{ n }}&amp;{{ view.querystring_url }}">{{ n }}</a></li>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&amp;{{ view.querystring_url }}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">end</span>
+            </a>
+          </li>
+          {% endif %}   </ul> </nav>
+        </div>
+{% endif %}
+
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <p>Copyright © 2022 <a href="#">MusHub</a> Musician Hub Ltd. All rights reserved.
+
+          Design: <a href="{% url 'music:users' %}">Michael Gorn</a></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+
+  <script src="{% static 'assets/js/isotope.min.js' %}"></script>
+  <script src="{% static 'assets/js/owl-carousel.js' %}"></script>
+  <script src="{% static 'assets/js/tabs.js' %}"></script>
+  <script src="{% static 'assets/js/popup.js' %}"></script>
+  <script src="{% static 'assets/js/custom.js' %}"></script>
+
+  </body>
+</html>

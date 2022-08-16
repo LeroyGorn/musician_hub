@@ -6,7 +6,7 @@ services:
     container_name: mushub_container
     working_dir: /musician_hub
     restart: always
-    command: bash -c "python src/manage.py migrate --settings=config.settings.${MODE} && python src/manage.py runserver --settings=config.settings.${MODE} 0:${WSGI_PORT}"
+    command: bash -c "python src/manage.py migrate --settings=config.settings.${MODE} && python src/manage.py collectstatic --noinput --settings=config.settings.${MODE} && gunicorn -w ${WSGI_WORKERS} -b 0:${WSGI_PORT} --chdir ./src config.wsgi:application --log-level=${WSGI_LOG_LEVEL}"
 
     ports:
       - ${LOCAL_PORT}:${WSGI_PORT}
@@ -17,55 +17,53 @@ services:
       - media_content:/musician_hub/src/media
     env_file:
       - .env
-    depends_on:
-      - postgres
 
-  postgres:
-    image: postgres:12
-    ports:
-      - 5432:5432
-    volumes:
-      - pg_data:/var/lib/postgresql/data
-    env_file:
-      - .env
-
-  pgadmin:
-    container_name: pgadmin_container
-    image: dpage/pgadmin4
-    restart: always
-    env_file:
-      - .env
-    ports:
-      - "5000:80"
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    depends_on:
-      - postgres
-
-  mongodb:
-    image: mongo:3-stretch
-    ports:
-      - 27017:27017
-    container_name: mongo_db_container
-    command: ["--bind_ip_all", "--smallfiles"]
-    volumes:
-      - mongo_data:/data/db
-    restart: always
-    env_file:
-      - .env
-
-  mongoadmin:
-    image: mongo-express
-    restart: always
-    container_name: mongo_admin_container
-    ports:
-      - 8091:8081
-    env_file:
-      - .env
-    links:
-      - mongodb
-    depends_on:
-      - mongodb
+#  postgres:
+#    image: postgres:12
+#    ports:
+#      - 5432:5432
+#    volumes:
+#      - pg_data:/var/lib/postgresql/data
+#    env_file:
+#      - .env
+#
+#  pgadmin:
+#    container_name: pgadmin_container
+#    image: dpage/pgadmin4
+#    restart: always
+#    env_file:
+#      - .env
+#    ports:
+#      - "5000:80"
+#    volumes:
+#      - pgadmin_data:/var/lib/pgadmin
+#    depends_on:
+#      - postgres
+#
+#  mongodb:
+#    image: mongo:3-stretch
+#    ports:
+#      - 27017:27017
+#    container_name: mongo_db_container
+#    command: ["--bind_ip_all", "--smallfiles"]
+#    volumes:
+#      - mongo_data:/data/db
+#    restart: always
+#    env_file:
+#      - .env
+#
+#  mongoadmin:
+#    image: mongo-express
+#    restart: always
+#    container_name: mongo_admin_container
+#    ports:
+#      - 8091:8081
+#    env_file:
+#      - .env
+#    links:
+#      - mongodb
+#    depends_on:
+#      - mongodb
 
   nginx:
     image: nginx:1.19
@@ -81,62 +79,62 @@ services:
     depends_on:
       - backend
 
-  redis:
-    image: redis:alpine
-    env_file:
-      - .env
-    restart: on-failure
-    depends_on:
-      - backend
-
-  celery:
-    build: ./
-    command: bash -c "cd src && celery -A config worker -l $CELERY_LOG_LEVEL  -c $CELERY_NUM_WORKERS"
-    restart: always
-    volumes:
-      - ./src:/musician_hub/src
-      - ./commands:/musician_hub/commands
-    env_file:
-      - .env
-    depends_on:
-      - redis
-      - backend
-
-  celerybeat:
-    env_file: .env
-    build: .
-    container_name: celerybeat
-    command: bash -c "cd src && celery -A config beat -l $CELERY_LOG_LEVEL -S django"
-    restart: on-failure
-    volumes:
-      - ./src:/musician_hub/src
-      - ./commands:/musician_hub/commands
-    depends_on:
-      - redis
-      - celery
-
-  flower:
-    build: ./
-    env_file:
-      - .env
-    command: bash -c "cd src && celery -A config flower --broker=redis://redis"
-    ports:
-      - 5555:5555
-    volumes:
-      - ./src:/musician_hub/src
-    depends_on:
-      - celery
-      - redis
-
-  redisadmin:
-    container_name: redisadmin
-    image: rediscommander/redis-commander:latest
-    hostname: redisadmin
-    restart: always
-    ports:
-      - "8092:8081"
-    env_file:
-      - .env
+#  redis:
+#    image: redis:alpine
+#    env_file:
+#      - .env
+#    restart: on-failure
+#    depends_on:
+#      - backend
+#
+#  celery:
+#    build: ./
+#    command: bash -c "cd src && celery -A config worker -l $CELERY_LOG_LEVEL  -c $CELERY_NUM_WORKERS"
+#    restart: always
+#    volumes:
+#      - ./src:/musician_hub/src
+#      - ./commands:/musician_hub/commands
+#    env_file:
+#      - .env
+#    depends_on:
+#      - redis
+#      - backend
+#
+#  celerybeat:
+#    env_file: .env
+#    build: .
+#    container_name: celerybeat
+#    command: bash -c "cd src && celery -A config beat -l $CELERY_LOG_LEVEL -S django"
+#    restart: on-failure
+#    volumes:
+#      - ./src:/musician_hub/src
+#      - ./commands:/musician_hub/commands
+#    depends_on:
+#      - redis
+#      - celery
+#
+#  flower:
+#    build: ./
+#    env_file:
+#      - .env
+#    command: bash -c "cd src && celery -A config flower --broker=redis://redis"
+#    ports:
+#      - 5555:5555
+#    volumes:
+#      - ./src:/musician_hub/src
+#    depends_on:
+#      - celery
+#      - redis
+#
+#  redisadmin:
+#    container_name: redisadmin
+#    image: rediscommander/redis-commander:latest
+#    hostname: redisadmin
+#    restart: always
+#    ports:
+#      - "8092:8081"
+#    env_file:
+#      - .env
 
 
 volumes:

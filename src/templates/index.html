@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load crispy_forms_tags %}
 <html lang="en">
   <head>
 
@@ -9,7 +10,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 
-    <title>MusHub Musician Forum by Michael Gorn</title>
+    <title>MusHub Musician Forum</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -48,22 +49,23 @@ https://templatemo.com/tm-576-snapx-photography
                     <ul class="nav">
                         <li><a href="/" class="active">Home</a></li>
                         <li class="has-sub">
-                            <a href="javascript:void(0)">Photos &amp; Videos</a>
+                            <a href="javascript:void(0)">Your Hub</a>
                             <ul class="sub-menu">
-                                <li><a href="/hub/contests">Contests</a></li>
-                                <li><a href="/hub/post-categories">Category Posts</a></li>
+                                <li><a href="/hub/favourites">Favourites <i class="fa-regular fa-heart"></i></a></li>
+                                <li><a href="/hub/create-post">New Post <i class="fa-regular fa-image"></i></a></li>
+                                <li><a href="/hub/user-posts">Your Posts <i class="fa-solid fa-images"></i></a></li>
                             </ul>
                         </li>
                         <li><a href="/hub/categories">Categories</a></li>
+                        <li><a href="/hub/posts">Posts</a></li>
                         <li><a href="/hub/users">Users</a></li>
                     </ul>
-                    {% if user.is_authenticated %}
+                    {% if request.user.is_authenticated %}
                     <div class="border-button">
-                      <a id="modal_trigger" href="{% url 'accounts:logout' %}" class="sign-in-up"><i class="fa fa-user"></i>LogOut</a>
-                      <a id="modal_trigger" href="{% url 'accounts:profile' user.id %}" class="sign-in-up"><i class="fa fa-user"></i>Profile</a>
+                      <a id="modal_trigger" href="{% url 'accounts:logout' %}" class="sign-in-up"><i class="fa fa-sign-out"></i> Exit</a>
+                      <a id="modal_trigger" href="{% url 'accounts:profile' user.id %}" class="sign-in-up"><i class="fa fa-user"></i> Profile</a>
                     </div>
-                    {% endif %}
-                     {% if not user.is_authenticated %}
+                    {% else %}
                     <div class="border-button">
                       <a id="modal_trigger" href="#modal" class="sign-in-up"><i class="fa fa-user"></i> Sign In/Up</a>
                     </div>
@@ -84,30 +86,10 @@ https://templatemo.com/tm-576-snapx-photography
         <span class="modal_close"><i class="fa fa-times"></i></span>
     </div>
     <section class="popupBody">
-        <!-- Social Login -->
-        <div class="social_login">
-            <div class="">
-                <a href="#" class="social_box fb">
-                    <span class="icon"><i class="fab fa-facebook"></i></span>
-                    <span class="icon_title">Connect with Facebook</span>
-
-                </a>
-
-                <a href="#" class="social_box google">
-                    <span class="icon"><i class="fab fa-google-plus"></i></span>
-                    <span class="icon_title">Connect with Google</span>
-                </a>
-            </div>
-
-            <div class="centeredText">
-                <span>Or use your Email address</span>
-            </div>
-
             <div class="action_btns">
                 <div class="one_half"><a href="{% url 'accounts:login' %}"  class="btn">Login</a></div>
                 <div class="one_half last"><a href="{% url 'accounts:signup' %}" class="btn">Sign up</a></div>
             </div>
-        </div>
     </section>
   </div>
   <!-- ***** Main Banner Area Start ***** -->
@@ -116,16 +98,7 @@ https://templatemo.com/tm-576-snapx-photography
       <div class="row">
         <div class="col-lg-10 offset-lg-1">
           <div class="header-text">
-            <h2>Enter a world of <em>Best</em> Musician <em>Hub</em></h2>
-            <p>Here you can find a different posts, threads and news about all related to music world. Join our big friendly family !</p>
-            <div class="buttons">
-              <div class="big-border-button">
-                <a href="hub/contests">Explore MusHub Contest</a>
-              </div>
-              <div class="icon-button">
-                <a href="https://youtube.com/templatemo" target="_blank"><i class="fa fa-play"></i> Watch Our Video Now</a>
-              </div>
-            </div>
+            <h2>Enter a world of <em>Best</em> Musician <em>Forum</em></h2>
           </div>
         </div>
       </div>
@@ -133,351 +106,124 @@ https://templatemo.com/tm-576-snapx-photography
   </div>
   <!-- ***** Main Banner Area End ***** -->
 
-
   <section class="featured-items" id="featured-items">
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
           <div class="owl-features owl-carousel" style="position: relative; z-index: 5;">
-            <div class="item">
+           {% for category in best_categories %}
+            <div class="item" style="width:352px;height:290px;">
               <div class="thumb">
-                <img src="{% static 'assets/images/featured-01.jpg' %}" alt="">
+               {% if category.image %}
+                <img src="{{ category.image.url }}" alt="" style="width:352px;height:290px;">
+               {% endif %}
                 <div class="hover-effect">
                   <div class="content">
-                    <h4>Walk In The Nature <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> <span>(4.5)</span></h4>
+                    <h4>{{ category.name }}
+                        <i class="fa-regular fa-images"></i>
+                        <span>{{ category.post_count }}</span></h4>
                     <ul>
-                      <li><span>Contest Winner:</span> Vincent Adam</li>
-                      <li><span>Contest Author:</span> Anthony Soft</li>
-                      <li><span>Awards:</span> $1.000 + Camera Nikon</li>
+                      {% if category.description %}
+                      {{ category.description }}
+                      {% endif %}
                     </ul>
+                    <br><br>
+                    <div class="border-button">
+                      <a href="{% url 'music:category' pk=category.id %}">View <i class="fa-solid fa-eye"></i></a>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="item">
-              <div class="thumb">
-                <img src="{% static 'assets/images/featured-02.jpg' %}" alt="">
-                <div class="hover-effect">
-                  <div class="content">
-                    <h4>Smile In The Nature <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> <span>(4.5)</span></h4>
-                    <ul>
-                      <li><span>Contest Winner:</span> Thomas Eddy</li>
-                      <li><span>Contest Author:</span> Anthony Soft</li>
-                      <li><span>Awards:</span> $1,200 + Canon EOS R7</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="thumb">
-                <img src="{% static 'assets/images/featured-03.jpg' %}" alt="">
-                <div class="hover-effect">
-                  <div class="content">
-                    <h4>Happy In The Nature <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> <span>(4.5)</span></h4>
-                    <ul>
-                      <li><span>Contest Winner:</span> Vincent Adam</li>
-                      <li><span>Contest Author:</span> Anthony Soft</li>
-                      <li><span>Awards:</span> $1,800 + Canon EOS R6</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="thumb">
-                <img src="{% static 'assets/images/featured-01.jpg' %}" alt="">
-                <div class="hover-effect">
-                  <div class="content">
-                    <h4>Walk In The Nature <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> <span>(4.5)</span></h4>
-                    <ul>
-                      <li><span>Contest Winner:</span> Thomas Eddy</li>
-                      <li><span>Contest Author:</span> Anthony Soft</li>
-                      <li><span>Awards:</span> $8,400 + Canon EOS R1</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="thumb">
-                <img src="{% static 'assets/images/featured-02.jpg' %}" alt="">
-                <div class="hover-effect">
-                  <div class="content">
-                    <h4>Run In The Nature <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> <span>(4.5)</span></h4>
-                    <ul>
-                      <li><span>Contest Winner:</span> Vincent Adam</li>
-                      <li><span>Contest Author:</span> Anthony Soft</li>
-                      <li><span>Awards:</span> $5,500 + Canon EOS R3</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="thumb">
-                <img src="{% static 'assets/images/featured-03.jpg' %}" alt="">
-                <div class="hover-effect">
-                  <div class="content">
-                    <h4>Stay In The Nature <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> <span>(4.5)</span></h4>
-                    <ul>
-                      <li><span>Contest Winner:</span> Thomas Eddy</li>
-                      <li><span>Contest Author:</span> Anthony Soft</li>
-                      <li><span>Awards:</span> $4,400 + Canon EOS R5</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="thumb">
-                <img src="{% static 'assets/images/featured-01.jpg' %}" alt="">
-                <div class="hover-effect">
-                  <div class="content">
-                    <h4>Walk In The Nature <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> <span>(4.5)</span></h4>
-                    <ul>
-                      <li><span>Contest Winner:</span> Vincent Adam</li>
-                      <li><span>Contest Author:</span> Anthony Soft</li>
-                      <li><span>Awards:</span> $3,800 + Canon EOS R6</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="thumb">
-                <img src="{% static 'assets/images/featured-02.jpg' %}" alt="">
-                <div class="hover-effect">
-                  <div class="content">
-                    <h4>Shoot In The Nature <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> <span>(4.5)</span></h4>
-                    <ul>
-                      <li><span>Contest Winner:</span> Vincent Adam</li>
-                      <li><span>Contest Author:</span> Anthony Soft</li>
-                      <li><span>Awards:</span> $2,400 + Canon EOS R7</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="thumb">
-                <img src="{% static 'assets/images/featured-03.jpg' %}" alt="">
-                <div class="hover-effect">
-                  <div class="content">
-                    <h4>Fly In The Nature <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> <span>(4.5)</span></h4>
-                    <ul>
-                      <li><span>Contest Winner:</span> Vincent Adam</li>
-                      <li><span>Contest Author:</span> Anthony Soft</li>
-                      <li><span>Awards:</span> $1,200 + Canon EOS R10</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
+          {% endfor %}
           </div>
         </div>
       </div>
     </div>
   </section>
-
-
+  <br><br>
   <section class="popular-categories">
     <div class="container-fluid">
       <div class="row">
+      {% block content %}
         <div class="col-lg-6">
           <div class="section-heading">
-            <h6>HOT</h6>
             <h4>Check Out <em>Most</em> Liked <em>Posts</em></h4>
           </div>
         </div>
         <div class="col-lg-6">
           <div class="main-button">
-            <a href="/hub/categories">Categories</a>
+            {% if request.user.is_authenticated %}
+            <a href="/hub/create-post">New Post  <i class="fa-solid fa-image"></i></a>
+            {% endif %}
+            <a href="/hub/categories">Categories  <i class="fa-regular fa-images"></i></a>
           </div>
         </div>
-        {% block content %}
             {% for post in all_post %}
                 <div class="col-lg-3 col-sm-6">
                   <div class="popular-item">
                     <div class="top-content">
                       <div class="icon">
                       {% if post.user.photo %}
-                        <img src="{{ post.user.photo.url }}" alt="">
+                        <img src="{{ post.user.photo.url }}" style="width:88px;height:auto;" alt="">
                       {% endif %}
                       </div>
                       <div class="right">
                         <h4>{{ post.title }}</h4>
-                        <span><em>{{ post.user.get_short_name }}</em>{{ post.description }}</span>
+                        <span>Authored By: <em>{{ post.user.get_short_name }}</em></span>
                       </div>
                     </div>
-                    <div class="thumb">
+                    <div class="thumb"  style="width:320px;height:270px;">
                         {% if post.image %}
-                            <img src="{{ post.image.url }}" alt="Image">
+                            <img src="{{ post.image.url }}" style="width:320px;height:270px;" alt="Image">
                         {% endif %}
                       <span class="category">Replies:{{ post.messages_count }}</span>
-                      <span class="likes"><i class="fa fa-heart"></i> {{ post.likes.all.count }}</span>
+                      <span class="likes"><i class="fa fa-heart"></i> {{ post.likes_count }}</span>
                     </div>
                     <div class="border-button">
-                      <a href="{% url 'music:post' uuid=post.uuid %}">View</a>
+                      <a href="{% url 'music:post' uuid=post.uuid %}">View <i class="fa-solid fa-eye"></i></a>
                     </div>
                   </div>
                 </div>
             {% endfor %}
-        {% endblock %}
         </div>
       </div>
   </section>
-
-  <section class="closed-contests">
-    <div class="container">
+  <section class="contest-win">
+    <div class="container-fluid">
       <div class="row">
         <div class="col-lg-12">
           <div class="section-heading text-center">
-            <h6>Closed Photography Contests</h6>
-            <h4><em>Previous Contests</em> With Handpicked <em>Winners</em></h4>
+            <h6>Write More Posts To Get Into</h6>
+            <h4>Top <em>Authors</em> Of This <em>Month</em></h4>
           </div>
         </div>
-        <div class="col-lg-12">
-          <div class="owl-features owl-carousel" style="position: relative; z-index: 5;">
-            <div class="item">
-              <div class="closed-item">
-                <div class="thumb">
-                  <img src="{% static 'assets/images/closed-01.jpg' %}" alt="">
-                  <span class="winner"><em>Winner:</em> Anthony Soft</span>
-                  <span class="price"><em>Award :</em> $1,600</span>
+          {% for user in top_users %}
+            <div class="col-lg-3">
+              <div class="contest-item">
+                <img src="{{ user.photo.url }}" style="width:352px;height:290px;" alt="">
+                <h4>{{ user.get_full_name }}</h4>
+                <div class="info">
+                  <span class="participants"><img src="{% static 'assets/images/icon-03.png' %}" alt=""><br>Likes {{ user.user_likes }}</span>
+                  <span class="submittions"><img src="{% static 'assets/images/icon-01.png' %}" alt=""><br>Posts {{ user.posted_count }}</span>
                 </div>
-                <div class="down-content">
-                  <div class="row">
-                    <div class="col-7">
-                      <h4>88 Participants <br><span>Number Of Artists</span></h4>
-                    </div>
-                    <div class="col-5">
-                      <h4 class="pics">320 Pictures <br><span>Submited Pics</span></h4>
-                    </div>
-                  </div>
+                <div class="border-button">
+                    <a href="{% url 'music:user' user.id %}" style="text-align: left"><i class="fa fa-eye"></i> View</a>
                 </div>
               </div>
             </div>
-            <div class="item">
-              <div class="closed-item">
-                <div class="thumb">
-                  <img src="{% static 'assets/images/closed-02.jpg' %}" alt="">
-                  <span class="winner"><em>Winner:</em> Anthony Soft</span>
-                  <span class="price"><em>Award :</em> $4,200</span>
-                </div>
-                <div class="down-content">
-                  <div class="row">
-                    <div class="col-7">
-                      <h4>96 Participants <br><span>Number Of Artists</span></h4>
-                    </div>
-                    <div class="col-5">
-                      <h4 class="pics">410 Pictures <br><span>Submited Pics</span></h4>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="closed-item">
-                <div class="thumb">
-                  <img src="{% static 'assets/images/closed-03.jpg' %}" alt="">
-                  <span class="winner"><em>Winner:</em> Anthony Soft</span>
-                  <span class="price"><em>Award :</em> $3,200</span>
-                </div>
-                <div class="down-content">
-                  <div class="row">
-                    <div class="col-7">
-                      <h4>74 Participants <br><span>Number Of Artists</span></h4>
-                    </div>
-                    <div class="col-5">
-                      <h4 class="pics">284 Pictures <br><span>Submited Pics</span></h4>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-12">
-          <div class="border-button text-center">
-            <a href="/hub/contests">Browse Open Contests</a>
-          </div>
-        </div>
+         {% endfor %}
       </div>
     </div>
   </section>
-
-  <section class="pricing-plans">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="section-heading text-center">
-            <h6>Our Pricing</h6>
-            <h4>Photography <em>Contest Plans</em> and Price <em>Awards</em></h4>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="pricing-item">
-            <img src="{% static 'assets/images/pricing-01.jpg' %}" alt="">
-            <h4>Basic Plan</h4>
-            <ul class="first-plan">
-              <li>Lorem Ipsum Dolores Sonte</li>
-              <li>Songe Lorem Ipsum Dol</li>
-              <li>Matrios Venga Heptuss</li>
-              <li>Denim Sriracha Kogi</li>
-              <li>Digital Photography Awards</li>
-            </ul>
-            <span class="price">$25 USD</span>
-            <div class="border-button">
-              <a href="#">Choose This Plan</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="pricing-item">
-            <img src="{% static 'assets/images/pricing-02.jpg' %}" alt="">
-            <h4>Standard Plan</h4>
-            <ul class="second-plan">
-              <li>Lorem Ipsum Dolores Sonte</li>
-              <li>Songe Lorem Ipsum Dol</li>
-              <li>Matrios Venga Heptuss</li>
-              <li>Denim Sriracha Kogi</li>
-              <li>Digital Photography Awards</li>
-            </ul>
-            <span class="price">$45 USD</span>
-            <div class="border-button">
-              <a href="#">Choose This Plan</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="pricing-item">
-            <img src="{% static 'assets/images/pricing-03.jpg' %}" alt="">
-            <h4>Advanced Plan</h4>
-            <ul class="third-plan">
-              <li>Lorem Ipsum Dolores Sonte</li>
-              <li>Songe Lorem Ipsum Dol</li>
-              <li>Matrios Venga Heptuss</li>
-              <li>Denim Sriracha Kogi</li>
-              <li>Digital Photography Awards</li>
-            </ul>
-            <span class="price">$85 USD</span>
-            <div class="border-button">
-              <a href="#">Choose This Plan</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
+  {% endblock %}
   <footer>
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
           <p>Copyright © 2022 <a href="#">MusHub</a> Musician Forum Co., Ltd. All rights reserved.
           
-          Design: <a title="CSS Templates" rel="sponsored" href="https://templatemo.com" target="_blank">Michael Gorn</a></p>
+          Design: <a href="{% url 'music:users' %}">Michael Gorn</a></p>
         </div>
       </div>
     </div>
