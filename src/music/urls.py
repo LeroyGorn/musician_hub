@@ -1,9 +1,9 @@
 from django.urls import path
 
 from music.views import (CategoryIndexView, CategoryListView, ContestIndex,
-                         CreatePost, DeletePost, FavouritesList, LikeView,
-                         PostIndex, PostsDetailsView, RelatedPost, UpdatePost,
-                         UsersDetailsView, bitcoin, create_data,
+                         CreatePost, DeleteComment, DeletePost, FavouritesList,
+                         LikeView, PostIndex, PostsDetailsView, RelatedPost,
+                         UpdatePost, UsersDetailsView, bitcoin, create_data,
                          normalize_email)
 
 app_name = "music"
@@ -23,5 +23,6 @@ urlpatterns = [
     path("user-posts/", RelatedPost.as_view(), name="user_posts"),
     path("update/<uuid:uuid>/", UpdatePost.as_view(), name="update_post"),
     path("delete/<uuid:uuid>/", DeletePost.as_view(), name="delete_post"),
+    path("delete/<int:pk>/", DeleteComment.as_view(), name="delete_comment"),
     path("favourites/", FavouritesList.as_view(), name="favourites"),
 ]

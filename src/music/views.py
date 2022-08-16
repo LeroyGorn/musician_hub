@@ -81,6 +81,23 @@ class PostsDetailsView(DetailView):
         return redirect(self.request.path_info)
 
 
+class DeleteComment(DeleteView):
+    template_name = "delete-comment.html"
+    model = ForumComment
+    success_url = "/"
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("accounts:login")
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        try:
+            return ForumComment.objects.get(author=self.request.user, id=self.kwargs.get("pk"))
+        except ForumComment.DoesNotExist:
+            raise Http404("You are not allowed to delete this comment.")
+
+
 class CategoryIndexView(ListView):
     template_name = "categories.html"
     model = ForumCategory
@@ -225,7 +242,7 @@ class DeletePost(DeleteView):
         try:
             return ForumPosted.objects.get(user=self.request.user, uuid=self.kwargs.get("uuid"))
         except ForumPosted.DoesNotExist:
-            raise Http404("You are not allowed to delete this Post")
+            raise Http404("You are not allowed to delete this post.")
 
 
 class ContestIndex(ListView):
