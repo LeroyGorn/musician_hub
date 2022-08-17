@@ -2,7 +2,7 @@ from config.settings.base import *
 
 load_dotenv()  # noqa:
 
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = [
