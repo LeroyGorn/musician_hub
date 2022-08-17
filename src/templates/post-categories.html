@@ -10,7 +10,7 @@
                     <div class="top-content">
                       <div class="icon">
                         {% if post.user.photo %}
-                        <img src="{{ post.user.photo.url }}" alt="">
+                        <img src="{{ post.user.photo.url }}" style="width:64px;height:64px; max-width: 100%" class="mb-2 rounded-circle img-thumbnail"  alt="">
                         {% endif %}
                       </div>
                       <div class="right">
@@ -20,7 +20,7 @@
                     </div>
                     <div class="thumb">
                       {% if post.image %}
-                      <img src="{{ post.image.url }}" style="width:352px;height:290px;" alt="">
+                      <img src="{{ post.image.url }}" style="width:352px;height:290px; max-width: 100%" alt="">
                       {% endif %}
                       <span class="category">Replies:{{ post.messages_count }}</span>
                       <span class="likes"><i class="fa fa-heart"></i> {{ post.likes.all.count }}</span>

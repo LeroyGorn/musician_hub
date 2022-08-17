@@ -112,10 +112,10 @@ https://templatemo.com/tm-576-snapx-photography
         <div class="col-lg-12">
           <div class="owl-features owl-carousel" style="position: relative; z-index: 5;">
            {% for category in best_categories %}
-            <div class="item" style="width:352px;height:290px;">
+            <div class="item" style="width:352px;height:290px; max-width: 100%">
               <div class="thumb">
                {% if category.image %}
-                <img src="{{ category.image.url }}" alt="" style="width:352px;height:290px;">
+                <img src="{{ category.image.url }}" alt="" style="width:352px;height:290px; max-width: 100%">
                {% endif %}
                 <div class="hover-effect">
                   <div class="content">
@@ -165,7 +165,7 @@ https://templatemo.com/tm-576-snapx-photography
                     <div class="top-content">
                       <div class="icon">
                       {% if post.user.photo %}
-                        <img src="{{ post.user.photo.url }}" style="width:88px;height:auto;" alt="">
+                        <img src="{{ post.user.photo.url }}" style="width:64px;height:64px; max-width: 100%" class="mb-2 rounded-circle img-thumbnail" alt="">
                       {% endif %}
                       </div>
                       <div class="right">
@@ -173,9 +173,9 @@ https://templatemo.com/tm-576-snapx-photography
                         <span>Authored By: <em>{{ post.user.get_short_name }}</em></span>
                       </div>
                     </div>
-                    <div class="thumb"  style="width:320px;height:270px;">
+                    <div class="thumb" style="width:320px;height:270px; max-width: 100%">
                         {% if post.image %}
-                            <img src="{{ post.image.url }}" style="width:320px;height:270px;" alt="Image">
+                            <img src="{{ post.image.url }}" style="width:320px;height:270px; max-width: 100%" alt="Image">
                         {% endif %}
                       <span class="category">Replies:{{ post.messages_count }}</span>
                       <span class="likes"><i class="fa fa-heart"></i> {{ post.likes_count }}</span>
@@ -200,8 +200,8 @@ https://templatemo.com/tm-576-snapx-photography
         </div>
           {% for user in top_users %}
             <div class="col-lg-3">
-              <div class="contest-item">
-                <img src="{{ user.photo.url }}" style="width:352px;height:290px;" alt="">
+              <div class="contest-item" style="max-width: 100%">
+                <img src="{{ user.photo.url }}" style="width:352px;height:290px; max-width: 100%" alt="">
                 <h4>{{ user.get_full_name }}</h4>
                 <div class="info">
                   <span class="participants"><img src="{% static 'assets/images/icon-03.png' %}" alt=""><br>Likes {{ user.user_likes }}</span>

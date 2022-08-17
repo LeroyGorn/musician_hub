@@ -8,7 +8,6 @@ from django.utils import timezone
 from django.views import View
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
-from django.views.generic.list import MultipleObjectMixin
 
 from accounts.models import ForumUser
 from music.filters import PostFilter, UserFilter
@@ -140,8 +139,12 @@ class UsersDetailsView(DetailView):
         context = super().get_context_data(**kwargs)
         posts = ForumPosted.objects.filter(user=super().get_object()).order_by("-create_datetime")
 
+        try:
+            context["most_liked"] = sorted([i for i in posts], key=ForumPosted.likes_count, reverse=True)[0]
+        except IndexError:
+            context["most_liked"] = 0
+
         context["page_obj"] = Paginator(posts, 4).get_page(self.request.GET.get("page"))
-        context["most_liked"] = sorted([i for i in posts], key=ForumPosted.likes_count, reverse=True)[0]
         context["comments"] = ForumComment.objects.filter(author=super().get_object()).all().count()
         context["user"] = super().get_object()
         return context
