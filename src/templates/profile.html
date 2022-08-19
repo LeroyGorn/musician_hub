@@ -11,7 +11,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 
-    <title>SnapX Photographer Page</title>
+    <title>MusHub</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -42,7 +42,7 @@ https://templatemo.com/tm-576-snapx-photography
               <div class="col-12">
                   <nav class="main-nav">
                       <!-- ***** Logo Start ***** -->
-                      <a href="/" class="logo">
+                      <a href="{% url 'index' %}" class="logo">
                           <img src="{% static 'assets/images/newlogo.png' %}" style="width:115px;height:58px;" alt="MusHub" >
                       </a>
                       <!-- ***** Logo End ***** -->
@@ -213,6 +213,7 @@ https://templatemo.com/tm-576-snapx-photography
 
   <!-- Scripts -->
   <!-- Bootstrap core JavaScript -->
+  <script src="{% static 'assets/js/index.js' %}"></script>
   <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
   <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
 

@@ -284,14 +284,14 @@
 		if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
 			var target = $(this.hash);
 			target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-			if (target.length) {
+			if (target) {
 				var width = $(window).width();
 				if(width < 991) {
 					$('.menu-trigger').removeClass('active');
 					$('.header-area .nav').slideUp(200);	
 				}				
 				$('html,body').animate({
-					scrollTop: target
+					scrollTop: (target.offset().top) - 80
 				}, 700);
 				return false;
 			}
@@ -315,7 +315,7 @@
 	        menu = target;
 	       	var target = $(this.hash);
 	        $('html, body').stop().animate({
-	            scrollTop: target
+	            scrollTop: (target.offset().top) - 79
 	        }, 500, 'swing', function () {
 	            window.location.hash = target;
 	            $(document).on("scroll", onScroll);
@@ -398,19 +398,20 @@
 
 
 	function visible(partial) {
-        var $t = partial,
-            $w = jQuery(window),
-            viewTop = $w.scrollTop(),
-            viewBottom = viewTop + $w.height(),
-            _top = $t,
-            _bottom = _top + $t.height(),
-            compareTop = partial === true ? _bottom : _top,
-            compareBottom = partial === true ? _top : _bottom;
+		if (typeof window != 'undefined' && partial) {
+			var $t = partial,
+				$w = jQuery(window),
+				viewTop = $w.scrollTop(),
+				viewBottom = viewTop + $w.height(),
+				_top = $t.offset().top,
+				_bottom = _top + $t.height(),
+				compareTop = partial === true ? _bottom : _top,
+				compareBottom = partial === true ? _top : _bottom;
 
-        return ((compareBottom <= viewBottom) && (compareTop >= viewTop) && $t.is(':visible'));
+			return ((compareBottom <= viewBottom) && (compareTop >= viewTop) && $t.is(':visible'));
 
-    }
-
+		}
+	}
     $(window).scroll(function() {
 
         if (visible($('.count-digit'))) {
