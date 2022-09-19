@@ -3,7 +3,7 @@ from config.settings.base import *
 load_dotenv()  # noqa:
 
 DEBUG = False
-
+ADMIN_ENABLED = False
 
 ALLOWED_HOSTS = [
     "localhost",

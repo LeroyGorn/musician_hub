@@ -21,7 +21,6 @@ from django.urls import include, path
 from music.views import IndexView
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
     path("", IndexView.as_view(), name="index"),
     path("hub/", include("music.urls")),
     path("api/", include("api.urls")),
@@ -31,3 +30,6 @@ urlpatterns = [
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.ADMIN_ENABLED:
+    urlpatterns += [path("admin/", admin.site.urls)]
