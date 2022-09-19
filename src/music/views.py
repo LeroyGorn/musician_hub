@@ -24,8 +24,7 @@ class IndexView(ListView):
     def get_queryset(self):
         one_year_ago = timezone.now() - timedelta(days=365)
         posts = ForumPosted.objects.filter(create_datetime__gte=one_year_ago).distinct()
-        liked_posts = posts.annotate(amount_likes=Sum("likes"))
-        queryset = liked_posts.order_by("-amount_likes")
+        queryset = posts.annotate(amount_likes=Sum("likes")).order_by("-amount_likes")
 
         return queryset[:4]
 
@@ -36,8 +35,8 @@ class IndexView(ListView):
         context = super().get_context_data(**kwargs)
         one_year_ago = timezone.now() - timedelta(days=365)
         posts = ForumPosted.objects.filter(create_datetime__gte=one_year_ago).distinct()
-        liked_posts = posts.annotate(amount_likes=Sum("likes"))
-        queryset = liked_posts.order_by("-amount_likes")
+        queryset = posts.annotate(amount_likes=Sum("likes")).order_by("-amount_likes")
+
         context["top_users"] = ForumUser.objects.filter(writer__in=queryset).distinct()
         context["best_categories"] = ForumCategory.objects.all()
         return context

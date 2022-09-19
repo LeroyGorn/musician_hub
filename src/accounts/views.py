@@ -95,8 +95,8 @@ class ProfileView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         posts = ForumPosted.objects.filter(user=self.request.user)
-        liked_posts = posts.annotate(amount_likes=Sum("likes"))
-        most_liked = liked_posts.order_by("-amount_likes")[0]
+        most_liked = posts.annotate(amount_likes=Sum("likes")).order_by("-amount_likes")[0]
+
         comments = ForumComment.objects.filter(author=self.request.user).all().count()
         context["most_liked"] = most_liked
         context["comments"] = comments
