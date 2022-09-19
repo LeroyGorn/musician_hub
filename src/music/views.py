@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from django.core.paginator import Paginator
+from django.db.models import Sum
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
@@ -21,9 +22,11 @@ class IndexView(ListView):
     context_object_name = "all_post"
 
     def get_queryset(self):
-        one_month_ago = timezone.now() - timedelta(days=30)
-        posts = ForumPosted.objects.filter(create_datetime__gte=one_month_ago).distinct()
-        queryset = sorted([i for i in posts], key=ForumPosted.likes_count, reverse=True)
+        one_year_ago = timezone.now() - timedelta(days=365)
+        posts = ForumPosted.objects.filter(create_datetime__gte=one_year_ago).distinct()
+        liked_posts = posts.annotate(amount_likes=Sum("likes"))
+        queryset = liked_posts.order_by("-amount_likes")
+
         return queryset[:4]
 
     def get_object(self):
@@ -31,9 +34,10 @@ class IndexView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        one_month_ago = timezone.now() - timedelta(days=30)
-        posts = ForumPosted.objects.filter(create_datetime__gte=one_month_ago).distinct()
-        queryset = sorted([i for i in posts], key=ForumPosted.likes_count, reverse=True)
+        one_year_ago = timezone.now() - timedelta(days=365)
+        posts = ForumPosted.objects.filter(create_datetime__gte=one_year_ago).distinct()
+        liked_posts = posts.annotate(amount_likes=Sum("likes"))
+        queryset = liked_posts.order_by("-amount_likes")
         context["top_users"] = ForumUser.objects.filter(writer__in=queryset).distinct()
         context["best_categories"] = ForumCategory.objects.all()
         return context
@@ -138,9 +142,10 @@ class UsersDetailsView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         posts = ForumPosted.objects.filter(user=super().get_object()).order_by("-create_datetime")
+        liked_posts = posts.annotate(amount_likes=Sum("likes"))
 
         try:
-            context["most_liked"] = sorted([i for i in posts], key=ForumPosted.likes_count, reverse=True)[0]
+            context["most_liked"] = liked_posts.order_by("-amount_likes")[0]
         except IndexError:
             context["most_liked"] = 0
 

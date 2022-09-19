@@ -5,6 +5,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.sites.shortcuts import get_current_site
+from django.db.models import Sum
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
@@ -94,7 +95,8 @@ class ProfileView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         posts = ForumPosted.objects.filter(user=self.request.user)
-        most_liked = sorted([i for i in posts], key=ForumPosted.likes_count, reverse=True)[0]
+        liked_posts = posts.annotate(amount_likes=Sum("likes"))
+        most_liked = liked_posts.order_by("-amount_likes")[0]
         comments = ForumComment.objects.filter(author=self.request.user).all().count()
         context["most_liked"] = most_liked
         context["comments"] = comments
